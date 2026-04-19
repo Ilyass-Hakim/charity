@@ -8,10 +8,16 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.CreationTimestamp;
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "actions_charite")
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
 public class ActionCharite {
+
+    @CreationTimestamp
+    private LocalDateTime dateCreation;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +41,8 @@ public class ActionCharite {
 
     // 'ACTIVE', 'TERMINEE', 'ARCHIVEE'
     private String statutAction = "ACTIVE";
+
+    private boolean archivee = false;
 
     // Lien vers Categorie (entite JPA)
     @ManyToOne(fetch = FetchType.LAZY)

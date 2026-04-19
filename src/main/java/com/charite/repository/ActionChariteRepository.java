@@ -16,9 +16,12 @@ public interface ActionChariteRepository extends JpaRepository<ActionCharite, Lo
     Page<ActionCharite> findByStatutActionNot(String statut, Pageable pageable);
     List<ActionCharite> findByCategorieAndStatutAction(Categorie cat, String statut);
     List<ActionCharite> findByOrganisationId(Long orgId);
+    
+    Page<ActionCharite> findByArchiveeFalse(Pageable pageable);
+    Page<ActionCharite> findByCategorieAndArchiveeFalse(Categorie cat, Pageable pageable);
 
-    @Query("SELECT a FROM ActionCharite a WHERE a.statutAction = 'ACTIVE' AND "
+    @Query("SELECT a FROM ActionCharite a WHERE a.archivee = false AND "
          + "(LOWER(a.titre) LIKE LOWER(CONCAT('%',:kw,'%')) OR "
          + "LOWER(a.description) LIKE LOWER(CONCAT('%',:kw,'%')))")
-    Page<ActionCharite> search(@Param("kw") String keyword, Pageable p);
+    Page<ActionCharite> searchByKeyword(@Param("kw") String keyword, Pageable p);
 }

@@ -34,6 +34,8 @@ public class Utilisateur {
 
     private String photoProfil;
 
+    private String telephone;
+
     private boolean actif = true;
 
     @CreationTimestamp 

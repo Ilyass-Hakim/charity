@@ -23,6 +23,8 @@ public class Organisation {
     private String adresseLegale;
     private String matriculeFiscal;
     private String emailContact;
+    private String contactPrincipal;
+    private String telephone;
     private String logo;
     private String description;
 
