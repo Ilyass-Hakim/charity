@@ -1,4 +1,4 @@
-package com.charite.charite_app;
+package com.charite;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

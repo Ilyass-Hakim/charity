@@ -1,0 +1,28 @@
+# docker-compose.dev.yml
+# Lance uniquement les bases de donnees en developpement
+# Ton application Spring Boot tourne directement dans IntelliJ
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: charite-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: charite_db
+      POSTGRES_USER: ${DB_PROD_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PROD_PASSWORD}
+    volumes:
+      - pgdata_dev:/var/lib/postgresql/data
+  mongodb:
+    image: mongo:6.0
+    container_name: charite-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata_dev:/data/db
+volumes:
+  pgdata_dev:
+  mongodata_dev:
