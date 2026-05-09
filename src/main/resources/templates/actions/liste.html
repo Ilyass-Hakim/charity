@@ -155,7 +155,7 @@
                     <a sec:authorize="hasRole('ROLE_ORG_ADMIN')" th:href="@{/organisation/dashboard}"
                         class="rounded-full overflow-hidden w-10 h-10 border border-outline-variant shadow-sm hover:ring-2 hover:ring-primary/20 transition-all">
                         <img alt="Org profile" class="w-full h-full object-cover"
-                            th:src="${currentUser != null && currentUser.photoProfil != null ? currentUser.photoProfil : 'https://ui-avatars.com/api/?name=Org&background=005440&color=fff'}" />
+                            th:src="${currentOrg != null && currentOrg.logo != null ? currentOrg.logo : 'https://ui-avatars.com/api/?name=Org&background=005440&color=fff'}" />
                     </a>
                     <a sec:authorize="!hasRole('ROLE_ORG_ADMIN')" th:href="@{/utilisateur/profil}"
                         class="rounded-full overflow-hidden w-10 h-10 border border-outline-variant shadow-sm hover:ring-2 hover:ring-primary/20 transition-all">

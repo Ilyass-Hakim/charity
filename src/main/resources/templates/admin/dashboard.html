@@ -159,14 +159,20 @@
 <h2 class="font-h1 text-h1 text-on-surface" th:text="#{admin.overview}">Platform Overview</h2>
 <p class="font-body-md text-on-surface-variant" th:text="#{admin.welcome}">Welcome back, Super Admin. Here's what's happening today.</p>
 </div>
+<!-- Success Message -->
+<div th:if="${success}" class="mb-lg p-md bg-primary-container text-on-primary-container rounded-xl flex items-center gap-sm animate-fade-in shadow-sm">
+    <span class="material-symbols-outlined">check_circle</span>
+    <span th:text="${success}">Action completed successfully!</span>
+</div>
+
 <div class="flex items-center gap-md">
 <!-- Language Toggle -->
 <div class="flex gap-2 mr-4 text-sm font-bold text-primary">
-    <a th:href="@{'' (lang='en')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'en' ? 'text-secondary font-black' : ''}">EN</a>
+    <a th:href="@{/admin/dashboard(lang='en')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'en' ? 'text-secondary font-black' : ''}">EN</a>
     <span class="text-outline opacity-30">|</span>
-    <a th:href="@{'' (lang='fr')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'fr' ? 'text-secondary font-black' : ''}">FR</a>
+    <a th:href="@{/admin/dashboard(lang='fr')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'fr' ? 'text-secondary font-black' : ''}">FR</a>
     <span class="text-outline opacity-30">|</span>
-    <a th:href="@{'' (lang='ar')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'ar' ? 'text-secondary font-black' : ''}">AR</a>
+    <a th:href="@{/admin/dashboard(lang='ar')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'ar' ? 'text-secondary font-black' : ''}">AR</a>
 </div>
 <div class="relative">
 <span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline">search</span>
@@ -177,7 +183,8 @@
 <span class="absolute top-2 right-2 w-2 h-2 bg-secondary rounded-full"></span>
 </button>
 <div class="flex items-center gap-sm pl-md border-l border-outline-variant">
-    <img alt="Admin Profile" class="w-10 h-10 rounded-full object-cover" th:src="${currentUser != null && currentUser.photoProfil != null ? currentUser.photoProfil : 'https://ui-avatars.com/api/?name=Super+Admin&background=005440&color=fff'}"/>
+    <img alt="Admin Profile" class="w-10 h-10 rounded-full object-cover" 
+         th:src="${currentUser != null && currentUser.photoProfil != null ? currentUser.photoProfil : 'https://ui-avatars.com/api/?name=Admin&background=005440&color=fff'}"/>
 </div>
 </div>
 </header>
@@ -189,7 +196,7 @@
 </div>
 <div>
 <p class="font-label-caps text-on-surface-variant" th:text="#{admin.total_donations}">Total Donations</p>
-<h3 class="font-h2 text-h2 text-on-surface" th:text="${totalGlobalDonations} + ' MAD'">2,482,900 MAD</h3>
+<h3 class="font-h2 text-h2 text-on-surface" th:text="${(totalGlobalDonations != null ? totalGlobalDonations : 0) + ' MAD'}">0 MAD</h3>
 <p class="text-xs text-primary font-bold flex items-center gap-xs">
 <span class="material-symbols-outlined text-[14px]">trending_up</span> +12.5% this month
                     </p>
@@ -225,7 +232,7 @@
 </div>
 <div>
 <p class="font-label-caps text-on-surface-variant" th:text="#{admin.total_users}">Total Users</p>
-<h3 class="font-h2 text-h2 text-on-surface" th:text="${nbUtilisateurs}">12.5K</h3>
+<h3 class="font-h2 text-h2 text-on-surface" th:text="${nbUtilisateurs != null ? nbUtilisateurs : 0}">0</h3>
 <p class="text-xs text-primary font-bold flex items-center gap-xs">
 <span class="material-symbols-outlined text-[14px]">person_add</span> 240 new this week
                     </p>
@@ -243,15 +250,15 @@
 <button class="px-md py-xs text-xs font-medium rounded-md hover:bg-white/50">1Y</button>
 </div>
 </div>
-<!-- Simulated Chart Area with Real Data scaling -->
+<!-- Chart Area -->
 <div class="relative h-[300px] flex items-end justify-between gap-base pt-md px-md">
 <div class="w-full bg-surface-container h-full absolute top-0 left-0 opacity-10 rounded"></div>
 <div class="w-full flex items-end justify-around h-64 gap-sm px-md">
     <div th:each="month : ${#numbers.sequence(1, 12)}" 
          class="w-8 bg-primary rounded-t-lg group relative"
-         th:style="'height: ' + ${(monthlyStats[month] ?: T(java.math.BigDecimal).ZERO).multiply(new java.math.BigDecimal('100')).divide(totalGlobalDonations.compareTo(T(java.math.BigDecimal).ZERO) > 0 ? totalGlobalDonations : T(java.math.BigDecimal).ONE, 0, T(java.math.RoundingMode).HALF_UP)} + '%'">
+         th:style="'height: ' + ${chartHeights[month-1]} + '%'">
          <span class="absolute -top-8 left-1/2 -translate-x-1/2 bg-on-surface text-surface text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap"
-               th:text="${monthlyStats[month] ?: 0} + ' MAD'"></span>
+               th:text="${monthlyStats[month]} + ' MAD'"></span>
     </div>
 </div>
 </div>
@@ -263,17 +270,17 @@
 <div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant">
 <h3 class="font-h3 text-h3 text-on-surface mb-lg" th:text="#{admin.recent_activity}">Recent Activity</h3>
 <div class="flex flex-col gap-lg">
-    <div th:each="don : ${recentDonations}" class="flex gap-md">
+    <div th:each="don : ${recentDonations}" th:if="${don != null}" class="flex gap-md">
         <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
             <span class="material-symbols-outlined text-[20px]">volunteer_activism</span>
         </div>
         <div>
             <p class="font-body-sm text-on-surface font-semibold" th:text="#{admin.new_donation_received}">New Donation Received</p>
-            <p class="text-xs text-on-surface-variant" th:text="#{admin.donation_activity_detail(${don.actionCharite.titre}, ${don.montant}, ${don.utilisateur.prenom})}"></p>
-            <p class="text-[10px] text-outline mt-1 uppercase font-bold" th:text="${#temporals.format(don.date, 'dd MMM HH:mm')}"></p>
+            <p class="text-xs text-on-surface-variant" th:text="#{admin.donation_activity_detail(${don.actionCharite != null ? don.actionCharite.titre : 'Campaign'}, ${don.montant != null ? don.montant : 0}, ${don.utilisateur != null ? don.utilisateur.prenom : 'Donor'})}"></p>
+            <p class="text-[10px] text-outline mt-1 uppercase font-bold" th:text="${don.date != null ? #temporals.format(don.date, 'dd MMM HH:mm') : '--'}"></p>
         </div>
     </div>
-    <div th:if="${recentDonations.empty}" class="py-xl text-center text-on-surface-variant text-sm italic" th:text="#{admin.no_activity}">
+    <div th:if="${recentDonations == null || recentDonations.empty}" class="py-xl text-center text-on-surface-variant text-sm italic" th:text="#{admin.no_activity}">
         No recent activity.
     </div>
 </div>
@@ -295,7 +302,7 @@
                 <img alt="Organization Logo" class="w-12 h-12 rounded-lg object-cover" th:src="'https://ui-avatars.com/api/?name=' + ${org.nom} + '&background=random'"/>
                 <div>
                     <h4 class="font-h3 text-h3" th:text="${org.nom}">Atlas Resilience</h4>
-                    <p class="text-xs text-on-surface-variant" th:text="'Registered: ' + ${#temporals.format(org.dateCreation, 'MMM dd, yyyy')}">Date</p>
+                    <p class="text-xs text-on-surface-variant" th:text="${org.dateInscription != null ? 'Registered: ' + #temporals.format(org.dateInscription, 'MMM dd, yyyy') : 'Date unknown'}">Date</p>
                 </div>
             </div>
             <p class="font-body-sm text-on-surface-variant line-clamp-2" th:text="${org.emailContact}">Email Contact</p>
@@ -306,11 +313,11 @@
         <div class="p-md bg-surface-container border-t border-outline-variant flex gap-md">
             <form th:action="@{/admin/organisations/{id}/valider(id=${org.id})}" method="post" class="flex-1">
                 <input type="hidden" name="approuver" value="true">
-                <button class="w-full bg-primary text-on-primary py-sm rounded-lg text-sm font-bold hover:opacity-90 active:scale-95 transition-all" th:text="#{admin.approve}">Approve</button>
+                <button type="submit" class="w-full bg-primary text-on-primary py-sm rounded-lg text-sm font-bold hover:opacity-90 active:scale-95 transition-all" th:text="#{admin.approve}">Approve</button>
             </form>
             <form th:action="@{/admin/organisations/{id}/valider(id=${org.id})}" method="post" class="flex-1">
                 <input type="hidden" name="approuver" value="false">
-                <button class="w-full bg-surface-container-high text-on-surface py-sm rounded-lg text-sm font-bold hover:bg-outline-variant active:scale-95 transition-all" th:text="#{admin.reject}">Reject</button>
+                <button type="submit" class="w-full bg-surface-container-high text-on-surface py-sm rounded-lg text-sm font-bold hover:bg-outline-variant active:scale-95 transition-all" th:text="#{admin.reject}">Reject</button>
             </form>
         </div>
     </div>

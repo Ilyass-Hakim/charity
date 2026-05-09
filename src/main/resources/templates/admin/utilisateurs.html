@@ -225,7 +225,8 @@
 <td class="px-lg py-md font-body-md text-primary font-bold text-right" th:text="${userDonations[user.id]} + ' MAD'">$12,450.00</td>
 <td class="px-lg py-md font-body-sm text-on-surface-variant" th:text="${user.role != null ? user.role.nom : 'USER'}">Role</td>
 <td class="px-lg py-md">
-<span class="px-sm py-xs bg-primary-container/20 text-primary-container text-[11px] font-bold rounded-full uppercase tracking-wider border border-primary/20" th:text="#{explore.ongoing}">Active</span>
+    <span th:if="${user.actif}" class="px-sm py-xs bg-primary-container/20 text-primary-container text-[11px] font-bold rounded-full uppercase tracking-wider border border-primary/20" th:text="#{admin.status_active}">Active</span>
+    <span th:if="${!user.actif}" class="px-sm py-xs bg-error-container/20 text-error text-[11px] font-bold rounded-full uppercase tracking-wider border border-error/20" th:text="#{admin.status_inactive}">Inactive</span>
 </td>
 <td class="px-lg py-md text-center">
 <div class="flex items-center justify-center gap-sm">

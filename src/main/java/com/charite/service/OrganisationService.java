@@ -6,6 +6,7 @@ import com.charite.entity.Organisation;
 import com.charite.entity.Role;
 import com.charite.entity.StatutOrganisation;
 import com.charite.entity.Utilisateur;
+import com.charite.repository.MembreOrganisationRepository;
 import com.charite.repository.OrganisationRepository;
 import com.charite.repository.RoleRepository;
 import com.charite.repository.UtilisateurRepository;
@@ -22,6 +23,7 @@ public class OrganisationService {
     private final UtilisateurRepository userRepository;
     private final RoleRepository roleRepository;
     private final EmailService emailService;
+    private final MembreOrganisationRepository membreRepository;
 
     public Organisation inscrire(OrganisationDto dto, String emailAdmin) {
         Organisation org = Organisation.builder()
@@ -55,7 +57,14 @@ public class OrganisationService {
         }
         admin.getMemberships().add(membre);
 
+        // Crucial: Add the member to the organization's list as well
+        if (savedOrg.getMembres() == null) {
+            savedOrg.setMembres(new java.util.ArrayList<>());
+        }
+        savedOrg.getMembres().add(membre);
+
         userRepository.save(admin);
+        organisationRepository.save(savedOrg);
 
         return savedOrg;
     }
@@ -66,18 +75,36 @@ public class OrganisationService {
 
         if (approuver) {
             org.setStatutOrganisation(StatutOrganisation.APPROUVEE.name());
-            
-            // Si l'organisation est approuvee, on evalue l'utilisateur responsable pour lui donner les droits ORG_ADMIN
-            if (org.getMembres() != null && !org.getMembres().isEmpty()) {
-                Utilisateur admin = org.getMembres().get(0).getUtilisateur();
+        } else {
+            org.setStatutOrganisation(StatutOrganisation.REJETEE.name());
+        }
+
+        // Always try to find the admin user to update their status/role
+        Utilisateur admin = null;
+        if (org.getMembres() != null && !org.getMembres().isEmpty()) {
+            admin = org.getMembres().get(0).getUtilisateur();
+        } else {
+            // Fallback: look in the repository if Hibernate hasn't loaded the list
+            admin = membreRepository.findByOrganisation(org).stream()
+                    .filter(m -> "ADMIN".equals(m.getRole()))
+                    .map(MembreOrganisation::getUtilisateur)
+                    .findFirst()
+                    .orElse(null);
+        }
+
+        if (admin != null) {
+            if (approuver) {
                 Role orgAdminRole = roleRepository.findByNom("ROLE_ORG_ADMIN")
                         .orElseThrow(() -> new RuntimeException("Role ROLE_ORG_ADMIN non trouve"));
                 admin.setRole(orgAdminRole);
-                admin.setActif(true); // Activer l'utilisateur orga
-                userRepository.save(admin);
+                admin.setActif(true);
+            } else {
+                // If rejected, ensure they are not an org admin and deactivate
+                admin.setActif(false);
+                // Also revert role to USER just in case
+                roleRepository.findByNom("ROLE_USER").ifPresent(admin::setRole);
             }
-        } else {
-            org.setStatutOrganisation(StatutOrganisation.REJETEE.name());
+            userRepository.save(admin);
         }
 
         organisationRepository.save(org);

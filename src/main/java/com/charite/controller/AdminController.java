@@ -1,5 +1,6 @@
 package com.charite.controller;
 
+import com.charite.entity.Utilisateur;
 import com.charite.repository.ActionChariteRepository;
 import com.charite.repository.DonRepository;
 import com.charite.repository.MembreOrganisationRepository;
@@ -7,14 +8,18 @@ import com.charite.repository.OrganisationRepository;
 import com.charite.repository.UtilisateurRepository;
 import com.charite.service.OrganisationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
@@ -27,8 +32,22 @@ public class AdminController {
     private final DonRepository donRepository;
     private final MembreOrganisationRepository membreRepository;
 
+    private void addCurrentUser(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.isAuthenticated() && !auth.getName().equals("anonymousUser")) {
+            utilisateurRepository.findByEmail(auth.getName()).ifPresent(u -> model.addAttribute("currentUser", u));
+        }
+    }
+
+    @GetMapping("")
+    public String index() {
+        return "redirect:/admin/dashboard";
+    }
+
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
+        addCurrentUser(model);
+        
         model.addAttribute("orgsEnAttente", organisationRepository.findByStatutOrganisation("EN_ATTENTE"));
         model.addAttribute("orgsApprouvees", organisationRepository.findByStatutOrganisation("APPROUVEE"));
         
@@ -36,25 +55,39 @@ public class AdminController {
         model.addAttribute("nbActions", actionRepository.count());
         model.addAttribute("nbOrgs", organisationRepository.count());
         
-        java.math.BigDecimal totalGlobalDonations = donRepository.findAll().stream()
+        BigDecimal totalGlobalDonations = donRepository.findAll().stream()
+                .filter(don -> don.getMontant() != null)
                 .map(com.charite.entity.Don::getMontant)
-                .reduce(java.math.BigDecimal.ZERO, java.math.BigDecimal::add);
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
         model.addAttribute("totalGlobalDonations", totalGlobalDonations);
 
-        // Recent Activity (Derniers dons)
         model.addAttribute("recentDonations", donRepository.findAll().stream()
+                .filter(don -> don.getDate() != null && don.getMontant() != null && don.getActionCharite() != null && don.getUtilisateur() != null)
                 .sorted((d1, d2) -> d2.getDate().compareTo(d1.getDate()))
                 .limit(5)
-                .collect(java.util.stream.Collectors.toList()));
+                .collect(Collectors.toList()));
 
-        // Chart Data (Simulation par mois pour l'instant avec les vrais dons si possible)
-        // Pour faire simple, on va juste envoyer une liste de montants par mois
-        java.util.Map<Integer, java.math.BigDecimal> monthlyStats = new java.util.HashMap<>();
-        donRepository.findAll().forEach(don -> {
-            int month = don.getDate().getMonthValue();
-            monthlyStats.merge(month, don.getMontant(), java.math.BigDecimal::add);
-        });
+        Map<Integer, BigDecimal> monthlyStats = new HashMap<>();
+        for (int i = 1; i <= 12; i++) {
+            monthlyStats.put(i, BigDecimal.ZERO);
+        }
+
+        donRepository.findAll().stream()
+                .filter(don -> don.getDate() != null && don.getMontant() != null)
+                .forEach(don -> {
+                    int month = don.getDate().getMonthValue();
+                    monthlyStats.merge(month, don.getMontant(), BigDecimal::add);
+                });
+        
+        // Calculate heights for the chart in Java to avoid Thymeleaf errors
+        List<Double> chartHeights = new java.util.ArrayList<>();
+        double total = totalGlobalDonations.doubleValue();
+        for (int i = 1; i <= 12; i++) {
+            double monthlyTotal = monthlyStats.get(i).doubleValue();
+            chartHeights.add(total > 0 ? (monthlyTotal * 100 / total) : 0);
+        }
         model.addAttribute("monthlyStats", monthlyStats);
+        model.addAttribute("chartHeights", chartHeights);
         
         return "admin/dashboard";
     }
@@ -66,34 +99,26 @@ public class AdminController {
         return "redirect:/admin/dashboard";
     }
 
-    @GetMapping("/organisations/{id}/membres")
-    public String membres(@PathVariable Long id, Model model) {
-        model.addAttribute("membres", membreRepository.findByOrganisationId(id));
-        return "admin/membres";
-    }
-
     @GetMapping("/utilisateurs")
     public String utilisateurs(Model model) {
-        java.util.List<com.charite.entity.Utilisateur> users = utilisateurRepository.findAll();
+        addCurrentUser(model);
+        List<Utilisateur> users = utilisateurRepository.findAll();
         model.addAttribute("utilisateurs", users);
         
-        // Total Donated mapping
-        java.util.Map<Long, java.math.BigDecimal> userDonations = new java.util.HashMap<>();
-        for (com.charite.entity.Utilisateur u : users) {
-            java.math.BigDecimal total = donRepository.findAll().stream()
+        Map<Long, BigDecimal> userDonations = new HashMap<>();
+        for (Utilisateur u : users) {
+            BigDecimal total = donRepository.findAll().stream()
                     .filter(d -> d.getUtilisateur() != null && d.getUtilisateur().getId().equals(u.getId()))
                     .map(com.charite.entity.Don::getMontant)
-                    .reduce(java.math.BigDecimal.ZERO, java.math.BigDecimal::add);
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
             userDonations.put(u.getId(), total);
         }
         model.addAttribute("userDonations", userDonations);
         
-        // Stats
         model.addAttribute("totalUsersCount", utilisateurRepository.count());
         long activeDonors = donRepository.findAll().stream()
-                .map(d -> d.getUtilisateur())
-                .filter(java.util.Objects::nonNull)
-                .map(u -> u.getId())
+                .filter(d -> d.getUtilisateur() != null)
+                .map(d -> d.getUtilisateur().getId())
                 .distinct()
                 .count();
         model.addAttribute("activeDonorsCount", activeDonors);
@@ -104,6 +129,7 @@ public class AdminController {
 
     @GetMapping("/dons")
     public String dons(Model model) {
+        addCurrentUser(model);
         model.addAttribute("dons", donRepository.findAll());
         return "admin/dons";
     }

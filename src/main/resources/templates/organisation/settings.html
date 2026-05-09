@@ -93,8 +93,8 @@
 <aside class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 border-r border-outline-variant bg-surface-container-low p-md gap-xs z-40">
     <div class="flex items-center gap-sm mb-lg">
         <div class="w-10 h-10 rounded-full overflow-hidden bg-surface-variant flex items-center justify-center shrink-0">
-            <img th:if="${organisation.logo != null}" th:src="${organisation.logo}" class="w-full h-full object-cover" alt="Org Logo"/>
-            <img th:if="${organisation.logo == null}" src="https://ui-avatars.com/api/?name=Org&background=005440&color=fff" class="w-full h-full object-cover" alt="Default Logo"/>
+            <img id="orgLogoPreview" th:if="${organisation.logo != null}" th:src="${organisation.logo}" class="w-full h-full object-cover" alt="Org Logo"/>
+            <img id="orgLogoPreview" th:if="${organisation.logo == null}" src="https://ui-avatars.com/api/?name=Org&background=005440&color=fff" class="w-full h-full object-cover" alt="Default Logo"/>
         </div>
         <div>
             <h1 class="font-h3 text-h3 text-primary">CharityHub</h1>
@@ -146,8 +146,8 @@
             <div class="flex items-center gap-sm">
                 <span class="text-body-sm text-on-surface-variant hidden sm:block font-medium" th:text="${organisation.nom}">Organization Name</span>
                 <div class="w-8 h-8 rounded-full overflow-hidden bg-surface-variant shadow-inner">
-                    <img th:if="${organisation.logo != null}" th:src="${organisation.logo}" class="w-full h-full object-cover"/>
-                    <img th:if="${organisation.logo == null}" src="https://ui-avatars.com/api/?name=Org&background=005440&color=fff" class="w-full h-full object-cover"/>
+                    <img id="orgLogoPreview" th:if="${organisation.logo != null}" th:src="${organisation.logo}" class="w-full h-full object-cover"/>
+                    <img id="orgLogoPreview" th:if="${organisation.logo == null}" src="https://ui-avatars.com/api/?name=Org&background=005440&color=fff" class="w-full h-full object-cover"/>
                 </div>
             </div>
         </div>
@@ -196,17 +196,18 @@
                     </div>
                 </div>
 
-                <form th:action="@{/organisation/settings}" th:object="${organisation}" method="post" class="flex flex-col gap-lg">
+                <form th:action="@{/organisation/settings}" th:object="${organisation}" method="post" enctype="multipart/form-data" class="flex flex-col gap-lg">
                     <!-- Avatar Section -->
                     <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm">
                         <div class="flex items-center gap-lg">
                             <div class="relative w-24 h-24 rounded-full overflow-hidden bg-surface-variant border-2 border-primary-container shadow-inner">
-                                <img th:if="${organisation.logo != null}" th:src="${organisation.logo}" class="w-full h-full object-cover" alt="Org Logo"/>
-                                <img th:if="${organisation.logo == null}" src="https://ui-avatars.com/api/?name=Org&background=005440&color=fff" class="w-full h-full object-cover" alt="Default Logo"/>
+                                <img id="orgLogoPreview" th:if="${organisation.logo != null}" th:src="${organisation.logo}" class="w-full h-full object-cover" alt="Org Logo"/>
+                                <img id="orgLogoPreview" th:if="${organisation.logo == null}" src="https://ui-avatars.com/api/?name=Org&background=005440&color=fff" class="w-full h-full object-cover" alt="Default Logo"/>
                             </div>
                             <div class="flex flex-col gap-sm">
                                 <div class="flex gap-sm">
-                                    <button type="button" class="bg-primary text-on-primary rounded-lg py-xs px-sm font-button text-button hover:opacity-90 transition-opacity" th:text="#{settings.change_logo}">Change Logo</button>
+                                    <input type="file" id="logoFile" name="logoFile" class="hidden" accept="image/*" onchange="previewImage(this)"/>
+                                    <button type="button" onclick="document.getElementById('logoFile').click()" class="bg-primary text-on-primary rounded-lg py-xs px-sm font-button text-button hover:opacity-90 transition-opacity" th:text="#{settings.change_logo}">Change Logo</button>
                                     <button type="button" class="bg-transparent border border-primary text-primary rounded-lg py-xs px-sm font-button text-button hover:bg-surface-variant transition-colors" th:text="#{settings.remove}">Remove</button>
                                 </div>
                                 <p class="font-body-sm text-on-surface-variant" th:text="#{settings.logo_help}">JPG or PNG. Max 800K</p>
@@ -260,5 +261,17 @@
     </main>
 </div>
 
+    <script>
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const previews = document.querySelectorAll('#orgLogoPreview');
+                    previews.forEach(img => img.src = e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
 </body>
 </html>
