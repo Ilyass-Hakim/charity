@@ -25,28 +25,39 @@ public class UtilisateurController {
     private final ContributionRepository contributionRepository;
 
     @GetMapping("/profil")
-    public String profil(@AuthenticationPrincipal UserDetails principal, Model model) {
-        Utilisateur u = utilisateurService.getByEmail(principal.getUsername());
+    public String profil(org.springframework.security.core.Authentication authentication, Model model) {
+        String email = com.charite.security.SecurityUtils.getEmail(authentication);
+        Utilisateur u = utilisateurService.getByEmail(email);
         model.addAttribute("utilisateur", u);
-        // Utilisation du repo Spring Data si existant, sinon appel .getContributions()
         model.addAttribute("contributions", u.getContributions());
+        
+        java.math.BigDecimal totalDonations = u.getContributions().stream()
+                .filter(c -> c instanceof com.charite.entity.Don)
+                .map(c -> ((com.charite.entity.Don) c).getMontant())
+                .reduce(java.math.BigDecimal.ZERO, java.math.BigDecimal::add);
+        
+        model.addAttribute("totalMAD", totalDonations);
+        model.addAttribute("totalActions", u.getContributions().size());
+        
         return "utilisateur/profil";
     }
 
     @GetMapping("/profil/modifier")
-    public String modifierForm(@AuthenticationPrincipal UserDetails principal, Model model) {
-        Utilisateur u = utilisateurService.getByEmail(principal.getUsername());
+    public String modifierForm(org.springframework.security.core.Authentication authentication, Model model) {
+        String email = com.charite.security.SecurityUtils.getEmail(authentication);
+        Utilisateur u = utilisateurService.getByEmail(email);
         model.addAttribute("dto", new UtilisateurDto(u));
         return "utilisateur/modifier";
     }
 
     @PostMapping("/profil/modifier")
-    public String modifier(@AuthenticationPrincipal UserDetails principal,
+    public String modifier(org.springframework.security.core.Authentication authentication,
                            @Valid @ModelAttribute("dto") UtilisateurDto dto,
                            BindingResult result, RedirectAttributes ra) {
         if (result.hasErrors()) return "utilisateur/modifier";
         
-        Utilisateur u = utilisateurService.getByEmail(principal.getUsername());
+        String email = com.charite.security.SecurityUtils.getEmail(authentication);
+        Utilisateur u = utilisateurService.getByEmail(email);
         utilisateurService.mettreAJour(u.getId(), dto);
         ra.addFlashAttribute("success", "Profil mis a jour.");
         return "redirect:/utilisateur/profil";

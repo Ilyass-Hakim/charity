@@ -11,6 +11,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.charite.entity.MembreOrganisation;
+import com.charite.entity.Organisation;
+import com.charite.entity.StatutOrganisation;
+import com.charite.repository.MembreOrganisationRepository;
+import com.charite.repository.OrganisationRepository;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,27 +27,61 @@ public class UtilisateurService {
     private final UtilisateurRepository utilisateurRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final OrganisationRepository organisationRepository;
 
     public Utilisateur inscrire(UtilisateurDto dto) {
         if (utilisateurRepository.existsByEmail(dto.getEmail())) {
             throw new RuntimeException("Email deja utilise");
         }
 
-        Role userRole = roleRepository.findByNom("ROLE_USER")
-                .orElseThrow(() -> new RuntimeException("Role ROLE_USER introuvable - verifie data.sql"));
+        boolean isOrg = "ORG".equals(dto.getTypeCompte());
+        String roleName = isOrg ? "ROLE_ORG_ADMIN" : "ROLE_USER";
+
+        Role userRole = roleRepository.findByNom(roleName)
+                .orElseThrow(() -> new RuntimeException("Role " + roleName + " introuvable - verifie data.sql"));
 
         Utilisateur user = Utilisateur.builder()
-                .nom(dto.getNom())
-                .prenom(dto.getPrenom())
+                .nom(isOrg ? dto.getNomOrganisation() : dto.getNom())
+                .prenom(isOrg ? "" : dto.getPrenom())
                 .email(dto.getEmail())
                 .motDePasse(passwordEncoder.encode(dto.getMotDePasse()))
                 .telephone(dto.getTelephone())
                 .role(userRole)
                 .provider("local")
-                .actif(true)
+                .actif(!isOrg) // L'orga est inactive (false) jusqu'a validation
                 .build();
 
-        return utilisateurRepository.save(user);
+        Utilisateur savedUser = utilisateurRepository.save(user);
+
+        if (isOrg) {
+            Organisation org = Organisation.builder()
+                    .nom(dto.getNomOrganisation())
+                    .adresseLegale(dto.getAdresseLegale())
+                    .matriculeFiscal(dto.getMatriculeFiscal())
+                    .description(dto.getDescriptionMission())
+                    .emailContact(dto.getEmail())
+                    .contactPrincipal(dto.getNom() + " " + dto.getPrenom())
+                    .telephone(dto.getTelephone())
+                    .statutOrganisation(StatutOrganisation.EN_ATTENTE.name())
+                    .build();
+
+            Organisation savedOrg = organisationRepository.save(org);
+
+            MembreOrganisation membre = MembreOrganisation.builder()
+                    .utilisateur(savedUser)
+                    .organisation(savedOrg)
+                    .role("ADMIN")
+                    .statutMembre("ACTIF")
+                    .build();
+
+            if (savedUser.getMemberships() == null) {
+                savedUser.setMemberships(new ArrayList<>());
+            }
+            savedUser.getMemberships().add(membre);
+            utilisateurRepository.save(savedUser);
+        }
+
+        return savedUser;
     }
 
     public Utilisateur mettreAJour(Long id, UtilisateurDto dto) {

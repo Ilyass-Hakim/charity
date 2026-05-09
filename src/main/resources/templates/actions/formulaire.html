@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html class="light" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Create New Campaign - CharityHub</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-surface-variant": "#3f4944",
+                      "on-error": "#ffffff",
+                      "on-tertiary-container": "#ffd3cc",
+                      "background": "#f8f9fa",
+                      "on-tertiary-fixed": "#3b0804",
+                      "primary-fixed-dim": "#84d6b9",
+                      "on-primary": "#ffffff",
+                      "inverse-primary": "#84d6b9",
+                      "error": "#ba1a1a",
+                      "inverse-surface": "#2e3132",
+                      "surface-container-highest": "#e1e3e4",
+                      "outline": "#6f7a74",
+                      "secondary-fixed": "#ffdbd0",
+                      "on-secondary-fixed": "#3a0b00",
+                      "error-container": "#ffdad6",
+                      "tertiary-fixed": "#ffdad4",
+                      "surface-bright": "#f8f9fa",
+                      "on-primary-fixed": "#002117",
+                      "on-background": "#191c1d",
+                      "surface-container": "#edeeef",
+                      "primary-fixed": "#a0f3d4",
+                      "primary-container": "#0f6e56",
+                      "primary": "#005440",
+                      "outline-variant": "#bec9c3",
+                      "on-secondary-container": "#661a00",
+                      "secondary-container": "#fd7549",
+                      "secondary": "#a8380f",
+                      "surface-container-lowest": "#ffffff",
+                      "secondary-fixed-dim": "#ffb59e",
+                      "on-tertiary": "#ffffff",
+                      "tertiary": "#78352b",
+                      "surface": "#f8f9fa",
+                      "on-secondary-fixed-variant": "#852400",
+                      "on-error-container": "#93000a",
+                      "surface-container-low": "#f3f4f5",
+                      "on-secondary": "#ffffff",
+                      "tertiary-container": "#954c41",
+                      "on-surface": "#191c1d",
+                      "surface-container-high": "#e7e8e9",
+                      "tertiary-fixed-dim": "#ffb4a8",
+                      "surface-dim": "#d9dadb",
+                      "on-primary-fixed-variant": "#00513e",
+                      "inverse-on-surface": "#f0f1f2",
+                      "surface-tint": "#086b53",
+                      "surface-variant": "#e1e3e4",
+                      "on-tertiary-fixed-variant": "#743329",
+                      "on-primary-container": "#9aedcf"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "12px",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "sm": "12px",
+                      "gutter": "24px",
+                      "base": "4px",
+                      "container-max": "1280px",
+                      "xs": "8px",
+                      "md": "16px",
+                      "lg": "24px",
+                      "xl": "32px"
+              }
+            },
+          },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen antialiased">
+
+<!-- Simple Navigation Header -->
+<header class="w-full bg-surface border-b border-outline-variant py-md px-lg sticky top-0 z-50 shadow-sm">
+    <div class="max-w-container-max mx-auto flex justify-between items-center">
+        <a th:href="@{/}" class="flex items-center gap-sm no-underline group">
+            <div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-on-primary shadow-sm group-hover:scale-105 transition-transform">
+                <span class="material-symbols-outlined">volunteer_activism</span>
+            </div>
+            <span class="font-h2 text-h2 text-primary font-bold">CharityHub</span>
+        </a>
+        <a th:href="@{/organisation/dashboard}" class="text-on-surface-variant hover:text-primary font-button text-button flex items-center gap-xs no-underline transition-colors">
+            <span class="material-symbols-outlined">close</span> Exit Editor
+        </a>
+    </div>
+</header>
+
+<main class="max-w-5xl mx-auto px-md md:px-xl py-xl w-full">
+    <!-- Breadcrumbs -->
+    <nav class="flex items-center gap-xs text-on-surface-variant font-body-sm mb-lg">
+        <a class="hover:text-primary transition-colors no-underline" th:href="@{/}">Home</a>
+        <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+        <a class="hover:text-primary transition-colors no-underline" th:href="@{/organisation/campaigns}">My Campaigns</a>
+        <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+        <span class="text-on-surface font-semibold">New Campaign</span>
+    </nav>
+
+    <div class="mb-xl">
+        <h2 class="font-h1 text-h1 text-on-background">Create New Campaign</h2>
+        <p class="text-on-surface-variant font-body-lg mt-xs">Complete the details below to launch your initiative and start receiving support.</p>
+    </div>
+
+    <form th:action="@{/actions/creer}" th:object="${dto}" method="post" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+        
+        <!-- Left Column: Primary Details -->
+        <div class="col-span-12 md:col-span-8 space-y-gutter">
+            
+            <!-- Basic Information Card -->
+            <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm">
+                <h3 class="font-h3 text-h3 mb-lg text-primary flex items-center gap-xs border-b border-outline-variant pb-md">
+                    <span class="material-symbols-outlined">description</span>
+                    Campaign Basics
+                </h3>
+                <div class="space-y-lg">
+                    <div class="flex flex-col gap-xs">
+                        <label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Campaign Title</label>
+                        <input th:field="*{titre}" class="w-full px-md py-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-body-md bg-surface" placeholder="e.g., Clean Water for Atlas Villages" type="text" required/>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-lg">
+                        <div class="flex flex-col gap-xs">
+                            <label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Category</label>
+                            <select th:field="*{categorieNom}" class="w-full px-md py-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-body-md bg-surface" required>
+                                <option value="">Select category</option>
+                                <option th:each="cat : ${categories}" th:value="${cat.nom}" th:text="${cat.nom}">EDUCATION</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col gap-xs">
+                            <label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Location / Lieu</label>
+                            <div class="relative">
+                                <span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant">location_on</span>
+                                <input th:field="*{lieu}" class="w-full pl-xl pr-md py-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-body-md bg-surface" placeholder="City, Region" type="text" required/>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col gap-xs">
+                        <label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Detailed Description</label>
+                        <textarea th:field="*{description}" class="w-full px-md py-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-body-md resize-none bg-surface" placeholder="Tell the story of your campaign, why it matters, and how the funds will be used..." rows="8" required></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Media Upload Card -->
+            <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm">
+                <h3 class="font-h3 text-h3 mb-lg text-primary flex items-center gap-xs border-b border-outline-variant pb-md">
+                    <span class="material-symbols-outlined">photo_library</span>
+                    Photos / Media
+                </h3>
+                <div class="border-2 border-dashed border-outline-variant rounded-xl p-xl flex flex-col items-center justify-center bg-surface-container-low hover:bg-surface-variant transition-colors cursor-pointer group relative">
+                    <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-md group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-[32px]">cloud_upload</span>
+                    </div>
+                    <p class="font-h3 text-h3 text-on-surface mb-xs">Choose your photos</p>
+                    <p class="text-on-surface-variant font-body-sm text-center max-w-xs">Upload high-quality images to increase transparency. JPG, PNG.</p>
+                    <input class="absolute inset-0 opacity-0 cursor-pointer" type="file" name="medias" multiple/>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Goal & Timeline -->
+        <div class="col-span-12 md:col-span-4 space-y-gutter">
+            
+            <!-- Funding Goals Card -->
+            <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm">
+                <h3 class="font-h3 text-h3 mb-lg text-primary flex items-center gap-xs border-b border-outline-variant pb-md">
+                    <span class="material-symbols-outlined">payments</span>
+                    Financial Goal
+                </h3>
+                <div class="space-y-lg">
+                    <div class="flex flex-col gap-xs">
+                        <label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Target Amount</label>
+                        <div class="relative">
+                            <input th:field="*{montantObjectif}" class="w-full pr-xl pl-md py-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-body-md font-bold bg-surface" placeholder="0.00" type="number" step="0.01" required/>
+                            <span class="absolute right-md top-1/2 -translate-y-1/2 font-bold text-on-surface-variant">MAD</span>
+                        </div>
+                    </div>
+                    <div class="p-md bg-primary-container/10 rounded-lg border border-primary/20">
+                        <div class="flex items-start gap-sm">
+                            <span class="material-symbols-outlined text-primary text-[20px]">info</span>
+                            <p class="text-body-sm text-on-surface-variant">Setting a realistic goal increases donor confidence.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timeline Card -->
+            <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm">
+                <h3 class="font-h3 text-h3 mb-lg text-primary flex items-center gap-xs border-b border-outline-variant pb-md">
+                    <span class="material-symbols-outlined">calendar_month</span>
+                    Campaign Timeline
+                </h3>
+                <div class="space-y-lg">
+                    <div class="flex flex-col gap-xs">
+                        <label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Start Date</label>
+                        <input th:field="*{dateDebut}" class="w-full px-md py-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-body-md bg-surface" type="date" required/>
+                    </div>
+                    <div class="flex flex-col gap-xs">
+                        <label class="font-label-caps text-label-caps text-on-surface-variant uppercase">End Date</label>
+                        <input th:field="*{dateFin}" class="w-full px-md py-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-body-md bg-surface" type="date" required/>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tip Card -->
+            <div class="bg-primary text-on-primary rounded-xl p-lg shadow-md">
+                <h4 class="font-h3 text-h3 mb-sm">Quick Tip</h4>
+                <p class="font-body-sm opacity-90">Adding a compelling story and multiple photos can increase your chance of reaching your goal by up to 50%.</p>
+            </div>
+        </div>
+
+        <!-- Sticky Bottom Actions -->
+        <div class="col-span-12 sticky bottom-8 z-30 mt-xl">
+            <div class="bg-surface/80 backdrop-blur-md border border-outline-variant rounded-xl p-md flex items-center justify-end gap-md shadow-xl">
+                <a th:href="@{/organisation/campaigns}" class="px-xl py-sm bg-surface-container-high text-on-surface rounded-lg font-button text-button border border-outline-variant hover:bg-surface-variant transition-all no-underline">
+                    Cancel
+                </a>
+                <button class="px-xl py-sm bg-secondary text-on-primary rounded-lg font-button text-button shadow-md hover:opacity-90 active:scale-95 transition-all flex items-center gap-xs" type="submit">
+                    <span class="material-symbols-outlined">rocket_launch</span>
+                    Publish Campaign
+                </button>
+            </div>
+        </div>
+    </form>
+</main>
+
+<footer class="mt-xl py-lg border-t border-outline-variant bg-surface-container-low w-full">
+    <div class="max-w-container-max mx-auto px-lg flex flex-col md:flex-row justify-between items-center gap-md">
+        <p class="text-body-sm text-on-surface-variant">© 2024 CharityHub. Empowering change together.</p>
+        <div class="flex items-center gap-lg">
+            <a class="text-body-sm text-on-surface-variant hover:text-primary no-underline transition-colors" href="#">Help Center</a>
+            <a class="text-body-sm text-on-surface-variant hover:text-primary no-underline transition-colors" href="#">Support</a>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

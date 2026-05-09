@@ -24,4 +24,10 @@ public interface ActionChariteRepository extends JpaRepository<ActionCharite, Lo
          + "(LOWER(a.titre) LIKE LOWER(CONCAT('%',:kw,'%')) OR "
          + "LOWER(a.description) LIKE LOWER(CONCAT('%',:kw,'%')))")
     Page<ActionCharite> searchByKeyword(@Param("kw") String keyword, Pageable p);
+
+    @Query("SELECT SUM(a.montantActuel) FROM ActionCharite a")
+    java.math.BigDecimal getTotalGlobalDonations();
+
+    @Query("SELECT COUNT(a) FROM ActionCharite a WHERE a.archivee = false")
+    long countAllActiveActions();
 }

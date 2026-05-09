@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html class="light" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Donations - CharityHub Admin</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed-variant": "#743329",
+                      "tertiary-fixed-dim": "#ffb4a8",
+                      "on-primary-fixed": "#002117",
+                      "secondary-fixed-dim": "#ffb59e",
+                      "on-secondary": "#ffffff",
+                      "error": "#ba1a1a",
+                      "surface-dim": "#d9dadb",
+                      "surface-tint": "#086b53",
+                      "error-container": "#ffdad6",
+                      "on-primary": "#ffffff",
+                      "on-secondary-container": "#661a00",
+                      "surface-variant": "#e1e3e4",
+                      "primary-fixed": "#a0f3d4",
+                      "surface-bright": "#f8f9fa",
+                      "surface-container": "#edeeef",
+                      "primary-container": "#0f6e56",
+                      "on-surface-variant": "#3f4944",
+                      "on-secondary-fixed": "#3a0b00",
+                      "on-tertiary-fixed": "#3b0804",
+                      "primary": "#005440",
+                      "tertiary": "#78352b",
+                      "on-secondary-fixed-variant": "#852400",
+                      "on-background": "#191c1d",
+                      "on-error": "#ffffff",
+                      "outline-variant": "#bec9c3",
+                      "on-primary-container": "#9aedcf",
+                      "secondary-container": "#fd7549",
+                      "on-error-container": "#93000a",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary-fixed": "#ffdad4",
+                      "secondary": "#a8380f",
+                      "surface": "#f8f9fa",
+                      "on-tertiary-container": "#ffd3cc",
+                      "background": "#f8f9fa",
+                      "on-surface": "#191c1d",
+                      "inverse-primary": "#84d6b9",
+                      "secondary-fixed": "#ffdbd0",
+                      "surface-container-highest": "#e1e3e4",
+                      "on-primary-fixed-variant": "#00513e",
+                      "inverse-on-surface": "#f0f1f2",
+                      "on-tertiary": "#ffffff",
+                      "surface-container-high": "#e7e8e9",
+                      "surface-container-low": "#f3f4f5",
+                      "inverse-surface": "#2e3132",
+                      "outline": "#6f7a74",
+                      "primary-fixed-dim": "#84d6b9",
+                      "tertiary-container": "#954c41"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "12px",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xl": "32px",
+                      "container-max": "1280px",
+                      "md": "16px",
+                      "gutter": "24px",
+                      "base": "4px",
+                      "sm": "12px",
+                      "xs": "8px",
+                      "lg": "24px"
+              }
+            }
+          }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .icon-fill { font-variation-settings: 'FILL' 1; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col md:flex-row antialiased">
+
+<!-- SideNavBar -->
+<aside class="hidden md:flex h-screen w-64 fixed left-0 top-0 flex-col p-md gap-xs bg-surface-container-low border-r border-outline-variant z-40">
+    <div class="flex items-center gap-sm p-sm mb-md">
+        <div class="w-10 h-10 rounded-full overflow-hidden bg-surface-variant flex items-center justify-center shrink-0">
+            <img th:if="${organisation.logo != null}" th:src="${organisation.logo}" class="w-full h-full object-cover" alt="Org Logo"/>
+            <img th:if="${organisation.logo == null}" src="https://ui-avatars.com/api/?name=Org&background=005440&color=fff" class="w-full h-full object-cover" alt="Default Logo"/>
+        </div>
+        <div>
+            <div class="font-h3 text-h3 text-primary">CharityHub</div>
+            <div class="font-label-caps text-label-caps text-on-surface-variant">Admin Console</div>
+        </div>
+    </div>
+    <a th:href="@{/actions/creer}" class="bg-primary text-on-primary font-button text-button rounded-lg px-md py-sm mb-md hover:bg-primary-container transition-colors flex items-center justify-center gap-xs no-underline">
+        <span class="material-symbols-outlined" style="font-size: 18px;">add</span> New Campaign
+    </a>
+    <nav class="flex-1 flex flex-col gap-xs">
+        <a class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg font-label-caps text-label-caps no-underline transition-all" th:href="@{/organisation/dashboard}">
+            <span class="material-symbols-outlined">dashboard</span> Dashboard
+        </a>
+        <a class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg font-label-caps text-label-caps no-underline transition-all" th:href="@{/organisation/campaigns}">
+            <span class="material-symbols-outlined">volunteer_activism</span> My Campaigns
+        </a>
+        <a class="flex items-center gap-sm px-md py-sm bg-primary-container text-on-primary-container rounded-lg font-bold font-label-caps text-label-caps no-underline transition-all" th:href="@{/organisation/donations}">
+            <span class="material-symbols-outlined icon-fill">payments</span> Donations
+        </a>
+        <a class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg font-label-caps text-label-caps no-underline transition-all" th:href="@{/organisation/settings}">
+            <span class="material-symbols-outlined">settings</span> Settings
+        </a>
+    </nav>
+    <div class="mt-auto flex flex-col gap-xs border-t border-outline-variant pt-md">
+        <a class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg font-label-caps text-label-caps no-underline transition-all" href="#">
+            <span class="material-symbols-outlined">help</span> Help Center
+        </a>
+        <form th:action="@{/auth/logout}" method="post">
+            <button type="submit" class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-error/10 hover:text-error rounded-lg font-label-caps text-label-caps w-full text-left transition-all">
+                <span class="material-symbols-outlined">logout</span> Logout
+            </button>
+        </form>
+    </div>
+</aside>
+
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col min-h-screen md:ml-64">
+    <!-- TopNavBar -->
+    <header class="bg-surface border-b border-outline-variant w-full sticky top-0 z-30">
+        <div class="flex justify-between items-center px-lg py-sm">
+            <nav class="flex gap-lg items-center">
+                <a class="font-body-md text-on-surface-variant hover:text-primary transition-colors pb-1 no-underline" th:href="@{/}">Home</a>
+                <a class="font-body-md text-on-surface-variant hover:text-primary transition-colors pb-1 no-underline" th:href="@{/actions}">Explore</a>
+                <a class="font-body-md text-on-surface-variant hover:text-primary transition-colors pb-1 no-underline" th:href="@{/about}">About</a>
+                <a class="font-body-md text-on-surface-variant hover:text-primary transition-colors pb-1 flex items-center gap-xs no-underline" th:href="@{/organisation/dashboard}">
+                    <span class="material-symbols-outlined text-[18px]">dashboard_customize</span> Console
+                </a>
+            </nav>
+            <div class="flex items-center gap-sm">
+                <span class="text-body-sm text-on-surface-variant hidden sm:block font-medium" th:text="${organisation.nom}">Organization Name</span>
+                <div class="w-8 h-8 rounded-full overflow-hidden bg-surface-variant shadow-inner">
+                    <img th:if="${organisation.logo != null}" th:src="${organisation.logo}" class="w-full h-full object-cover"/>
+                    <img th:if="${organisation.logo == null}" src="https://ui-avatars.com/api/?name=Org&background=005440&color=fff" class="w-full h-full object-cover"/>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="p-md md:p-lg lg:p-xl max-w-container-max mx-auto w-full flex-1 flex flex-col">
+        <header class="flex flex-col md:flex-row md:items-center justify-between gap-md mb-lg">
+            <div>
+                <h1 class="font-h1 text-h1 text-on-background">Donations</h1>
+                <p class="font-body-md text-body-md text-on-surface-variant mt-base" th:text="'Managing contributions for ' + ${organisation.nom}">Manage and track all incoming contributions.</p>
+            </div>
+            <button class="flex items-center justify-center gap-xs px-md py-sm rounded-lg border border-outline text-primary font-button text-button hover:bg-surface-variant transition-colors self-start md:self-auto shadow-sm">
+                <span class="material-symbols-outlined text-[20px]">download</span> Export CSV
+            </button>
+        </header>
+
+        <!-- Filters Section -->
+        <section class="grid grid-cols-1 md:grid-cols-12 gap-md mb-lg">
+            <div class="md:col-span-5 bg-surface-container-lowest p-sm rounded-xl border border-outline-variant flex items-center focus-within:border-primary focus-within:ring-2 focus-within:ring-primary-fixed-dim focus-within:ring-opacity-20 transition-all shadow-sm">
+                <span class="material-symbols-outlined text-on-surface-variant ml-xs mr-sm">search</span>
+                <input class="w-full bg-transparent border-none p-0 focus:ring-0 text-on-surface placeholder:text-on-surface-variant font-body-md outline-none" placeholder="Search by Donor Name or Email" type="text"/>
+            </div>
+            <div class="md:col-span-4 bg-surface-container-lowest p-sm rounded-xl border border-outline-variant flex items-center shadow-sm">
+                <span class="material-symbols-outlined text-on-surface-variant ml-xs mr-sm">calendar_month</span>
+                <div class="flex items-center gap-sm w-full">
+                    <input class="bg-transparent border-none p-0 focus:ring-0 text-on-surface font-body-md outline-none w-full text-sm" type="date"/>
+                    <span class="text-on-surface-variant">-</span>
+                    <input class="bg-transparent border-none p-0 focus:ring-0 text-on-surface font-body-md outline-none w-full text-sm" type="date"/>
+                </div>
+            </div>
+            <div class="md:col-span-3 bg-surface-container-lowest p-sm rounded-xl border border-outline-variant flex items-center relative shadow-sm">
+                <span class="material-symbols-outlined text-on-surface-variant ml-xs mr-sm">filter_list</span>
+                <select class="w-full bg-transparent border-none p-0 focus:ring-0 text-on-surface font-body-md outline-none appearance-none cursor-pointer">
+                    <option value="all">All Statuses</option>
+                    <option value="success">Success</option>
+                    <option value="pending">Pending</option>
+                </select>
+                <span class="material-symbols-outlined text-on-surface-variant absolute right-sm pointer-events-none">expand_more</span>
+            </div>
+        </section>
+
+        <!-- Data Table Card -->
+        <div class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden flex-1 flex flex-col shadow-sm">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse min-w-[800px]">
+                    <thead>
+                        <tr class="border-b border-outline-variant bg-surface-container-low text-on-surface-variant font-label-caps text-label-caps">
+                            <th class="p-md font-semibold">Donor</th>
+                            <th class="p-md font-semibold">Amount</th>
+                            <th class="p-md font-semibold">Campaign</th>
+                            <th class="p-md font-semibold">Date</th>
+                            <th class="p-md font-semibold">Status</th>
+                            <th class="p-md font-semibold text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-body-sm">
+                        <tr th:each="contrib : ${contributions}" class="border-b border-surface-variant hover:bg-surface-container-low/30 transition-colors">
+                            <td class="p-md">
+                                <div class="flex items-center gap-sm">
+                                    <div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-xs shrink-0" 
+                                         th:text="${#strings.substring(contrib.utilisateur.nom, 0, 1) + #strings.substring(contrib.utilisateur.prenom ?: ' ', 0, 1)}">
+                                        JS
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-on-background" th:text="${contrib.utilisateur.nom} + ' ' + ${contrib.utilisateur.prenom ?: ''}">John Smith</p>
+                                        <p class="text-on-surface-variant text-xs" th:text="${contrib.utilisateur.email}">john.smith@example.com</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="p-md font-semibold text-on-background">
+                                <span th:if="${contrib instanceof T(com.charite.entity.Don)}" th:text="${contrib.montant} + ' MAD'">$250.00</span>
+                                <span th:if="${!(contrib instanceof T(com.charite.entity.Don))}" class="text-on-surface-variant italic">Participation</span>
+                            </td>
+                            <td class="p-md text-on-surface-variant" th:text="${contrib.actionCharite.titre}">Campaign Name</td>
+                            <td class="p-md text-on-surface-variant">
+                                <span th:text="${#temporals.format(contrib.date, 'dd MMM yyyy')}">Oct 24, 2023</span><br/>
+                                <span class="text-xs" th:text="${#temporals.format(contrib.date, 'HH:mm')}">10:42 AM</span>
+                            </td>
+                            <td class="p-md">
+                                <th:block th:if="${contrib instanceof T(com.charite.entity.Don)}">
+                                    <span th:if="${contrib.statutPaiement == 'CONFIRME'}" class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-primary-container/20 text-primary border border-primary-container/30 font-label-caps text-[10px]">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Success
+                                    </span>
+                                    <span th:if="${contrib.statutPaiement == 'EN_ATTENTE'}" class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-surface-variant text-on-surface-variant border border-outline-variant font-label-caps text-[10px]">
+                                        <span class="material-symbols-outlined text-[12px]">schedule</span> Pending
+                                    </span>
+                                </th:block>
+                                <th:block th:if="${contrib instanceof T(com.charite.entity.Participation)}">
+                                    <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-secondary-container/20 text-secondary border border-secondary-container/30 font-label-caps text-[10px]" th:text="${contrib.statutParticipation}">
+                                        INSCRIT
+                                    </span>
+                                </th:block>
+                            </td>
+                            <td class="p-md text-right">
+                                <button class="text-on-surface-variant hover:text-primary p-1 rounded transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">more_vert</span>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(contributions)}">
+                            <td colspan="6" class="p-xl text-center text-on-surface-variant italic">No contributions found.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Pagination -->
+            <div class="mt-auto border-t border-outline-variant bg-surface-container-low/30 p-md flex items-center justify-between">
+                <p class="text-body-sm text-on-surface-variant" th:text="'Showing ' + ${#lists.size(contributions)} + ' entries'">Showing 3 entries</p>
+                <div class="flex gap-xs">
+                    <button class="p-1 rounded text-on-surface-variant hover:bg-surface-variant disabled:opacity-50 transition-colors" disabled>
+                        <span class="material-symbols-outlined">chevron_left</span>
+                    </button>
+                    <button class="w-8 h-8 rounded bg-primary-container text-on-primary-container font-semibold text-sm flex items-center justify-center">1</button>
+                    <button class="p-1 rounded text-on-surface-variant hover:bg-surface-variant transition-colors" disabled>
+                        <span class="material-symbols-outlined">chevron_right</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>

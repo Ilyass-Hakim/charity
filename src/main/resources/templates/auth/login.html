@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Login - CharityHub</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#743329",
+                        "tertiary-fixed-dim": "#ffb4a8",
+                        "on-primary-fixed": "#002117",
+                        "secondary-fixed-dim": "#ffb59e",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#d9dadb",
+                        "surface-tint": "#086b53",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "on-secondary-container": "#661a00",
+                        "surface-variant": "#e1e3e4",
+                        "primary-fixed": "#a0f3d4",
+                        "surface-bright": "#f8f9fa",
+                        "surface-container": "#edeeef",
+                        "primary-container": "#0f6e56",
+                        "on-surface-variant": "#3f4944",
+                        "on-secondary-fixed": "#3a0b00",
+                        "on-tertiary-fixed": "#3b0804",
+                        "primary": "#005440",
+                        "tertiary": "#78352b",
+                        "on-secondary-fixed-variant": "#852400",
+                        "on-background": "#191c1d",
+                        "on-error": "#ffffff",
+                        "outline-variant": "#bec9c3",
+                        "on-primary-container": "#9aedcf",
+                        "secondary-container": "#fd7549",
+                        "on-error-container": "#93000a",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed": "#ffdad4",
+                        "secondary": "#a8380f",
+                        "surface": "#f8f9fa",
+                        "on-tertiary-container": "#ffd3cc",
+                        "background": "#f8f9fa",
+                        "on-surface": "#191c1d",
+                        "inverse-primary": "#84d6b9",
+                        "secondary-fixed": "#ffdbd0",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-primary-fixed-variant": "#00513e",
+                        "inverse-on-surface": "#f0f1f2",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-high": "#e7e8e9",
+                        "surface-container-low": "#f3f4f5",
+                        "inverse-surface": "#2e3132",
+                        "outline": "#6f7a74",
+                        "primary-fixed-dim": "#84d6b9",
+                        "tertiary-container": "#954c41"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "container-max": "1280px",
+                        "md": "16px",
+                        "gutter": "24px",
+                        "base": "4px",
+                        "sm": "12px",
+                        "xs": "8px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "h3": ["DM Sans"],
+                        "label-caps": ["Inter"],
+                        "button": ["Inter"],
+                        "display": ["DM Sans"],
+                        "body-sm": ["Inter"],
+                        "h2": ["DM Sans"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "h1": ["DM Sans"]
+                    },
+                    "fontSize": {
+                        "h3": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "button": ["16px", {"lineHeight": "1", "fontWeight": "600"}],
+                        "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "h2": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "h1": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .input-halo:focus {
+            box-shadow: 0 0 0 2px rgba(132, 214, 185, 0.2);
+            border-color: #005440;
+            outline: none;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex items-center justify-center p-md md:p-gutter font-body-md antialiased">
+<!-- Main Container -->
+<main class="w-full max-w-[1024px] bg-surface-container-lowest rounded-xl border border-surface-variant overflow-hidden flex flex-col md:flex-row">
+<!-- Left Side: Illustration -->
+<section class="hidden md:block md:w-1/2 relative bg-surface-container-low">
+<img alt="Community volunteers" class="absolute inset-0 w-full h-full object-cover opacity-90 mix-blend-multiply" data-alt="A warm, highly detailed photograph of diverse community volunteers working together in a bright, modern community center. Sunlight streams through large windows, highlighting the deep teal aprons and warm coral accents of their clothing. The mood is inspiring, collaborative, and hopeful, with a clean aesthetic matching a professional charity platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-dpyYjSyD-d6gg_cfog9gVTCp4dMvIt6lSQC_Bz1JH1OOQpjfrmMuCGyxvaLWo72XvzXPb_BDu6wTUd7RejrP_uRI0JxUWBlK89Bl5PBPoLbtPDcTbOEfZQtW3Gt4CO3ayGMmNL7mh_u6E_cKFa2fgdnDgAV6FVOnvD7_uouaOBpyQmIfp40IIDcT4ELbuDHNiROBN-Bbl5U7oohawbh4cK1xKPXy4m5T6wl2U30q46oZbkxbvWjRnSjbQQ2v2v1q6jviIdi2BQ"/>
+<div class="absolute inset-0 bg-primary-container/80 mix-blend-overlay"></div>
+<div class="absolute inset-0 p-xl flex flex-col justify-end text-on-primary">
+<h2 class="font-h1 text-h1 text-on-primary mb-sm">Empower Communities</h2>
+<p class="font-body-lg text-body-lg text-primary-fixed">Join CharityHub today and make a transparent, lasting impact on the causes you care about most.</p>
+</div>
+</section>
+<!-- Right Side: Login Form -->
+<section class="w-full md:w-1/2 p-lg md:p-xl flex flex-col justify-center bg-surface-container-lowest">
+<header class="mb-xl text-center md:text-left">
+<h1 class="font-h2 text-h2 text-primary mb-xs" th:text="#{nav.login}">Welcome back</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Please enter your details to sign in.</p>
+</header>
+
+<!-- Alerts -->
+<div th:if="${param.error}" class="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm border border-red-200">
+    Email ou mot de passe incorrect.
+</div>
+<div th:if="${param.logout}" class="mb-4 p-3 bg-green-100 text-green-700 rounded-lg text-sm border border-green-200">
+    Vous avez été déconnecté avec succès.
+</div>
+
+<form th:action="@{/auth/login}" method="post" class="flex flex-col gap-md">
+<!-- Email Input -->
+<div class="flex flex-col gap-base">
+<label class="font-label-caps text-label-caps text-on-surface" for="username">Email Address</label>
+<div class="relative">
+<span aria-hidden="true" class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline">mail</span>
+<input class="w-full pl-xl pr-sm py-sm bg-surface-container-lowest border border-surface-variant rounded-lg font-body-sm text-body-sm text-on-surface input-halo placeholder:text-outline transition-all" id="username" name="username" placeholder="   you@example.com" required="" type="email"/>
+</div>
+</div>
+<!-- Password Input -->
+<div class="flex flex-col gap-base">
+<div class="flex justify-between items-center">
+<label class="font-label-caps text-label-caps text-on-surface" for="password">Password</label>
+<a class="font-body-sm text-body-sm text-primary hover:text-primary-container transition-colors" href="#">Forgot Password?</a>
+</div>
+<div class="relative">
+<span aria-hidden="true" class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline">lock</span>
+<input class="w-full pl-xl pr-sm py-sm bg-surface-container-lowest border border-surface-variant rounded-lg font-body-sm text-body-sm text-on-surface input-halo placeholder:text-outline transition-all" id="password" name="password" placeholder="   ••••••••" required="" type="password"/>
+</div>
+</div>
+<!-- Primary Action -->
+<button class="w-full mt-sm py-sm bg-primary hover:bg-primary-container text-on-primary font-button text-button rounded-lg transition-colors flex items-center justify-center gap-xs" type="submit">
+                    Sign In
+                </button>
+</form>
+<div class="flex items-center gap-sm my-lg">
+<div class="flex-1 h-px bg-surface-variant"></div>
+<span class="font-label-caps text-label-caps text-outline-variant">OR</span>
+<div class="flex-1 h-px bg-surface-variant"></div>
+</div>
+<!-- OAuth Button -->
+<a th:href="@{/oauth2/authorization/google}" class="w-full py-sm bg-surface-container-lowest border border-surface-variant hover:bg-surface-container-low text-on-surface font-button text-button rounded-lg transition-colors flex items-center justify-center gap-sm no-underline">
+<svg class="w-5 h-5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"></path>
+<path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
+</svg>
+                Continue with Google
+            </a>
+<p class="mt-xl text-center font-body-sm text-body-sm text-on-surface-variant">
+                Don't have an account? <a class="text-primary font-medium hover:text-primary-container transition-colors" th:href="@{/auth/register}">Sign up</a>
+</p>
+</section>
+</main>
+</body></html>

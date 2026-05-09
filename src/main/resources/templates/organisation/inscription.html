@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: html(content=~{::content}, extraCss=~{}, extraJs=~{})}">
+<th:block th:fragment="content">
+    <div class="row justify-content-center">
+        <div class="col-md-8 mt-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-warning py-3">
+                    <h4 class="mb-0 text-dark">Inscrire votre Organisation</h4>
+                </div>
+                <div class="card-body p-4">
+                    <div class="alert alert-info border-0 shadow-sm mb-4">
+                        <small>Une fois inscrite, votre organisation passera en <strong>Attente de Validation</strong>. Seul un administrateur pourra l'approuver pour que vous puissiez collecter des fonds.</small>
+                    </div>
+                    
+                    <form th:action="@{/organisation/inscription}" th:object="${dto}" method="post">
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Nom de l'organisation</label>
+                                <input type="text" th:field="*{nom}" class="form-control" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Matricule Fiscal</label>
+                                <input type="text" th:field="*{matriculeFiscal}" class="form-control" placeholder="12345678" required/>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Adresse Legale</label>
+                            <input type="text" th:field="*{adresseLegale}" class="form-control" required/>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Nom du representant (Contact)</label>
+                                <input type="text" th:field="*{contactPrincipal}" class="form-control" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Telephone</label>
+                                <input type="text" th:field="*{telephone}" class="form-control"/>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Email de l'organisation</label>
+                            <input type="email" th:field="*{emailContact}" class="form-control" required/>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Description de la mission</label>
+                            <textarea th:field="*{descriptionMission}" class="form-control" rows="4" required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-warning w-100 fw-bold">Soumettre mon inscription</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+</html>

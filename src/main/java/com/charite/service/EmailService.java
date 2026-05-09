@@ -22,7 +22,11 @@ public class EmailService {
             message.setText("Bonjour,\n\nMalheureusement, votre demande d'inscription pour l'organisation '" + nomOrg + "' a ete rejetee.");
         }
 
-        emailSender.send(message);
+        try {
+            emailSender.send(message);
+        } catch (Exception e) {
+            System.err.println("Erreur (Simulee) d'envoi d'email: " + e.getMessage());
+        }
     }
 
     public void envoyerConfirmationDon(String to, String titreAction, java.math.BigDecimal montant) {
@@ -30,7 +34,11 @@ public class EmailService {
         m.setTo(to);
         m.setSubject("Confirmation de votre don");
         m.setText("Merci pour votre don de " + montant + " MAD pour : " + titreAction);
-        emailSender.send(m);
+        try {
+            emailSender.send(m);
+        } catch (Exception e) {
+            System.err.println("Erreur (Simulee) d'envoi d'email: " + e.getMessage());
+        }
     }
 
     public void envoyerNotification(java.util.List<String> destinataires, String sujet, String texte) {
@@ -38,6 +46,10 @@ public class EmailService {
         m.setTo(destinataires.toArray(new String[0]));
         m.setSubject(sujet);
         m.setText(texte);
-        emailSender.send(m);
+        try {
+            emailSender.send(m);
+        } catch (Exception e) {
+            System.err.println("Erreur (Simulee) d'envoi d'email: " + e.getMessage());
+        }
     }
 }

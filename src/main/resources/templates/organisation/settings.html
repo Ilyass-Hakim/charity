@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html class="light" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Profile Settings - CharityHub</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@600;700&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed-variant": "#743329",
+                      "tertiary-fixed-dim": "#ffb4a8",
+                      "on-primary-fixed": "#002117",
+                      "secondary-fixed-dim": "#ffb59e",
+                      "on-secondary": "#ffffff",
+                      "error": "#ba1a1a",
+                      "surface-dim": "#d9dadb",
+                      "surface-tint": "#086b53",
+                      "error-container": "#ffdad6",
+                      "on-primary": "#ffffff",
+                      "on-secondary-container": "#661a00",
+                      "surface-variant": "#e1e3e4",
+                      "primary-fixed": "#a0f3d4",
+                      "surface-bright": "#f8f9fa",
+                      "surface-container": "#edeeef",
+                      "primary-container": "#0f6e56",
+                      "on-surface-variant": "#3f4944",
+                      "on-secondary-fixed": "#3a0b00",
+                      "on-tertiary-fixed": "#3b0804",
+                      "primary": "#005440",
+                      "tertiary": "#78352b",
+                      "on-secondary-fixed-variant": "#852400",
+                      "on-background": "#191c1d",
+                      "on-error": "#ffffff",
+                      "outline-variant": "#bec9c3",
+                      "on-primary-container": "#9aedcf",
+                      "secondary-container": "#fd7549",
+                      "on-error-container": "#93000a",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary-fixed": "#ffdad4",
+                      "secondary": "#a8380f",
+                      "surface": "#f8f9fa",
+                      "on-tertiary-container": "#ffd3cc",
+                      "background": "#f8f9fa",
+                      "on-surface": "#191c1d",
+                      "inverse-primary": "#84d6b9",
+                      "secondary-fixed": "#ffdbd0",
+                      "surface-container-highest": "#e1e3e4",
+                      "on-primary-fixed-variant": "#00513e",
+                      "inverse-on-surface": "#f0f1f2",
+                      "on-tertiary": "#ffffff",
+                      "surface-container-high": "#e7e8e9",
+                      "surface-container-low": "#f3f4f5",
+                      "inverse-surface": "#2e3132",
+                      "outline": "#6f7a74",
+                      "primary-fixed-dim": "#84d6b9",
+                      "tertiary-container": "#954c41"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "12px",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xl": "32px",
+                      "container-max": "1280px",
+                      "md": "16px",
+                      "gutter": "24px",
+                      "base": "4px",
+                      "sm": "12px",
+                      "xs": "8px",
+                      "lg": "24px"
+              }
+            }
+          }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .icon-fill { font-variation-settings: 'FILL' 1; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen font-body-md flex flex-col md:flex-row antialiased">
+
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 border-r border-outline-variant bg-surface-container-low p-md gap-xs z-40">
+    <div class="flex items-center gap-sm mb-lg">
+        <div class="w-10 h-10 rounded-full overflow-hidden bg-surface-variant flex items-center justify-center shrink-0">
+            <img th:if="${organisation.logo != null}" th:src="${organisation.logo}" class="w-full h-full object-cover" alt="Org Logo"/>
+            <img th:if="${organisation.logo == null}" src="https://ui-avatars.com/api/?name=Org&background=005440&color=fff" class="w-full h-full object-cover" alt="Default Logo"/>
+        </div>
+        <div>
+            <h1 class="font-h3 text-h3 text-primary">CharityHub</h1>
+            <p class="font-label-caps text-label-caps text-on-surface-variant">Admin Console</p>
+        </div>
+    </div>
+    <a th:href="@{/actions/creer}" class="bg-primary text-on-primary rounded-lg py-sm px-md font-button text-button w-full mb-md flex items-center justify-center gap-xs no-underline shadow-sm">
+        <span class="material-symbols-outlined">add</span> New Campaign
+    </a>
+    <nav class="flex-1 flex flex-col gap-xs">
+        <a class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg no-underline font-label-caps text-label-caps" th:href="@{/organisation/dashboard}">
+            <span class="material-symbols-outlined">dashboard</span> Dashboard
+        </a>
+        <a class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg no-underline font-label-caps text-label-caps" th:href="@{/organisation/campaigns}">
+            <span class="material-symbols-outlined">volunteer_activism</span> My Campaigns
+        </a>
+        <a class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg no-underline font-label-caps text-label-caps" th:href="@{/organisation/donations}">
+            <span class="material-symbols-outlined">payments</span> Donations
+        </a>
+        <a class="flex items-center gap-sm px-md py-sm bg-primary-container text-on-primary-container font-bold rounded-lg no-underline font-label-caps text-label-caps" th:href="@{/organisation/settings}">
+            <span class="material-symbols-outlined icon-fill">settings</span> Settings
+        </a>
+    </nav>
+    <div class="mt-auto flex flex-col gap-xs pt-md border-t border-outline-variant">
+        <a class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg no-underline font-label-caps text-label-caps" href="#">
+            <span class="material-symbols-outlined">help</span> Help Center
+        </a>
+        <form th:action="@{/auth/logout}" method="post">
+            <button type="submit" class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-error/10 hover:text-error rounded-lg w-full text-left font-label-caps text-label-caps">
+                <span class="material-symbols-outlined">logout</span> Logout
+            </button>
+        </form>
+    </div>
+</aside>
+
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col min-h-screen md:ml-64">
+    <!-- TopNavBar -->
+    <header class="bg-surface border-b border-outline-variant w-full sticky top-0 z-30">
+        <div class="flex justify-between items-center px-lg py-sm">
+            <nav class="flex gap-lg items-center">
+                <a class="font-body-md text-on-surface-variant hover:text-primary transition-colors pb-1 no-underline" th:href="@{/}">Home</a>
+                <a class="font-body-md text-on-surface-variant hover:text-primary transition-colors pb-1 no-underline" th:href="@{/actions}">Explore</a>
+                <a class="font-body-md text-on-surface-variant hover:text-primary transition-colors pb-1 no-underline" th:href="@{/about}">About</a>
+                <a class="font-body-md text-on-surface-variant hover:text-primary transition-colors pb-1 flex items-center gap-xs no-underline" th:href="@{/organisation/dashboard}">
+                    <span class="material-symbols-outlined text-[18px]">dashboard_customize</span> Console
+                </a>
+            </nav>
+            <div class="flex items-center gap-sm">
+                <span class="text-body-sm text-on-surface-variant hidden sm:block font-medium" th:text="${organisation.nom}">Organization Name</span>
+                <div class="w-8 h-8 rounded-full overflow-hidden bg-surface-variant shadow-inner">
+                    <img th:if="${organisation.logo != null}" th:src="${organisation.logo}" class="w-full h-full object-cover"/>
+                    <img th:if="${organisation.logo == null}" src="https://ui-avatars.com/api/?name=Org&background=005440&color=fff" class="w-full h-full object-cover"/>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="p-md md:p-xl max-w-container-max mx-auto w-full flex-1">
+        <!-- Breadcrumbs -->
+        <nav aria-label="Breadcrumb" class="flex text-on-surface-variant font-body-sm text-body-sm mb-lg">
+            <ol class="inline-flex items-center space-x-2">
+                <li class="inline-flex items-center"><a class="hover:text-primary transition-colors no-underline" th:href="@{/}">Home</a></li>
+                <li><div class="flex items-center"><span class="material-symbols-outlined text-sm mx-1">chevron_right</span><a class="hover:text-primary transition-colors no-underline" th:href="@{/organisation/dashboard}">Console</a></div></li>
+                <li aria-current="page"><div class="flex items-center"><span class="material-symbols-outlined text-sm mx-1">chevron_right</span><span class="text-on-background font-semibold">Settings</span></div></li>
+            </ol>
+        </nav>
+
+        <!-- Success Message -->
+        <div th:if="${success}" class="mb-lg p-md bg-primary-container text-on-primary-container rounded-xl flex items-center gap-sm animate-fade-in shadow-sm">
+            <span class="material-symbols-outlined">check_circle</span>
+            <span th:text="${success}">Settings updated successfully!</span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-xl">
+            <!-- Sidebar Layout -->
+            <div class="lg:col-span-1 hidden lg:block">
+                <nav class="flex flex-col gap-base">
+                    <a class="px-md py-sm bg-surface-variant text-on-surface rounded-lg font-label-caps text-label-caps font-semibold no-underline" href="#">General Profile</a>
+                    <a class="px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg font-label-caps text-label-caps transition-colors no-underline" href="#">Security</a>
+                    <a class="px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg font-label-caps text-label-caps transition-colors no-underline" href="#">Notifications</a>
+                </nav>
+            </div>
+
+            <!-- Content Area -->
+            <div class="lg:col-span-3 flex flex-col gap-lg">
+                <div class="mb-md">
+                    <h2 class="font-h2 text-h2 mb-xs text-on-background">Organization Settings</h2>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">Update your organization's public profile and legal information.</p>
+                </div>
+
+                <form th:action="@{/organisation/settings}" th:object="${organisation}" method="post" class="flex flex-col gap-lg">
+                    <!-- Avatar Section -->
+                    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm">
+                        <div class="flex items-center gap-lg">
+                            <div class="relative w-24 h-24 rounded-full overflow-hidden bg-surface-variant border-2 border-primary-container shadow-inner">
+                                <img th:if="${organisation.logo != null}" th:src="${organisation.logo}" class="w-full h-full object-cover" alt="Org Logo"/>
+                                <img th:if="${organisation.logo == null}" src="https://ui-avatars.com/api/?name=Org&background=005440&color=fff" class="w-full h-full object-cover" alt="Default Logo"/>
+                            </div>
+                            <div class="flex flex-col gap-sm">
+                                <div class="flex gap-sm">
+                                    <button type="button" class="bg-primary text-on-primary rounded-lg py-xs px-sm font-button text-button hover:opacity-90 transition-opacity">Change Logo</button>
+                                    <button type="button" class="bg-transparent border border-primary text-primary rounded-lg py-xs px-sm font-button text-button hover:bg-surface-variant transition-colors">Remove</button>
+                                </div>
+                                <p class="font-body-sm text-on-surface-variant">JPG or PNG. Max 800K</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Fields -->
+                    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+                            <div class="flex flex-col gap-xs md:col-span-2">
+                                <label class="font-label-caps text-label-caps text-on-surface" for="nom">Organization Name</label>
+                                <input th:field="*{nom}" class="bg-surface border border-outline-variant text-on-background font-body-md rounded-lg px-md py-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" id="nom" type="text" placeholder="Charity Name"/>
+                            </div>
+                            
+                            <div class="flex flex-col gap-xs md:col-span-2">
+                                <label class="font-label-caps text-label-caps text-on-surface" for="description">Description</label>
+                                <textarea th:field="*{description}" rows="4" class="bg-surface border border-outline-variant text-on-background font-body-md rounded-lg px-md py-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none" id="description" placeholder="What does your organization do?"></textarea>
+                            </div>
+
+                            <div class="flex flex-col gap-xs">
+                                <label class="font-label-caps text-label-caps text-on-surface" for="emailContact">Contact Email</label>
+                                <input th:field="*{emailContact}" class="bg-surface border border-outline-variant text-on-background font-body-md rounded-lg px-md py-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" id="emailContact" type="email" placeholder="contact@org.com"/>
+                            </div>
+                            
+                            <div class="flex flex-col gap-xs">
+                                <label class="font-label-caps text-label-caps text-on-surface" for="telephone">Phone Number</label>
+                                <input th:field="*{telephone}" class="bg-surface border border-outline-variant text-on-background font-body-md rounded-lg px-md py-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" id="telephone" type="tel" placeholder="+212 ..."/>
+                            </div>
+
+                            <div class="flex flex-col gap-xs">
+                                <label class="font-label-caps text-label-caps text-on-surface" for="matriculeFiscal">Fiscal ID (Matricule Fiscal)</label>
+                                <input th:field="*{matriculeFiscal}" class="bg-surface border border-outline-variant text-on-background font-body-md rounded-lg px-md py-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" id="matriculeFiscal" type="text" placeholder="MF12345678"/>
+                            </div>
+
+                            <div class="flex flex-col gap-xs md:col-span-2">
+                                <label class="font-label-caps text-label-caps text-on-surface" for="adresseLegale">Legal Address</label>
+                                <input th:field="*{adresseLegale}" class="bg-surface border border-outline-variant text-on-background font-body-md rounded-lg px-md py-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" id="adresseLegale" type="text" placeholder="123 Street, City, Country"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer Actions -->
+                    <div class="flex justify-end gap-sm pt-md border-t border-outline-variant">
+                        <a th:href="@{/organisation/dashboard}" class="bg-transparent border border-outline text-on-surface rounded-lg py-sm px-lg font-button text-button hover:bg-surface-variant transition-colors no-underline">Cancel</a>
+                        <button type="submit" class="bg-primary text-on-primary rounded-lg py-sm px-lg font-button text-button hover:bg-primary-container transition-all shadow-md active:scale-95">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>

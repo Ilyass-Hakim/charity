@@ -89,4 +89,13 @@ public class ActionService {
         return actionRepository.findById(actionId)
                 .orElseThrow(() -> new RuntimeException("Action non trouvee"));
     }
+
+    public BigDecimal getTotalGlobalDonations() {
+        BigDecimal total = actionRepository.getTotalGlobalDonations();
+        return total != null ? total : BigDecimal.ZERO;
+    }
+
+    public long countAllActiveActions() {
+        return actionRepository.countAllActiveActions();
+    }
 }

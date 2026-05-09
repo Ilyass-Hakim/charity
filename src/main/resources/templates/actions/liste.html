@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html class="light" lang="en" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Discover Campaigns - CharityHub</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&amp;family=Inter:wght@400;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#086b53",
+                        "surface-variant": "#e1e3e4",
+                        "on-tertiary-fixed-variant": "#743329",
+                        "on-primary-container": "#9aedcf",
+                        "tertiary-container": "#954c41",
+                        "on-surface": "#191c1d",
+                        "surface-container-high": "#e7e8e9",
+                        "tertiary-fixed-dim": "#ffb4a8",
+                        "surface-dim": "#d9dadb",
+                        "on-primary-fixed-variant": "#00513e",
+                        "inverse-on-surface": "#f0f1f2",
+                        "on-secondary-fixed-variant": "#852400",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f3f4f5",
+                        "on-secondary": "#ffffff",
+                        "secondary-container": "#fd7549",
+                        "secondary": "#a8380f",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed-dim": "#ffb59e",
+                        "on-tertiary": "#ffffff",
+                        "tertiary": "#78352b",
+                        "surface": "#f8f9fa",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed": "#ffdad4",
+                        "surface-bright": "#f8f9fa",
+                        "on-primary-fixed": "#002117",
+                        "on-background": "#191c1d",
+                        "surface-container": "#edeeef",
+                        "primary-fixed": "#a0f3d4",
+                        "primary-container": "#0f6e56",
+                        "primary": "#005440",
+                        "outline-variant": "#bec9c3",
+                        "on-secondary-container": "#661a00",
+                        "inverse-surface": "#2e3132",
+                        "surface-container-highest": "#e1e3e4",
+                        "outline": "#6f7a74",
+                        "secondary-fixed": "#ffdbd0",
+                        "on-secondary-fixed": "#3a0b00",
+                        "on-tertiary-fixed": "#3b0804",
+                        "primary-fixed-dim": "#84d6b9",
+                        "on-primary": "#ffffff",
+                        "inverse-primary": "#84d6b9",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#3f4944",
+                        "on-error": "#ffffff",
+                        "on-tertiary-container": "#ffd3cc",
+                        "background": "#f8f9fa"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "12px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "xs": "8px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "container-max": "1280px",
+                        "sm": "12px",
+                        "gutter": "24px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "h2": ["DM Sans"],
+                        "body-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "h3": ["DM Sans"],
+                        "body-sm": ["Inter"],
+                        "button": ["Inter"],
+                        "h1": ["DM Sans"],
+                        "display": ["DM Sans"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h2": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "h3": ["20px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "button": ["16px", { "lineHeight": "1", "fontWeight": "600" }],
+                        "h1": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "display": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #191c1d;
+        }
+    </style>
+</head>
+
+<body class="font-body-md text-body-md min-h-screen flex flex-col">
+
+    <!-- TopNavBar -->
+    <header
+        class="bg-surface dark:bg-on-background w-full sticky top-0 z-50 border-b border-outline-variant dark:border-on-surface-variant shadow-sm">
+        <div class="flex justify-between items-center px-lg py-sm max-w-container-max mx-auto">
+            <div class="flex items-center gap-xl">
+                <a class="font-h2 text-h2 font-bold text-primary dark:text-primary-fixed-dim"
+                    th:href="@{/}">CharityHub</a>
+                <nav class="hidden md:flex gap-lg items-center">
+                    <a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors pb-1" th:href="@{/}">Home</a>
+                    <a class="font-body-md text-body-md text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-secondary pb-1" th:href="@{/actions}">Explore</a>
+                    <a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors pb-1" th:href="@{/about}">About</a>
+                    <a sec:authorize="hasRole('ROLE_ORG_ADMIN')" 
+                        class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors flex items-center gap-xs pb-1" 
+                        th:href="@{/organisation/dashboard}">
+                        <span class="material-symbols-outlined text-[18px]">dashboard_customize</span> Console
+                    </a>
+                </nav>
+            </div>
+            <div class="flex items-center gap-md">
+                <div sec:authorize="!isAuthenticated()" class="flex items-center gap-sm">
+                    <a th:href="@{/auth/login}"
+                        class="text-on-surface-variant hover:text-primary transition-colors">Login</a>
+                    <a th:href="@{/auth/register}"
+                        class="bg-primary text-on-primary font-button text-button px-lg py-xs rounded-lg hover:bg-primary-container transition-all">Get
+                        Started</a>
+                </div>
+                <div sec:authorize="isAuthenticated()" class="flex items-center gap-sm">
+                    <a sec:authorize="hasRole('ROLE_ORG_ADMIN')" th:href="@{/organisation/dashboard}"
+                        class="rounded-full overflow-hidden w-10 h-10 border border-outline-variant shadow-sm hover:ring-2 hover:ring-primary/20 transition-all">
+                        <img alt="Org profile" class="w-full h-full object-cover"
+                            src="https://ui-avatars.com/api/?name=Org&background=005440&color=fff" />
+                    </a>
+                    <a sec:authorize="!hasRole('ROLE_ORG_ADMIN')" th:href="@{/utilisateur/profil}"
+                        class="rounded-full overflow-hidden w-10 h-10 border border-outline-variant shadow-sm hover:ring-2 hover:ring-primary/20 transition-all">
+                        <img alt="User profile" class="w-full h-full object-cover"
+                            src="https://ui-avatars.com/api/?name=User&background=005440&color=fff" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-container-max mx-auto px-md md:px-xl py-xl flex-grow w-full">
+        <!-- Flash Messages -->
+        <div th:if="${success}" class="mb-lg p-md bg-primary-container/10 border border-primary/20 rounded-xl flex items-center gap-md text-primary">
+            <span class="material-symbols-outlined">check_circle</span>
+            <span class="font-body-md" th:text="${success}">Success message goes here</span>
+        </div>
+        <div th:if="${error}" class="mb-lg p-md bg-error-container/10 border border-error/20 rounded-xl flex items-center gap-md text-error">
+            <span class="material-symbols-outlined">error</span>
+            <span class="font-body-md" th:text="${error}">Error message goes here</span>
+        </div>
+
+        <!-- Hero Title Section -->
+        <div class="mb-xl">
+            <h1 class="font-display text-display text-on-background mb-xs">Discover Campaigns</h1>
+            <p class="text-on-surface-variant max-w-2xl font-body-lg text-body-lg">Support causes that matter. Every
+                contribution brings us closer to a world driven by empathy and lasting impact.</p>
+        </div>
+
+        <!-- Filter and Search Bar -->
+        <section class="mb-xl p-md bg-white border border-outline-variant rounded-xl shadow-sm">
+            <form th:action="@{/actions}" method="GET" class="flex flex-col lg:flex-row gap-md items-center">
+                <!-- Search Input -->
+                <div class="flex-1 w-full relative">
+                    <span
+                        class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline">search</span>
+                    <input type="text" name="keyword" th:value="${keyword}"
+                        class="w-full pl-xl pr-md py-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                        placeholder="   Filter by keywords, organizations..." />
+                </div>
+
+                <!-- Category Selector -->
+                <div class="flex flex-wrap gap-xs items-center w-full lg:w-auto">
+                    <span class="text-label-caps font-label-caps text-outline mr-xs">CATEGORY</span>
+                    <a th:href="@{/actions(keyword=${keyword})}"
+                        th:class="${categorieSelectionnee == null || categorieSelectionnee == '' ? 'px-md py-xs bg-primary text-on-primary rounded-full font-label-caps text-label-caps transition-all' : 'px-md py-xs bg-surface-container-low text-on-surface-variant border border-outline-variant hover:bg-surface-variant rounded-full font-label-caps text-label-caps transition-all'}"
+                        class="no-underline">All</a>
+
+                    <th:block th:each="cat : ${categories}">
+                        <a th:href="@{/actions(categorie=${cat.nom}, keyword=${keyword})}" th:text="${cat.nom}"
+                            th:class="${cat.nom == categorieSelectionnee ? 'px-md py-xs bg-primary text-on-primary rounded-full font-label-caps text-label-caps transition-all' : 'px-md py-xs bg-surface-container-low text-on-surface-variant border border-outline-variant hover:bg-surface-variant rounded-full font-label-caps text-label-caps transition-all'}"
+                            class="no-underline">Environment</a>
+                    </th:block>
+                </div>
+
+                <div class="h-8 w-[1px] bg-outline-variant hidden lg:block mx-xs"></div>
+
+                <button type="submit" class="hidden">Search</button>
+            </form>
+        </section>
+
+        <!-- Campaign Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-xl">
+            <th:block th:each="action : ${actions.content}">
+                <article
+                    class="bg-white border border-outline-variant rounded-xl overflow-hidden flex flex-col group hover:border-primary/30 transition-all duration-300 shadow-sm">
+                    <div class="h-56 w-full relative overflow-hidden">
+                        <img th:if="${not #lists.isEmpty(action.medias)}" th:src="${action.medias[0].url}"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            alt="Campaign Image" />
+                        <img th:if="${#lists.isEmpty(action.medias)}" src="https://placehold.co/600x400?text=Campaign"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            alt="Placeholder" />
+                        <span
+                            class="absolute top-md left-md bg-white/90 backdrop-blur-sm px-md py-1 rounded-full text-label-caps font-label-caps text-primary border border-primary/20"
+                            th:text="${action.categorie.nom}">Environment</span>
+                    </div>
+                    <div class="p-lg flex flex-col flex-grow">
+                        <h3 class="font-h3 text-h3 mb-xs group-hover:text-primary transition-colors"
+                            th:text="${action.titre}">Campaign Title</h3>
+                        <p class="text-on-surface-variant text-body-sm mb-md line-clamp-2"
+                            th:text="${action.description}">Short description...</p>
+                        <div class="mt-auto"
+                            th:with="percentage=${action.pourcentageAtteint}">
+                            <div class="flex justify-between items-end mb-xs">
+                                <span class="text-label-caps font-label-caps text-secondary font-bold"
+                                    th:text="${percentage} + '% Funded'">75% Funded</span>
+                                <span class="text-body-sm text-on-surface-variant"><b class="text-on-surface"
+                                        th:text="${action.montantActuel} + ' MAD'">$120,000</b> récoltés</span>
+                            </div>
+                            <div class="w-full bg-surface-variant h-3 rounded-full overflow-hidden mb-lg">
+                                <div class="bg-secondary h-full rounded-full"
+                                    th:style="'width: ' + ${percentage} + '%'"></div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-label-caps font-label-caps text-outline"
+                                    th:text="'Objectif: ' + ${action.montantObjectif} + ' MAD'">Goal: $160,000</span>
+                                <a th:href="@{/actions/{id}(id=${action.id})}"
+                                    class="bg-primary text-on-primary px-lg py-xs rounded-lg font-button text-button hover:bg-primary-container transition-all no-underline">View
+                                    Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </th:block>
+        </div>
+
+        <!-- Empty Results -->
+        <div th:if="${actions.empty}"
+            class="text-center py-20 bg-white rounded-xl border border-outline-variant shadow-sm">
+            <span class="material-symbols-outlined text-outline text-6xl mb-md">search_off</span>
+            <h4 class="font-h2 text-h2 text-on-surface mb-xs">No campaigns found</h4>
+            <p class="text-on-surface-variant">Try adjusting your filters or keywords.</p>
+        </div>
+
+        <!-- Pagination -->
+        <div th:if="${actions.totalPages > 1}" class="mt-xl flex flex-col items-center gap-md">
+            <p class="text-on-surface-variant text-body-sm">
+                Page <span th:text="${actions.number + 1}">1</span> of <span th:text="${actions.totalPages}">5</span>
+            </p>
+            <div class="flex gap-2">
+                <a th:if="${actions.hasPrevious()}"
+                    th:href="@{/actions(page=${actions.number - 1}, categorie=${categorieSelectionnee}, keyword=${keyword})}"
+                    class="px-lg py-md border border-primary text-primary font-button text-button rounded-lg hover:bg-primary-fixed transition-all no-underline">Previous</a>
+                <a th:if="${actions.hasNext()}"
+                    th:href="@{/actions(page=${actions.number + 1}, categorie=${categorieSelectionnee}, keyword=${keyword})}"
+                    class="px-lg py-md border border-primary text-primary font-button text-button rounded-lg hover:bg-primary-fixed transition-all no-underline">Next</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-surface-container-low border-t border-outline-variant py-xl">
+        <div class="max-w-container-max mx-auto px-md md:px-xl grid grid-cols-1 md:grid-cols-4 gap-xl">
+            <div class="col-span-1 md:col-span-1">
+                <span class="font-h2 text-h2 font-bold text-primary mb-md block">CharityHub</span>
+                <p class="text-on-surface-variant text-body-sm">A transparent platform connecting empathetic donors with
+                    urgent global causes.</p>
+            </div>
+            <div>
+                <h4 class="font-button text-button mb-md">Platform</h4>
+                <ul class="space-y-sm text-on-surface-variant text-body-sm list-none p-0">
+                    <li><a class="hover:text-primary no-underline" href="#">How it works</a></li>
+                    <li><a class="hover:text-primary no-underline" href="#">Fees &amp; Pricing</a></li>
+                    <li><a class="hover:text-primary no-underline" href="#">Success Stories</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-button text-button mb-md">Community</h4>
+                <ul class="space-y-sm text-on-surface-variant text-body-sm list-none p-0">
+                    <li><a class="hover:text-primary no-underline" href="#">Partner Program</a></li>
+                    <li><a class="hover:text-primary no-underline" href="#">Volunteer</a></li>
+                    <li><a class="hover:text-primary no-underline" href="#">Newsletter</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-button text-button mb-md">Support</h4>
+                <ul class="space-y-sm text-on-surface-variant text-body-sm list-none p-0">
+                    <li><a class="hover:text-primary no-underline" href="#">Help Center</a></li>
+                    <li><a class="hover:text-primary no-underline" href="#">Trust &amp; Safety</a></li>
+                    <li><a class="hover:text-primary no-underline" href="#">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+        <div
+            class="max-w-container-max mx-auto px-md md:px-xl pt-xl mt-xl border-t border-outline-variant flex flex-col md:flex-row justify-between items-center gap-md">
+            <p class="text-outline text-label-caps font-label-caps">© 2026 CharityHub. All Rights Reserved.</p>
+            <div class="flex gap-lg">
+                <span class="text-outline material-symbols-outlined">public</span>
+                <span class="text-outline material-symbols-outlined">share</span>
+                <span class="text-outline material-symbols-outlined">help</span>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

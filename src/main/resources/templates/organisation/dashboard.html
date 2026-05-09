@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html class="light" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Dashboard - CharityHub</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@600;700&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#743329",
+                        "tertiary-fixed-dim": "#ffb4a8",
+                        "on-primary-fixed": "#002117",
+                        "secondary-fixed-dim": "#ffb59e",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#d9dadb",
+                        "surface-tint": "#086b53",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "on-secondary-container": "#661a00",
+                        "surface-variant": "#e1e3e4",
+                        "primary-fixed": "#a0f3d4",
+                        "surface-bright": "#f8f9fa",
+                        "surface-container": "#edeeef",
+                        "primary-container": "#0f6e56",
+                        "on-surface-variant": "#3f4944",
+                        "on-secondary-fixed": "#3a0b00",
+                        "on-tertiary-fixed": "#3b0804",
+                        "primary": "#005440",
+                        "tertiary": "#78352b",
+                        "on-secondary-fixed-variant": "#852400",
+                        "on-background": "#191c1d",
+                        "on-error": "#ffffff",
+                        "outline-variant": "#bec9c3",
+                        "on-primary-container": "#9aedcf",
+                        "secondary-container": "#fd7549",
+                        "on-error-container": "#93000a",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed": "#ffdad4",
+                        "secondary": "#a8380f",
+                        "surface": "#f8f9fa",
+                        "on-tertiary-container": "#ffd3cc",
+                        "background": "#f8f9fa",
+                        "on-surface": "#191c1d",
+                        "inverse-primary": "#84d6b9",
+                        "secondary-fixed": "#ffdbd0",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-primary-fixed-variant": "#00513e",
+                        "inverse-on-surface": "#f0f1f2",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-high": "#e7e8e9",
+                        "surface-container-low": "#f3f4f5",
+                        "inverse-surface": "#2e3132",
+                        "outline": "#6f7a74",
+                        "primary-fixed-dim": "#84d6b9",
+                        "tertiary-container": "#954c41"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "12px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "container-max": "1280px",
+                        "md": "16px",
+                        "gutter": "24px",
+                        "base": "4px",
+                        "sm": "12px",
+                        "xs": "8px",
+                        "lg": "24px"
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .icon-fill { font-variation-settings: 'FILL' 1; }
+    </style>
+</head>
+<body class="bg-background text-on-background antialiased flex flex-col md:flex-row min-h-screen">
+
+<!-- SideNavBar -->
+<aside class="hidden md:flex h-screen w-64 fixed left-0 top-0 flex-col p-md gap-xs bg-surface-container-low border-r border-outline-variant z-40">
+    <div class="flex items-center gap-sm p-sm mb-md">
+        <div class="w-10 h-10 rounded-full overflow-hidden bg-surface-variant flex items-center justify-center shrink-0">
+            <img th:if="${organisation.logo != null}" th:src="${organisation.logo}" class="w-full h-full object-cover" alt="Org Logo"/>
+            <img th:if="${organisation.logo == null}" src="https://ui-avatars.com/api/?name=Org&background=005440&color=fff" class="w-full h-full object-cover" alt="Default Logo"/>
+        </div>
+        <div>
+            <div class="font-h3 text-h3 text-primary">CharityHub</div>
+            <div class="font-label-caps text-label-caps text-on-surface-variant">Admin Console</div>
+        </div>
+    </div>
+    <a th:href="@{/actions/creer}" class="bg-primary text-on-primary font-button text-button rounded-lg px-md py-sm mb-md hover:bg-primary-container transition-colors flex items-center justify-center gap-xs no-underline shadow-sm">
+        <span class="material-symbols-outlined" style="font-size: 18px;">add</span> New Campaign
+    </a>
+    <nav class="flex-1 flex flex-col gap-xs">
+        <a class="flex items-center gap-sm px-md py-sm bg-primary-container text-on-primary-container rounded-lg font-bold font-label-caps text-label-caps no-underline transition-all" th:href="@{/organisation/dashboard}">
+            <span class="material-symbols-outlined icon-fill">dashboard</span> Dashboard
+        </a>
+        <a class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg font-label-caps text-label-caps no-underline transition-all" th:href="@{/organisation/campaigns}">
+            <span class="material-symbols-outlined">volunteer_activism</span> My Campaigns
+        </a>
+        <a class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg font-label-caps text-label-caps no-underline transition-all" th:href="@{/organisation/donations}">
+            <span class="material-symbols-outlined">payments</span> Donations
+        </a>
+        <a class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg font-label-caps text-label-caps no-underline transition-all" th:href="@{/organisation/settings}">
+            <span class="material-symbols-outlined">settings</span> Settings
+        </a>
+    </nav>
+    <div class="mt-auto flex flex-col gap-xs border-t border-outline-variant pt-md">
+        <a class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg font-label-caps text-label-caps no-underline transition-all" href="#">
+            <span class="material-symbols-outlined">help</span> Help Center
+        </a>
+        <form th:action="@{/auth/logout}" method="post">
+            <button type="submit" class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-error/10 hover:text-error rounded-lg font-label-caps text-label-caps w-full text-left transition-all">
+                <span class="material-symbols-outlined">logout</span> Logout
+            </button>
+        </form>
+    </div>
+</aside>
+
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col min-h-screen md:ml-64">
+    <!-- TopNavBar -->
+    <header class="bg-surface border-b border-outline-variant w-full sticky top-0 z-30">
+        <div class="flex justify-between items-center px-lg py-sm">
+            <nav class="flex gap-lg items-center">
+                <a class="font-body-md text-on-surface-variant hover:text-primary transition-colors pb-1 no-underline" th:href="@{/}">Home</a>
+                <a class="font-body-md text-on-surface-variant hover:text-primary transition-colors pb-1 no-underline" th:href="@{/actions}">Explore</a>
+                <a class="font-body-md text-on-surface-variant hover:text-primary transition-colors pb-1 no-underline" th:href="@{/about}">About</a>
+                <a class="font-body-md text-primary font-bold border-b-2 border-secondary pb-1 flex items-center gap-xs no-underline" th:href="@{/organisation/dashboard}">
+                    <span class="material-symbols-outlined text-[18px]">dashboard_customize</span> Console
+                </a>
+            </nav>
+            <div class="flex items-center gap-sm">
+                <span class="text-body-sm text-on-surface-variant hidden sm:block font-medium" th:text="${organisation.nom}">Organization Name</span>
+                <div class="w-8 h-8 rounded-full overflow-hidden bg-surface-variant shadow-inner">
+                    <img th:if="${organisation.logo != null}" th:src="${organisation.logo}" class="w-full h-full object-cover"/>
+                    <img th:if="${organisation.logo == null}" src="https://ui-avatars.com/api/?name=Org&background=005440&color=fff" class="w-full h-full object-cover"/>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="flex-1 p-md md:p-xl max-w-container-max mx-auto w-full">
+        <!-- Page Header -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-xl gap-md">
+            <div>
+                <h1 class="font-h1 text-h1 text-on-surface mb-base">Dashboard</h1>
+                <p class="font-body-md text-body-md text-on-surface-variant" th:text="'Overview of ' + ${organisation.nom} + '\'s impact.'">Overview of your organization's impact.</p>
+            </div>
+            <a th:href="@{/actions/creer}" class="bg-primary text-on-primary font-button text-button rounded-lg px-lg py-sm hover:bg-primary-container transition-colors flex items-center gap-xs no-underline shadow-md">
+                <span class="material-symbols-outlined" style="font-size: 20px;">add</span> New Campaign
+            </a>
+        </div>
+
+        <!-- Summary Stats -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter mb-xl">
+            <div class="bg-surface-container-lowest rounded-xl p-lg border border-outline-variant flex flex-col justify-between shadow-sm">
+                <div class="flex justify-between items-start mb-sm">
+                    <span class="font-body-sm text-body-sm text-on-surface-variant">Total Donations</span>
+                    <span class="material-symbols-outlined text-primary bg-primary-container/20 rounded-full p-base">payments</span>
+                </div>
+                <div class="font-h2 text-h2 text-on-surface" th:text="${totalDonated} + ' MAD'">$124,500</div>
+                <div class="font-body-sm text-body-sm text-primary flex items-center gap-xs mt-base">
+                    <span class="material-symbols-outlined" style="font-size: 16px;">trending_up</span> Just updated
+                </div>
+            </div>
+            <div class="bg-surface-container-lowest rounded-xl p-lg border border-outline-variant flex flex-col justify-between shadow-sm">
+                <div class="flex justify-between items-start mb-sm">
+                    <span class="font-body-sm text-body-sm text-on-surface-variant">Active Campaigns</span>
+                    <span class="material-symbols-outlined text-secondary bg-secondary-container/20 rounded-full p-base">volunteer_activism</span>
+                </div>
+                <div class="font-h2 text-h2 text-on-surface" th:text="${activeCampaignsCount}">12</div>
+                <div class="font-body-sm text-body-sm text-on-surface-variant mt-base">Ongoing initiatives</div>
+            </div>
+            <div class="bg-surface-container-lowest rounded-xl p-lg border border-outline-variant flex flex-col justify-between shadow-sm">
+                <div class="flex justify-between items-start mb-sm">
+                    <span class="font-body-sm text-body-sm text-on-surface-variant">Unique Donors</span>
+                    <span class="material-symbols-outlined text-tertiary bg-tertiary-container/20 rounded-full p-base">group</span>
+                </div>
+                <div class="font-h2 text-h2 text-on-surface" th:text="${uniqueDonorsCount}">842</div>
+                <div class="font-body-sm text-body-sm text-on-surface-variant mt-base">Growing community</div>
+            </div>
+            <div class="bg-surface-container-lowest rounded-xl p-lg border border-outline-variant flex flex-col justify-between shadow-sm">
+                <div class="flex justify-between items-start mb-sm">
+                    <span class="font-body-sm text-body-sm text-on-surface-variant">Success Rate</span>
+                    <span class="material-symbols-outlined text-primary bg-primary-container/20 rounded-full p-base">emoji_events</span>
+                </div>
+                <div class="font-h2 text-h2 text-on-surface">94%</div>
+                <div class="font-body-sm text-body-sm text-on-surface-variant mt-base">Goal completion</div>
+            </div>
+        </div>
+
+        <!-- Recent Activity Table -->
+        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+            <div class="p-lg border-b border-outline-variant flex justify-between items-center">
+                <h3 class="font-h3 text-h3 text-on-surface">Recent Contributions</h3>
+                <a th:href="@{/organisation/donations}" class="text-primary font-button text-body-sm no-underline hover:underline">View All</a>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-surface-container-low">
+                            <th class="p-sm px-lg font-label-caps text-label-caps text-on-surface-variant font-semibold">Donor</th>
+                            <th class="p-sm font-label-caps text-label-caps text-on-surface-variant font-semibold">Date</th>
+                            <th class="p-sm font-label-caps text-label-caps text-on-surface-variant font-semibold">Amount</th>
+                            <th class="p-sm font-label-caps text-label-caps text-on-surface-variant font-semibold">Campaign</th>
+                        </tr>
+                    </thead>
+                    <tbody class="font-body-sm">
+                        <tr th:each="contrib : ${recentContributions}" class="border-b border-outline-variant hover:bg-surface-container-low/50 transition-colors">
+                            <td class="p-sm px-lg text-on-surface font-medium flex items-center gap-xs">
+                                <div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold"
+                                     th:text="${#strings.substring(contrib.utilisateur.nom, 0, 1) + #strings.substring(contrib.utilisateur.prenom ?: ' ', 0, 1)}">JD</div>
+                                <span th:text="${contrib.utilisateur.nom} + ' ' + ${contrib.utilisateur.prenom ?: ''}">Jane Doe</span>
+                            </td>
+                            <td class="p-sm text-on-surface-variant" th:text="${#temporals.format(contrib.date, 'dd MMM yyyy')}">Oct 24, 2023</td>
+                            <td class="p-sm text-on-surface font-semibold text-primary">
+                                <span th:if="${contrib instanceof T(com.charite.entity.Don)}" th:text="${contrib.montant} + ' MAD'">$500.00</span>
+                                <span th:if="${!(contrib instanceof T(com.charite.entity.Don))}" class="italic">Participation</span>
+                            </td>
+                            <td class="p-sm text-on-surface-variant" th:text="${contrib.actionCharite.titre}">Campaign Name</td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(recentContributions)}">
+                            <td colspan="4" class="p-xl text-center text-on-surface-variant italic">No recent contributions.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>

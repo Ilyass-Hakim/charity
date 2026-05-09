@@ -18,10 +18,15 @@ public class ParticipationController {
 
     @PostMapping("/inscrire/{actionId}")
     public String inscrire(@PathVariable Long actionId,
-                           @AuthenticationPrincipal UserDetails principal,
+                           org.springframework.security.core.Authentication authentication,
                            RedirectAttributes ra) {
-        participationService.inscrire(actionId, principal.getUsername());
-        ra.addFlashAttribute("success", "Inscription confirmee !");
+        try {
+            String email = com.charite.security.SecurityUtils.getEmail(authentication);
+            participationService.inscrire(actionId, email);
+            ra.addFlashAttribute("success", "Votre inscription à l'action a été confirmée ! Merci pour votre engagement.");
+        } catch (Exception e) {
+            ra.addFlashAttribute("error", e.getMessage());
+        }
         return "redirect:/actions/" + actionId;
     }
 }

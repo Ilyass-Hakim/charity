@@ -61,4 +61,13 @@ public class ActionCharite {
     // Contributions recues (Dons + Participations)
     @OneToMany(mappedBy = "actionCharite", cascade = CascadeType.ALL)
     private List<Contribution> contributions = new ArrayList<>();
+
+    public double getPourcentageAtteint() {
+        if (montantObjectif == null || montantObjectif.compareTo(BigDecimal.ZERO) == 0) {
+            return 0;
+        }
+        return montantActuel.multiply(new BigDecimal("100"))
+                .divide(montantObjectif, 2, java.math.RoundingMode.HALF_UP)
+                .doubleValue();
+    }
 }

@@ -9,11 +9,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UtilisateurDto {
+    private String typeCompte = "USER"; // "USER" ou "ORG"
+    
+    // Champs Utilisateur
     private String nom;
     private String prenom;
     private String email;
     private String motDePasse;
     private String telephone;
+
+    // Champs Organisation (si typeCompte == "ORG")
+    private String nomOrganisation;
+    private String adresseLegale;
+    private String matriculeFiscal;
+    private String descriptionMission;
 
     // Constructeur a partir de l'entite
     public UtilisateurDto(Utilisateur u) {

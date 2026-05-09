@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html class="light" lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>CharityHub - Home</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#743329",
+                        "tertiary-fixed-dim": "#ffb4a8",
+                        "on-primary-fixed": "#002117",
+                        "secondary-fixed-dim": "#ffb59e",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#d9dadb",
+                        "surface-tint": "#086b53",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "on-secondary-container": "#661a00",
+                        "surface-variant": "#e1e3e4",
+                        "primary-fixed": "#a0f3d4",
+                        "surface-bright": "#f8f9fa",
+                        "surface-container": "#edeeef",
+                        "primary-container": "#0f6e56",
+                        "on-surface-variant": "#3f4944",
+                        "on-secondary-fixed": "#3a0b00",
+                        "on-tertiary-fixed": "#3b0804",
+                        "primary": "#005440",
+                        "tertiary": "#78352b",
+                        "on-secondary-fixed-variant": "#852400",
+                        "on-background": "#191c1d",
+                        "on-error": "#ffffff",
+                        "outline-variant": "#bec9c3",
+                        "on-primary-container": "#9aedcf",
+                        "secondary-container": "#fd7549",
+                        "on-error-container": "#93000a",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed": "#ffdad4",
+                        "secondary": "#a8380f",
+                        "surface": "#f8f9fa",
+                        "on-tertiary-container": "#ffd3cc",
+                        "background": "#f8f9fa",
+                        "on-surface": "#191c1d",
+                        "inverse-primary": "#84d6b9",
+                        "secondary-fixed": "#ffdbd0",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-primary-fixed-variant": "#00513e",
+                        "inverse-on-surface": "#f0f1f2",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-high": "#e7e8e9",
+                        "surface-container-low": "#f3f4f5",
+                        "inverse-surface": "#2e3132",
+                        "outline": "#6f7a74",
+                        "primary-fixed-dim": "#84d6b9",
+                        "tertiary-container": "#954c41"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "container-max": "1280px",
+                        "md": "16px",
+                        "gutter": "24px",
+                        "base": "4px",
+                        "sm": "12px",
+                        "xs": "8px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "h3": ["DM Sans"],
+                        "label-caps": ["Inter"],
+                        "button": ["Inter"],
+                        "display": ["DM Sans"],
+                        "body-sm": ["Inter"],
+                        "h2": ["DM Sans"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "h1": ["DM Sans"]
+                    },
+                    "fontSize": {
+                        "h3": ["20px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "button": ["16px", { "lineHeight": "1", "fontWeight": "600" }],
+                        "display": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "h2": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "h1": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased min-h-screen flex flex-col">
+
+<!-- TopNavBar -->
+<nav class="bg-surface dark:bg-on-background w-full sticky top-0 z-50 border-b border-outline-variant dark:border-on-surface-variant shadow-sm">
+<div class="flex justify-between items-center px-lg py-sm max-w-container-max mx-auto">
+<div class="flex items-center gap-xl">
+<a class="font-h2 text-h2 font-bold text-primary dark:text-primary-fixed-dim" th:href="@{/}">CharityHub</a>
+<div class="hidden md:flex items-center gap-lg">
+    <a class="font-body-md text-body-md text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-secondary pb-1" th:href="@{/}">Home</a>
+    <a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors pb-1" th:href="@{/actions}">Explore</a>
+    <a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors pb-1" th:href="@{/about}">About</a>
+    <a sec:authorize="hasRole('ROLE_ORG_ADMIN')" class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors pb-1 flex items-center gap-xs" th:href="@{/organisation/dashboard}">
+        <span class="material-symbols-outlined text-[18px]">dashboard_customize</span> Console
+    </a>
+</div>
+</div>
+<div class="flex items-center gap-md">
+    <!-- Language Toggle -->
+    <div class="flex gap-2 mr-4">
+        <a th:href="@{/(lang=fr)}" class="text-xs font-bold text-primary">FR</a>
+        <span class="text-xs text-outline">|</span>
+        <a th:href="@{/(lang=ar)}" class="text-xs font-bold text-primary">AR</a>
+    </div>
+
+    <div sec:authorize="!isAuthenticated()" class="flex items-center gap-sm">
+        <a th:href="@{/auth/login}" class="text-on-surface-variant hover:text-primary transition-colors">Login</a>
+        <a th:href="@{/auth/register}" class="bg-primary text-on-primary font-button text-button px-lg py-xs rounded-lg hover:bg-primary-container transition-colors shadow-sm">Get Started</a>
+    </div>
+    
+    <div sec:authorize="isAuthenticated()" class="flex items-center gap-sm">
+        <!-- Profile Link: Dashboard for Orgs, Profile for Users -->
+        <a sec:authorize="hasRole('ROLE_ORG_ADMIN')" th:href="@{/organisation/dashboard}" class="rounded-full overflow-hidden w-10 h-10 border border-outline-variant shadow-sm hover:ring-2 hover:ring-primary/20 transition-all">
+            <img alt="Org profile" class="w-full h-full object-cover" src="https://ui-avatars.com/api/?name=Org&background=005440&color=fff"/>
+        </a>
+        <a sec:authorize="!hasRole('ROLE_ORG_ADMIN')" th:href="@{/utilisateur/profil}" class="rounded-full overflow-hidden w-10 h-10 border border-outline-variant shadow-sm hover:ring-2 hover:ring-primary/20 transition-all">
+            <img alt="User profile" class="w-full h-full object-cover" src="https://ui-avatars.com/api/?name=User&background=005440&color=fff"/>
+        </a>
+        
+        <form th:action="@{/auth/logout}" method="post">
+            <button type="submit" class="text-on-surface-variant hover:text-error transition-colors">
+                <span class="material-symbols-outlined">logout</span>
+            </button>
+        </form>
+    </div>
+</div>
+</div>
+</nav>
+
+<main class="max-w-container-max mx-auto px-md md:px-[64px] py-xl space-y-[48px] w-full">
+<!-- Hero Section (Bento Style) -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-gutter min-h-[400px]">
+<div class="md:col-span-8 rounded-xl overflow-hidden relative group shadow-md">
+<div class="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-all z-10"></div>
+<img alt="Hero Image" class="w-full h-full object-cover absolute inset-0" src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070&auto=format&fit=crop"/>
+<div class="absolute inset-0 z-20 flex flex-col justify-end p-[32px] md:p-[48px]">
+<h1 class="font-display text-display text-white mb-sm drop-shadow-md">Make an Impact Today</h1>
+<p class="font-body-lg text-body-lg text-white/90 max-w-2xl mb-lg drop-shadow-sm">Join thousands of donors making a difference across the globe. Your contribution, big or small, creates lasting change.</p>
+<div class="flex gap-md">
+<a th:href="@{/actions}" class="bg-primary text-on-primary font-button text-button px-lg py-[12px] rounded-lg hover:bg-primary-container transition-colors shadow-sm w-fit no-underline">
+                            Explore Causes
+                        </a>
+<a th:href="@{/watch}" class="bg-white/10 backdrop-blur-md border border-white/30 text-white font-button text-button px-lg py-[12px] rounded-lg hover:bg-white/20 transition-colors w-fit no-underline">
+                            Watch Video
+                        </a>
+</div>
+</div>
+</div>
+
+<!-- Urgent Appeal Card -->
+<div th:if="${urgentAction != null}" class="md:col-span-4 bg-surface-container-low rounded-xl border border-outline-variant p-lg flex flex-col justify-between shadow-sm">
+<div>
+<h2 class="font-h3 text-h3 text-on-surface mb-xs">Urgent Appeal</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-md" th:text="${urgentAction.titre}">Emergency relief campaign...</p>
+<div class="space-y-xs mb-md" th:with="percentage=${urgentAction.montantObjectif != null && urgentAction.montantObjectif.compareTo(0) > 0 ? (urgentAction.montantActuel.multiply(100).divide(urgentAction.montantObjectif, 0, T(java.math.RoundingMode).HALF_UP)) : 0}">
+<div class="flex justify-between text-body-sm">
+<span class="text-on-surface-variant">Raised</span>
+<span class="font-medium text-on-surface"><span th:text="${urgentAction.montantActuel}"></span> / <span th:text="${urgentAction.montantObjectif}"></span> MAD</span>
+</div>
+<div class="w-full bg-surface-variant rounded-full h-[8px] overflow-hidden">
+<div class="bg-secondary h-full rounded-full transition-all duration-1000" th:style="'width: ' + ${percentage} + '%'"></div>
+</div>
+</div>
+</div>
+<div class="space-y-sm">
+    <div class="mb-lg">
+        <p class="font-label-caps text-label-caps text-on-surface-variant mb-sm uppercase">Sélectionner un montant</p>
+        <div class="grid grid-cols-3 gap-xs mb-xs">
+            <a th:href="@{/dons/initier/{id}(id=${urgentAction.id}, amount=100)}"
+                class="bg-[#F0F9F7] text-primary border border-primary-container font-button text-xs py-xs rounded-lg hover:bg-primary-container hover:text-on-primary-container transition-colors flex justify-center items-center no-underline">
+                100 MAD
+            </a>
+            <a th:href="@{/dons/initier/{id}(id=${urgentAction.id}, amount=250)}"
+                class="bg-primary text-on-primary border border-primary font-button text-xs py-xs rounded-lg transition-colors flex justify-center items-center no-underline shadow-sm">
+                250 MAD
+            </a>
+            <a th:href="@{/dons/initier/{id}(id=${urgentAction.id}, amount=500)}"
+                class="bg-[#F0F9F7] text-primary border border-primary-container font-button text-xs py-xs rounded-lg hover:bg-primary-container hover:text-on-primary-container transition-colors flex justify-center items-center no-underline">
+                500 MAD
+            </a>
+        </div>
+        <a th:href="@{/dons/initier/{id}(id=${urgentAction.id})}"
+            class="w-full bg-surface text-on-surface-variant border border-outline-variant font-button text-xs py-xs rounded-lg hover:bg-surface-variant transition-colors flex justify-center items-center no-underline">
+            Montant Personnalisé
+        </a>
+    </div>
+    
+    <div class="flex flex-col gap-sm">
+        <a th:href="@{/dons/initier/{id}(id=${urgentAction.id})}"
+            class="w-full bg-secondary text-on-secondary font-button text-button py-sm rounded-lg hover:bg-secondary-container transition-colors flex justify-center items-center font-bold no-underline">
+            Faire un Don Now
+        </a>
+        <form th:action="@{/participations/inscrire/{id}(id=${urgentAction.id})}" method="post" class="w-full">
+            <button type="submit"
+                class="w-full border-2 border-primary text-primary font-button text-button py-sm rounded-lg hover:bg-primary/5 transition-colors flex justify-center items-center font-bold">
+                Participer / S'inscrire
+            </button>
+        </form>
+        <button
+            class="w-full border border-outline-variant text-on-surface-variant font-body-sm py-sm rounded-lg hover:bg-surface-variant transition-colors flex justify-center items-center">
+            <span class="material-symbols-outlined mr-xs text-sm">share</span> Partager l'action
+        </button>
+    </div>
+</div>
+</div>
+</section>
+
+<!-- Global Impact Summary -->
+<section>
+<h2 class="font-h2 text-h2 text-on-surface mb-lg">Global Impact</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="bg-white rounded-[12px] border border-outline-variant p-[24px] hover:bg-surface-bright transition-colors group flex items-center gap-md shadow-sm">
+<div class="w-[48px] h-[48px] rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">volunteer_activism</span>
+</div>
+<div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Total Donated</p>
+<p class="font-h2 text-h2 text-on-surface" th:text="${totalDonated} + ' MAD'">$1,250</p>
+</div>
+</div>
+<div class="bg-white rounded-[12px] border border-outline-variant p-[24px] hover:bg-surface-bright transition-colors group flex items-center gap-md shadow-sm">
+<div class="w-[48px] h-[48px] rounded-full bg-secondary/10 flex items-center justify-center text-secondary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">public</span>
+</div>
+<div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Causes Supported</p>
+<p class="font-h2 text-h2 text-on-surface" th:text="${causesSupported}">5</p>
+</div>
+</div>
+<div class="bg-white rounded-[12px] border border-outline-variant p-[24px] hover:bg-surface-bright transition-colors group flex items-center gap-md shadow-sm">
+<div class="w-[48px] h-[48px] rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">group</span>
+</div>
+<div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Lives Touched (Est.)</p>
+<p class="font-h2 text-h2 text-on-surface" th:text="${livesTouched} + '+'">120+</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Featured Campaigns -->
+<section>
+<div class="flex justify-between items-end mb-lg">
+<h2 class="font-h2 text-h2 text-on-surface">Featured Campaigns</h2>
+<a class="font-button text-button text-primary hover:text-primary-container flex items-center gap-xs no-underline" th:href="@{/actions}">
+                    View All <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+    <!-- Action Cards -->
+    <th:block th:each="action : ${featuredActions}">
+        <div class="bg-white rounded-[12px] border border-outline-variant overflow-hidden hover:border-outline transition-colors flex flex-col shadow-sm">
+            <div class="h-[200px] relative">
+                <img th:if="${not #lists.isEmpty(action.medias)}" th:src="${action.medias[0].url}" alt="Campaign Image" class="w-full h-full object-cover"/>
+                <img th:if="${#lists.isEmpty(action.medias)}" src="https://placehold.co/400x200?text=Campaign" alt="Placeholder" class="w-full h-full object-cover"/>
+                <span class="absolute top-md right-md bg-white/90 backdrop-blur-sm text-on-surface font-label-caps px-sm py-xs rounded-full text-[10px]" th:text="${action.categorie.nom}">Category</span>
+            </div>
+            <div class="p-[24px] flex flex-col flex-grow">
+                <h3 class="font-h3 text-h3 text-on-surface mb-xs line-clamp-1" th:text="${action.titre}">Campaign Title</h3>
+                <p class="font-body-sm text-body-sm text-on-surface-variant mb-md line-clamp-2" th:text="${action.description}">Short description...</p>
+                <div class="mt-auto space-y-sm" th:with="percentage=${action.montantObjectif != null && action.montantObjectif.compareTo(0) > 0 ? (action.montantActuel.multiply(100).divide(action.montantObjectif, 0, T(java.math.RoundingMode).HALF_UP)) : 0}">
+                    <div class="w-full bg-surface-variant rounded-full h-[8px] overflow-hidden">
+                        <div class="bg-secondary h-full rounded-full" th:style="'width: ' + ${percentage} + '%'"></div>
+                    </div>
+                    <div class="flex justify-between text-body-sm">
+                        <span class="font-medium text-on-surface"><span th:text="${action.montantActuel}"></span> MAD</span>
+                        <span class="text-on-surface-variant" th:text="${percentage} + '%'">75%</span>
+                    </div>
+                    <a th:href="@{/actions/{id}(id=${action.id})}" class="block mt-4 text-center bg-primary/5 text-primary font-button text-xs py-2 rounded hover:bg-primary/10 transition-colors no-underline">
+                        View Details
+                    </a>
+                </div>
+            </div>
+        </div>
+    </th:block>
+</div>
+</section>
+</main>
+
+<footer class="mt-auto border-t border-outline-variant bg-surface-container-lowest py-lg">
+    <div class="max-w-container-max mx-auto px-md text-center text-on-surface-variant font-body-sm">
+        <p>&copy; 2026 CharityHub. All rights reserved.</p>
+    </div>
+</footer>
+
+</body>
+</html>

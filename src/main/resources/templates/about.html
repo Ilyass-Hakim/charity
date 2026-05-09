@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html class="light" lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>About Us - CharityHub</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&amp;family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#0f6e56",
+                        "error-container": "#ffdad6",
+                        "tertiary-container": "#954c41",
+                        "on-secondary-fixed-variant": "#852400",
+                        "secondary-fixed-dim": "#ffb59e",
+                        "background": "#f8f9fa",
+                        "on-secondary-fixed": "#3a0b00",
+                        "on-tertiary-container": "#ffd3cc",
+                        "on-error": "#ffffff",
+                        "surface-bright": "#f8f9fa",
+                        "tertiary-fixed": "#ffdad4",
+                        "on-surface-variant": "#3f4944",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb4a8",
+                        "on-surface": "#191c1d",
+                        "on-secondary-container": "#661a00",
+                        "primary": "#005440",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#00513e",
+                        "secondary": "#a8380f",
+                        "surface-tint": "#086b53",
+                        "surface-container-low": "#f3f4f5",
+                        "inverse-surface": "#2e3132",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-container": "#fd7549",
+                        "on-background": "#191c1d",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#e1e3e4",
+                        "inverse-primary": "#84d6b9",
+                        "outline": "#6f7a74",
+                        "primary-fixed": "#a0f3d4",
+                        "inverse-on-surface": "#f0f1f2",
+                        "on-tertiary-fixed-variant": "#743329",
+                        "on-error-container": "#93000a",
+                        "surface-container-high": "#e7e8e9",
+                        "surface": "#f8f9fa",
+                        "on-primary-fixed": "#002117",
+                        "on-tertiary-fixed": "#3b0804",
+                        "primary-fixed-dim": "#84d6b9",
+                        "outline-variant": "#bec9c3",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#78352b",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-primary-container": "#9aedcf",
+                        "surface-container": "#edeeef",
+                        "secondary-fixed": "#ffdbd0",
+                        "surface-dim": "#d9dadb"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "container-max": "1280px",
+                        "gutter": "24px",
+                        "xs": "8px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "sm": "12px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "h2": ["DM Sans"],
+                        "body-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "h1": ["DM Sans"],
+                        "h3": ["DM Sans"],
+                        "button": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "display": ["DM Sans"],
+                        "label-caps": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h2": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "h1": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "h3": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "button": ["16px", {"lineHeight": "1", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
+
+<!-- TopNavBar -->
+<nav class="bg-surface dark:bg-on-background w-full sticky top-0 z-50 border-b border-outline-variant dark:border-on-surface-variant shadow-sm">
+    <div class="flex justify-between items-center px-lg py-sm max-w-container-max mx-auto h-16">
+        <div class="flex items-center gap-xl">
+            <a class="font-h2 text-h2 font-bold text-primary dark:text-primary-fixed-dim no-underline" th:href="@{/}">CharityHub</a>
+            <div class="hidden md:flex items-center gap-lg">
+                <a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors pb-1 no-underline" th:href="@{/}">Home</a>
+                <a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors pb-1 no-underline" th:href="@{/actions}">Explore</a>
+                <a class="font-body-md text-body-md text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-secondary pb-1 no-underline" th:href="@{/about}">About</a>
+                <a sec:authorize="hasRole('ROLE_ORG_ADMIN')" class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors pb-1 flex items-center gap-xs no-underline" th:href="@{/organisation/dashboard}">
+                    <span class="material-symbols-outlined text-[18px]">dashboard_customize</span> Console
+                </a>
+            </div>
+        </div>
+        <div class="flex items-center gap-md">
+            <!-- Language Toggle -->
+            <div class="flex gap-2 mr-4">
+                <a th:href="@{/(lang=fr)}" class="text-xs font-bold text-primary no-underline">FR</a>
+                <span class="text-xs text-outline">|</span>
+                <a th:href="@{/(lang=ar)}" class="text-xs font-bold text-primary no-underline">AR</a>
+            </div>
+
+            <div sec:authorize="!isAuthenticated()" class="flex items-center gap-sm">
+                <a th:href="@{/auth/login}" class="text-on-surface-variant hover:text-primary transition-colors no-underline">Login</a>
+                <a th:href="@{/auth/register}" class="bg-primary text-on-primary font-button text-button px-lg py-xs rounded-lg hover:bg-primary-container transition-colors shadow-sm no-underline">Get Started</a>
+            </div>
+            
+            <div sec:authorize="isAuthenticated()" class="flex items-center gap-sm">
+                <a sec:authorize="hasRole('ROLE_ORG_ADMIN')" th:href="@{/organisation/dashboard}" class="rounded-full overflow-hidden w-10 h-10 border border-outline-variant shadow-sm hover:ring-2 hover:ring-primary/20 transition-all">
+                    <img alt="Org profile" class="w-full h-full object-cover" src="https://ui-avatars.com/api/?name=Org&background=005440&color=fff"/>
+                </a>
+                <a sec:authorize="!hasRole('ROLE_ORG_ADMIN')" th:href="@{/utilisateur/profil}" class="rounded-full overflow-hidden w-10 h-10 border border-outline-variant shadow-sm hover:ring-2 hover:ring-primary/20 transition-all">
+                    <img alt="User profile" class="w-full h-full object-cover" src="https://ui-avatars.com/api/?name=User&background=005440&color=fff"/>
+                </a>
+                <form th:action="@{/auth/logout}" method="post">
+                    <button type="submit" class="p-base rounded-full hover:bg-surface-variant transition-colors text-on-surface-variant">
+                        <span class="material-symbols-outlined">logout</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<main>
+<!-- Hero Section -->
+<section class="relative bg-primary overflow-hidden py-32 px-md">
+<div class="absolute inset-0 opacity-20">
+<img class="w-full h-full object-cover" data-alt="A cinematic, wide-angle shot of diverse community hands coming together over a world map, softly lit by golden hour sunlight. The atmosphere is warm, hopeful, and inclusive, echoing the Deep Teal and Warm Coral tones of the CharityHub brand. The lighting is high-key with soft bokeh in the background to emphasize human connection and global reach." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2RN3H0FAbThy8twdNO56O_QZ6QElRhy4qLhZf1sjMFjWDttCXSgXCq5gtJRAlzc2FL5cov27nD2zSB_WmVWvgau7FFK_yOTItG1yL44sZtz667xC5K9IoLTwGalVo1OAS3K9TXgdRKH65y_1bWZjj9F35O2-SzqsxRCkvjvRt95vXRIjKB6tEOaZKH5SKY2tFMY433ZiSRvvTUZhbUewMclxx-gh3fs8ZFLLH0DI_87HKYfQDNrfvrSWHlvLU96uKWBLTfTlqcw"/>
+</div>
+<div class="relative max-w-container-max mx-auto text-center z-10">
+<h1 class="font-display text-display text-on-primary mb-md max-w-4xl mx-auto">Empowering global change through transparent giving.</h1>
+<p class="font-body-lg text-body-lg text-primary-fixed mb-xl max-w-2xl mx-auto">We bridge the gap between compassionate donors and verified global causes, ensuring every cent creates a measurable impact.</p>
+<div class="flex flex-col sm:flex-row justify-center gap-md">
+<button class="px-xl py-md font-button text-button rounded-lg bg-secondary-container text-on-secondary-container hover:bg-secondary transition-all shadow-lg">Our Story</button>
+<button class="px-xl py-md font-button text-button rounded-lg border-2 border-on-primary text-on-primary hover:bg-on-primary hover:text-primary transition-all">View Our Impact</button>
+</div>
+</div>
+</section>
+<!-- Our Story Section -->
+<section class="py-xl px-md max-w-container-max mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-xl items-center">
+<div class="order-2 md:order-1">
+<span class="font-label-caps text-label-caps text-secondary mb-xs block">OUR STORY</span>
+<h2 class="font-h1 text-h1 text-on-surface mb-md">From a Local Vision to Global Transparency</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">CharityHub started in a small community center with a single question: "Where does my money actually go?" We realized that trust is the most valuable currency in philanthropy. Since then, we've built a platform that combines cutting-edge tracking technology with grassroots empathy.</p>
+<p class="font-body-md text-body-md text-on-surface-variant">Today, we support thousands of vetted organizations, providing donors with real-time updates and data-driven impact reports. Our mission remains the same: to make giving as clear as it is compassionate.</p>
+</div>
+<div class="order-1 md:order-2">
+<div class="rounded-xl overflow-hidden border border-outline-variant bg-white">
+<img class="w-full h-64 md:h-96 object-cover" data-alt="A high-quality photograph of a collaborative team of diverse professionals in a modern, sunlit office environment working on data-driven charts for a social cause. The lighting is crisp and natural, highlighting a Deep Teal accent wall and modern wooden furniture. The mood is focused yet optimistic, reflecting professional transparency and community-driven technology." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlg6QhMUC6wmSdvKChviJ47pMrTxYqjSuFMCZyUgeSW5c5Il4QT_We_pNXveiSARB-XudauWDhV51Fu-e1YGUlgw7d7owmHLHaGS9Tcl4PNx7azhUN2EcqyMb_TEmJib9Lx-BN-AvKt7RdXFuXktFSInujFGzimHOicruMO4cQFuIkS2kKexwf3yCbm9vQkSAmteLnmn_JtKzhpP9roh2qOz5fp00njN2zqCwu-MAundCeO0FLMgbY-1MK-mRh1FaST-2I3MHdXA"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Impact Statistics Bento Grid -->
+<section class="bg-surface-container-low py-xl px-md">
+<div class="max-w-container-max mx-auto">
+<div class="text-center mb-xl">
+<h2 class="font-h1 text-h1 text-on-surface">Measurable Milestones</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Real numbers from real people making a difference.</p>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-md">
+<div class="bg-white p-lg rounded-xl border border-outline-variant text-center">
+<div class="font-display text-h1 text-primary mb-xs">4.2M+</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant">Lives Touched</div>
+</div>
+<div class="bg-white p-lg rounded-xl border border-outline-variant text-center">
+<div class="font-display text-h1 text-secondary mb-xs">114</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant">Countries Reached</div>
+</div>
+<div class="bg-white p-lg rounded-xl border border-outline-variant text-center">
+<div class="font-display text-h1 text-primary mb-xs">$85M</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant">Funds Distributed</div>
+</div>
+<div class="bg-white p-lg rounded-xl border border-outline-variant text-center">
+<div class="font-display text-h1 text-secondary mb-xs">12k+</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant">Verified Partners</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Core Values Section -->
+<section class="py-xl px-md max-w-container-max mx-auto">
+<div class="text-center mb-xl">
+<h2 class="font-h1 text-h1 text-on-surface">Our Core Values</h2>
+<div class="w-24 h-1 bg-secondary mx-auto mt-md rounded-full"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<!-- Transparency Card -->
+<div class="bg-white p-lg rounded-xl border border-outline-variant hover:border-primary transition-colors flex flex-col items-center text-center">
+<div class="w-16 h-16 bg-primary-fixed rounded-full flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-primary text-3xl">visibility</span>
+</div>
+<h3 class="font-h3 text-h3 text-on-surface mb-sm">Transparency</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">We provide open-ledger reporting so you know exactly where your contributions are being deployed in real-time.</p>
+</div>
+<!-- Community Card -->
+<div class="bg-white p-lg rounded-xl border border-outline-variant hover:border-primary transition-colors flex flex-col items-center text-center">
+<div class="w-16 h-16 bg-primary-fixed rounded-full flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-primary text-3xl">groups</span>
+</div>
+<h3 class="font-h3 text-h3 text-on-surface mb-sm">Community</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Change happens together. We foster a global ecosystem of donors, volunteers, and local activists.</p>
+</div>
+<!-- Accountability Card -->
+<div class="bg-white p-lg rounded-xl border border-outline-variant hover:border-primary transition-colors flex flex-col items-center text-center">
+<div class="w-16 h-16 bg-primary-fixed rounded-full flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-primary text-3xl">verified</span>
+</div>
+<h3 class="font-h3 text-h3 text-on-surface mb-sm">Accountability</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">We strictly vet every organization and project to ensure ethical standards and sustainable long-term outcomes.</p>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="py-xl px-md bg-white">
+<div class="max-w-4xl mx-auto bg-primary-container rounded-2xl p-xl text-center relative overflow-hidden">
+<!-- Abstract visual elements -->
+<div class="absolute top-0 left-0 w-32 h-32 bg-secondary opacity-20 rounded-full -translate-x-16 -translate-y-16"></div>
+<div class="absolute bottom-0 right-0 w-48 h-48 bg-secondary opacity-10 rounded-full translate-x-16 translate-y-16"></div>
+<div class="relative z-10">
+<h2 class="font-h1 text-h1 text-on-primary mb-md">Ready to make an impact?</h2>
+<p class="font-body-lg text-body-lg text-primary-fixed mb-xl">Join our mission and start your journey of transparent giving today. Create your account and discover causes that matter to you.</p>
+<div class="flex flex-col sm:flex-row justify-center gap-md">
+<a th:href="@{/auth/register}" class="px-xl py-md font-button text-button rounded-lg bg-secondary-container text-on-secondary-container hover:bg-secondary transition-all shadow-lg no-underline">Join our mission</a>
+<a th:href="@{/auth/login}" class="px-xl py-md bg-transparent border border-on-primary text-on-primary hover:bg-white hover:text-primary transition-all no-underline">Sign in</a>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-on-background text-surface py-xl px-md mt-auto">
+<div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-4 gap-xl">
+<div class="col-span-1 md:col-span-1">
+<span class="font-h2 text-h2 font-bold text-primary-fixed-dim mb-md block">CharityHub</span>
+<p class="font-body-sm text-body-sm text-surface-variant opacity-80">Empowering human-first giving experiences through technology and transparency since 2021.</p>
+</div>
+<div>
+<h4 class="font-h3 text-h3 mb-md">Quick Links</h4>
+<ul class="space-y-sm font-body-sm text-surface-variant no-underline list-none p-0">
+<li><a class="hover:text-primary-fixed transition-colors no-underline" th:href="@{/actions}">Find a Campaign</a></li>
+<li><a class="hover:text-primary-fixed transition-colors no-underline" href="#">Start a Fundraiser</a></li>
+<li><a class="hover:text-primary-fixed transition-colors no-underline" href="#">Impact Reports</a></li>
+<li><a class="hover:text-primary-fixed transition-colors no-underline" href="#">Transparency Ledger</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-h3 text-h3 mb-md">Support</h4>
+<ul class="space-y-sm font-body-sm text-surface-variant no-underline list-none p-0">
+<li><a class="hover:text-primary-fixed transition-colors no-underline" href="#">Help Center</a></li>
+<li><a class="hover:text-primary-fixed transition-colors no-underline" href="#">Contact Us</a></li>
+<li><a class="hover:text-primary-fixed transition-colors no-underline" href="#">Security</a></li>
+<li><a class="hover:text-primary-fixed transition-colors no-underline" href="#">Privacy Policy</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-h3 text-h3 mb-md">Newsletter</h4>
+<p class="font-body-sm text-body-sm text-surface-variant mb-md">Get impact stories delivered to your inbox.</p>
+<div class="flex gap-xs">
+<input class="bg-inverse-surface border-none rounded-lg px-md py-xs text-on-primary w-full focus:ring-2 focus:ring-primary outline-none" placeholder="Email address" type="email"/>
+<button class="bg-primary text-on-primary px-md py-xs rounded-lg hover:bg-primary-container transition-all">Join</button>
+</div>
+</div>
+</div>
+<div class="max-w-container-max mx-auto border-t border-outline-variant mt-xl pt-lg flex flex-col md:flex-row justify-between items-center gap-md">
+<p class="font-label-caps text-label-caps text-surface-variant">© 2024 CharityHub. All rights reserved.</p>
+<div class="flex gap-lg text-surface-variant">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed">public</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed">share</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed">star</span>
+</div>
+</div>
+</footer>
+</body></html>

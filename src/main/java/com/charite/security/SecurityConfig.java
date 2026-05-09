@@ -26,14 +26,15 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(auth -> auth
                 // Pages publiques
-                .requestMatchers("/", "/explore", "/actions/**").permitAll()
+                .requestMatchers("/", "/explore", "/about").permitAll()
+                .requestMatchers(org.springframework.http.HttpMethod.GET, "/actions", "/actions/{id}").permitAll()
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                 .requestMatchers("/webjars/**").permitAll()
                 // Pages admin uniquement
                 .requestMatchers("/admin/**").hasRole("SUPER_ADMIN")
-                // Pages organisation
-                .requestMatchers("/organisation/dashboard/**").hasAnyRole("ORG_ADMIN", "SUPER_ADMIN")
+                // Pages organisation (creer action et dashboard)
+                .requestMatchers("/organisation/**", "/actions/creer", "/actions/*/archiver").hasAnyRole("ORG_ADMIN", "SUPER_ADMIN")
                 // Toutes les autres pages necessitent une connexion
                 .anyRequest().authenticated()
             )
@@ -51,7 +52,7 @@ public class SecurityConfig {
             )
             .logout(logout -> logout
                 .logoutUrl("/auth/logout")
-                .logoutSuccessUrl("/")
+                .logoutSuccessUrl("/auth/login?logout=true")
                 .deleteCookies("JSESSIONID")
             )
             .sessionManagement(session -> session

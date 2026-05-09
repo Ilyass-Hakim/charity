@@ -40,16 +40,19 @@ public class OrganisationService {
         Utilisateur admin = userRepository.findByEmail(emailAdmin)
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouve"));
 
-        Role adminRole = roleRepository.findByNom("ROLE_ORG_ADMIN")
-                .orElseThrow(() -> new RuntimeException("Role ROLE_ORG_ADMIN non trouve"));
-        
-        admin.setRole(adminRole);
+        // Ne PAS attribuer le role ORG_ADMIN ici. L'utilisateur reste ROLE_USER
+        // jusqu'a ce que le Super Administrateur approuve l'organisation.
 
         MembreOrganisation membre = MembreOrganisation.builder()
                 .utilisateur(admin)
                 .organisation(savedOrg)
+                .role("ADMIN")
+                .statutMembre("ACTIF")
                 .build();
                 
+        if (admin.getMemberships() == null) {
+            admin.setMemberships(new java.util.ArrayList<>());
+        }
         admin.getMemberships().add(membre);
 
         userRepository.save(admin);
@@ -61,13 +64,31 @@ public class OrganisationService {
         Organisation org = organisationRepository.findById(orgId)
                 .orElseThrow(() -> new RuntimeException("Organisation non trouvee"));
 
-        org.setStatutOrganisation(approuver
-                ? StatutOrganisation.APPROUVEE.name()
-                : StatutOrganisation.REJETEE.name());
+        if (approuver) {
+            org.setStatutOrganisation(StatutOrganisation.APPROUVEE.name());
+            
+            // Si l'organisation est approuvee, on evalue l'utilisateur responsable pour lui donner les droits ORG_ADMIN
+            if (org.getMembres() != null && !org.getMembres().isEmpty()) {
+                Utilisateur admin = org.getMembres().get(0).getUtilisateur();
+                Role orgAdminRole = roleRepository.findByNom("ROLE_ORG_ADMIN")
+                        .orElseThrow(() -> new RuntimeException("Role ROLE_ORG_ADMIN non trouve"));
+                admin.setRole(orgAdminRole);
+                admin.setActif(true); // Activer l'utilisateur orga
+                userRepository.save(admin);
+            }
+        } else {
+            org.setStatutOrganisation(StatutOrganisation.REJETEE.name());
+        }
 
         organisationRepository.save(org);
 
-        emailService.envoyerEmailValidation(org.getEmailContact(),
-                org.getNom(), approuver);
+        try {
+            emailService.envoyerEmailValidation(org.getEmailContact(), org.getNom(), approuver);
+        } catch (Exception e) {
+            System.err.println("Erreur email: " + e.getMessage());
+        }
+    }
+    public Organisation enregistrer(Organisation org) {
+        return organisationRepository.save(org);
     }
 }

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Mon Profil - CharityHub</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#d9dadb",
+                        "primary-fixed": "#a0f3d4",
+                        "on-secondary-container": "#661a00",
+                        "surface-variant": "#e1e3e4",
+                        "primary-container": "#0f6e56",
+                        "error": "#ba1a1a",
+                        "surface": "#f8f9fa",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-container": "#ffd3cc",
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "primary": "#005440",
+                        "on-primary-fixed-variant": "#00513e",
+                        "surface-container-highest": "#e1e3e4",
+                        "outline-variant": "#bec9c3",
+                        "tertiary-fixed": "#ffdad4",
+                        "on-tertiary-fixed-variant": "#743329",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#954c41",
+                        "primary-fixed-dim": "#84d6b9",
+                        "on-background": "#191c1d",
+                        "inverse-surface": "#2e3132",
+                        "on-secondary-fixed": "#3a0b00",
+                        "on-primary-container": "#9aedcf",
+                        "tertiary": "#78352b",
+                        "surface-bright": "#f8f9fa",
+                        "secondary-fixed-dim": "#ffb59e",
+                        "secondary": "#a8380f",
+                        "outline": "#6f7a74",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#84d6b9",
+                        "secondary-container": "#fd7549",
+                        "on-secondary-fixed-variant": "#852400",
+                        "inverse-on-surface": "#f0f1f2",
+                        "tertiary-fixed-dim": "#ffb4a8",
+                        "surface-container-high": "#e7e8e9",
+                        "background": "#f8f9fa",
+                        "on-primary-fixed": "#002117",
+                        "on-surface-variant": "#3f4944",
+                        "surface-tint": "#086b53",
+                        "surface-container": "#edeeef",
+                        "on-surface": "#191c1d",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f3f4f5",
+                        "on-tertiary-fixed": "#3b0804",
+                        "on-error": "#ffffff",
+                        "secondary-fixed": "#ffdbd0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "base": "4px",
+                        "sm": "12px",
+                        "gutter": "24px",
+                        "xl": "32px",
+                        "xs": "8px",
+                        "md": "16px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "h2": ["DM Sans"],
+                        "body-sm": ["Inter"],
+                        "button": ["Inter"],
+                        "h3": ["DM Sans"],
+                        "display": ["DM Sans"],
+                        "body-lg": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "h1": ["DM Sans"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h2": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "button": ["16px", {"lineHeight": "1", "fontWeight": "600"}],
+                        "h3": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "h1": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'DM Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col">
+
+<!-- TopNavBar -->
+<header class="bg-surface sticky top-0 z-50 border-b border-outline-variant w-full">
+    <div class="flex justify-between items-center px-lg py-sm max-w-container-max mx-auto">
+        <div class="flex items-center gap-xl">
+            <a th:href="@{/}" class="font-h2 text-h2 font-bold text-primary no-underline">CharityHub</a>
+            <nav class="hidden md:flex gap-lg items-center">
+                <a class="text-on-surface-variant font-body-md hover:text-primary transition-colors cursor-pointer no-underline" th:href="@{/}">Home</a>
+                <a class="text-on-surface-variant font-body-md hover:text-primary transition-colors cursor-pointer no-underline" th:href="@{/actions}">Explore</a>
+                <a class="text-on-surface-variant font-body-md hover:text-primary transition-colors cursor-pointer no-underline" th:href="@{/about}">About</a>
+            </nav>
+        </div>
+        <div class="flex items-center gap-md">
+            <!-- Language Toggle -->
+            <div class="flex gap-2 mr-4">
+                <a th:href="@{/(lang=fr)}" class="text-xs font-bold text-primary no-underline">FR</a>
+                <span class="text-xs text-outline">|</span>
+                <a th:href="@{/(lang=ar)}" class="text-xs font-bold text-primary no-underline">AR</a>
+            </div>
+            
+            <div sec:authorize="isAuthenticated()" class="flex items-center gap-sm text-on-surface-variant">
+                <span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">notifications</span>
+                <a th:href="@{/utilisateur/profil}" class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant cursor-pointer active:scale-95 transition-transform">
+                    <img alt="User profile" class="w-full h-full object-cover" th:src="'https://ui-avatars.com/api/?name=' + ${utilisateur.prenom} + '+' + ${utilisateur.nom} + '&background=005440&color=fff'"/>
+                </a>
+                <form th:action="@{/auth/logout}" method="post" class="flex items-center">
+                    <button type="submit" class="p-base rounded-full hover:bg-surface-variant transition-colors text-on-surface-variant">
+                        <span class="material-symbols-outlined">logout</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main class="flex-grow p-lg md:p-xl">
+    <div class="max-w-6xl mx-auto">
+        <header class="mb-xl">
+            <h1 class="text-h1 font-h1 text-on-background">Gestion de mon Profil</h1>
+            <p class="text-body-md text-on-surface-variant">Gérez votre profil et suivez l'historique de vos généreuses contributions.</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
+            <!-- Left Section: Mon Profil -->
+            <section class="lg:col-span-4 flex flex-col gap-lg">
+                <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg flex flex-col items-center text-center">
+                    <div class="mb-md relative">
+                        <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-surface-container-high">
+                            <img alt="Profile" class="w-full h-full object-cover" th:src="'https://ui-avatars.com/api/?name=' + ${utilisateur.prenom} + '+' + ${utilisateur.nom} + '&size=128&background=005440&color=fff'"/>
+                        </div>
+                        <button class="absolute bottom-0 right-0 p-xs bg-primary text-on-primary rounded-full shadow-lg cursor-pointer active:scale-95 transition-transform">
+                            <span class="material-symbols-outlined text-[20px]">photo_camera</span>
+                        </button>
+                    </div>
+                    <div class="space-y-base mb-lg w-full">
+                        <h2 class="text-h2 font-h2 text-on-surface" th:text="${utilisateur.prenom + ' ' + utilisateur.nom}">Nom Prénom</h2>
+                        <p class="text-body-sm text-on-surface-variant">Donateur depuis 2024</p>
+                    </div>
+                    <div class="w-full space-y-md border-t border-outline-variant pt-lg text-left">
+                        <div class="flex items-center gap-sm">
+                            <span class="material-symbols-outlined text-primary">mail</span>
+                            <div class="flex flex-col">
+                                <span class="text-label-caps text-on-surface-variant uppercase opacity-70">Email</span>
+                                <span class="text-body-md font-medium" th:text="${utilisateur.email}">email@test.com</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-sm">
+                            <span class="material-symbols-outlined text-primary">call</span>
+                            <div class="flex flex-col">
+                                <span class="text-label-caps text-on-surface-variant uppercase opacity-70">Téléphone</span>
+                                <span class="text-body-md font-medium" th:text="${utilisateur.telephone != null ? utilisateur.telephone : '+212...'}">+212611111111</span>
+                            </div>
+                        </div>
+                    </div>
+                    <a th:href="@{/utilisateur/profil/modifier}" class="mt-xl w-full py-sm px-md border border-primary text-primary font-button rounded-lg hover:bg-primary-fixed transition-colors active:scale-95 cursor-pointer no-underline text-center">
+                        Modifier mon profil
+                    </a>
+                </div>
+
+                <!-- Donation Summary Stats -->
+                <div class="bg-primary-container text-on-primary-container rounded-xl p-lg flex flex-col gap-md">
+                    <h3 class="text-h3 font-h3">Votre Impact</h3>
+                    <div class="grid grid-cols-2 gap-md">
+                        <div class="flex flex-col">
+                            <span class="text-display leading-none" th:text="${totalActions}">0</span>
+                            <span class="text-label-caps uppercase opacity-80">Actions</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-display leading-none" th:text="${totalMAD}">0</span>
+                            <span class="text-label-caps uppercase opacity-80">MAD Total</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Section: Historique -->
+            <section class="lg:col-span-8">
+                <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
+                    <div class="p-lg border-b border-outline-variant flex justify-between items-center bg-surface-container-low/50">
+                        <h2 class="text-h2 font-h2 text-on-surface">Historique de mes Contributions</h2>
+                        <button class="flex items-center gap-xs text-primary font-button text-body-sm hover:underline cursor-pointer">
+                            <span class="material-symbols-outlined text-[18px]">filter_list</span>
+                            Filtrer
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse">
+                            <thead>
+                                <tr class="bg-surface-container-low">
+                                    <th class="text-left px-lg py-md text-label-caps text-on-surface-variant uppercase tracking-wider">Date</th>
+                                    <th class="text-left px-lg py-md text-label-caps text-on-surface-variant uppercase tracking-wider">Action Charité</th>
+                                    <th class="text-right px-lg py-md text-label-caps text-on-surface-variant uppercase tracking-wider">Montant (MAD)</th>
+                                    <th class="text-center px-lg py-md text-label-caps text-on-surface-variant uppercase tracking-wider">Statut</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-outline-variant">
+                                <tr th:each="contrib : ${contributions}" class="hover:bg-surface-container transition-colors">
+                                    <td class="px-lg py-lg text-body-md text-on-surface-variant" th:text="${#temporals.format(contrib.date, 'dd MMM yyyy')}">Date</td>
+                                    <td class="px-lg py-lg">
+                                        <div class="flex flex-col">
+                                            <span class="text-body-md font-semibold text-on-surface" th:text="${contrib.actionCharite.titre}">Action Title</span>
+                                            <span class="text-body-sm text-on-surface-variant" th:text="${contrib.actionCharite.categorie.nom}">Category</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-lg py-lg text-right text-body-md font-bold text-primary">
+                                        <span th:if="${contrib.class.name.contains('Don')}" th:text="${contrib.montant} + ' MAD'">0 MAD</span>
+                                        <span th:if="${contrib.class.name.contains('Participation')}" class="text-secondary">Bénévolat</span>
+                                    </td>
+                                    <td class="px-lg py-lg text-center">
+                                        <span class="inline-flex items-center px-sm py-base rounded-full bg-[#E6F4EA] text-[#137333] text-label-caps font-bold">
+                                            Complété
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr th:if="${contributions.empty}">
+                                    <td colspan="4" class="px-lg py-12 text-center text-on-surface-variant">Aucune contribution trouvée.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="p-lg bg-surface-container-low/30 border-t border-outline-variant flex justify-between items-center">
+                        <span class="text-body-sm text-on-surface-variant" th:text="'Affichage de ' + ${contributions.size()} + ' contributions'">Stats</span>
+                        <div class="flex gap-xs">
+                            <button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-variant transition-colors">
+                                <span class="material-symbols-outlined text-[18px]">chevron_left</span>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center rounded bg-primary text-on-primary text-body-sm font-bold">1</button>
+                            <button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-variant transition-colors">
+                                <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</main>
+
+<footer class="bg-on-background text-surface py-lg px-md mt-auto">
+    <div class="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-md">
+        <p class="font-label-caps text-label-caps text-surface-variant">© 2024 CharityHub. Tous droits réservés.</p>
+    </div>
+</footer>
+
+</body>
+</html>

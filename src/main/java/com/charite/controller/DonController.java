@@ -24,11 +24,14 @@ public class DonController {
     private final DonService donService;
     private final ActionService actionService;
 
+    @org.springframework.beans.factory.annotation.Value("${stripe.publishable.key}")
+    private String stripePublicKey;
+
     // Affiche le formulaire de don
     @GetMapping("/initier/{actionId}")
     public String formulaireDon(@PathVariable Long actionId, Model model) {
         model.addAttribute("action", actionService.findById(actionId));
-        model.addAttribute("stripePublicKey", "${stripe.publishable.key}");
+        model.addAttribute("stripePublicKey", stripePublicKey);
         return "dons/formulaire";
     }
 
@@ -46,9 +49,10 @@ public class DonController {
     public String confirmerDon(@RequestParam String paymentIntentId,
                                @RequestParam Long actionId,
                                @RequestParam BigDecimal montant,
-                               @AuthenticationPrincipal UserDetails userDetails) {
+                               org.springframework.security.core.Authentication authentication) {
         if (stripeService.confirmerPaiement(paymentIntentId)) {
-            donService.enregistrerDon(actionId, userDetails.getUsername(),
+            String email = com.charite.security.SecurityUtils.getEmail(authentication);
+            donService.enregistrerDon(actionId, email,
                     montant, paymentIntentId);
             return "redirect:/actions/" + actionId + "?don=succes";
         }

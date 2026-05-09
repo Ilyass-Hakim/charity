@@ -48,21 +48,27 @@ public class ActionController {
     }
 
     @GetMapping("/creer")
-    public String creerForm(Model model) {
+    public String creerForm(org.springframework.security.core.Authentication authentication, Model model) {
+        String email = com.charite.security.SecurityUtils.getEmail(authentication);
+        Utilisateur u = utilisateurService.getByEmail(email);
+        if (u.getMemberships() != null && !u.getMemberships().isEmpty()) {
+            model.addAttribute("organisation", u.getMemberships().get(0).getOrganisation());
+        }
         model.addAttribute("dto", new ActionDto());
         model.addAttribute("categories", categorieRepository.findAll());
         return "actions/formulaire";
     }
 
     @PostMapping("/creer")
-    public String creer(@AuthenticationPrincipal UserDetails principal,
+    public String creer(org.springframework.security.core.Authentication authentication,
                         @Valid @ModelAttribute("dto") ActionDto dto,
                         @RequestParam(required = false) List<MultipartFile> medias,
                         BindingResult result, RedirectAttributes ra) {
         if (result.hasErrors()) return "actions/formulaire";
         
-        Utilisateur u = utilisateurService.getByEmail(principal.getUsername());
-        if (u.getMemberships().isEmpty()) {
+        String email = com.charite.security.SecurityUtils.getEmail(authentication);
+        Utilisateur u = utilisateurService.getByEmail(email);
+        if (u.getMemberships() == null || u.getMemberships().isEmpty()) {
             throw new RuntimeException("Aucune organisation associee");
         }
         
@@ -70,7 +76,9 @@ public class ActionController {
         ActionCharite action = actionService.creer(dto, orgId);
         
         if (medias != null) {
-            medias.forEach(f -> mediaService.sauvegarder(f, action));
+            medias.stream()
+                  .filter(f -> !f.isEmpty())
+                  .forEach(f -> mediaService.sauvegarder(f, action));
         }
         
         ra.addFlashAttribute("success", "Action creee.");

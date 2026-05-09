@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html class="light" lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Dashboard Admin - CharityHub</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#00513e",
+                        "outline": "#6f7a74",
+                        "on-tertiary-fixed-variant": "#743329",
+                        "primary-fixed": "#a0f3d4",
+                        "on-secondary-container": "#661a00",
+                        "on-tertiary-container": "#ffd3cc",
+                        "tertiary-container": "#954c41",
+                        "on-tertiary-fixed": "#3b0804",
+                        "background": "#f8f9fa",
+                        "error": "#ba1a1a",
+                        "tertiary": "#78352b",
+                        "secondary-fixed-dim": "#ffb59e",
+                        "on-secondary-fixed-variant": "#852400",
+                        "outline-variant": "#bec9c3",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-high": "#e7e8e9",
+                        "surface-variant": "#e1e3e4",
+                        "surface": "#f8f9fa",
+                        "surface-container-highest": "#e1e3e4",
+                        "surface-dim": "#d9dadb",
+                        "surface-container": "#edeeef",
+                        "on-primary-fixed": "#002117",
+                        "on-error-container": "#93000a",
+                        "primary-container": "#0f6e56",
+                        "inverse-on-surface": "#f0f1f2",
+                        "primary": "#005440",
+                        "on-surface": "#191c1d",
+                        "surface-bright": "#f8f9fa",
+                        "on-secondary-fixed": "#3a0b00",
+                        "primary-fixed-dim": "#84d6b9",
+                        "on-error": "#ffffff",
+                        "inverse-surface": "#2e3132",
+                        "surface-tint": "#086b53",
+                        "tertiary-fixed-dim": "#ffb4a8",
+                        "inverse-primary": "#84d6b9",
+                        "on-primary-container": "#9aedcf",
+                        "secondary-fixed": "#ffdbd0",
+                        "on-tertiary": "#ffffff",
+                        "on-surface-variant": "#3f4944",
+                        "on-primary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-background": "#191c1d",
+                        "secondary": "#a8380f",
+                        "on-secondary": "#ffffff",
+                        "surface-container-low": "#f3f4f5",
+                        "secondary-container": "#fd7549",
+                        "tertiary-fixed": "#ffdad4"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "md": "16px",
+                        "container-max": "1280px",
+                        "xl": "32px",
+                        "xs": "8px",
+                        "sm": "12px",
+                        "gutter": "24px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "display": ["DM Sans"],
+                        "button": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "h2": ["DM Sans"],
+                        "body-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "h3": ["DM Sans"],
+                        "h1": ["DM Sans"]
+                    },
+                    "fontSize": {
+                        "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "button": ["16px", {"lineHeight": "1", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "h2": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "h3": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "h1": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'DM Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container-low border-r border-outline-variant flex flex-col p-md gap-xs z-50">
+<div class="flex items-center gap-md mb-xl px-xs">
+<div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined">volunteer_activism</span>
+</div>
+<div>
+<h1 class="font-h3 text-h3 text-primary">CharityHub</h1>
+<p class="font-label-caps text-label-caps text-on-surface-variant">Admin Console</p>
+</div>
+</div>
+<nav class="flex-grow flex flex-col gap-xs">
+<a class="flex items-center gap-md px-md py-sm bg-primary-container text-on-primary-container rounded-lg font-bold duration-200 ease-in-out no-underline" th:href="@{/admin/dashboard}">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-caps">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg duration-200 ease-in-out no-underline" th:href="@{/admin/utilisateurs}">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-caps">Users</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg duration-200 ease-in-out no-underline" th:href="@{/admin/dons}">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-caps">Donations</span>
+</a>
+</nav>
+<div class="mt-auto flex flex-col gap-xs pt-md border-t border-outline-variant">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg duration-200 ease-in-out no-underline" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-caps text-label-caps">Help Center</span>
+</a>
+<form th:action="@{/auth/logout}" method="post">
+    <button type="submit" class="w-full flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg duration-200 ease-in-out">
+        <span class="material-symbols-outlined">logout</span>
+        <span class="font-label-caps text-label-caps">Logout</span>
+    </button>
+</form>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 p-xl max-w-container-max mx-auto">
+<!-- Top Header -->
+<header class="flex justify-between items-center mb-xl">
+<div>
+<h2 class="font-h1 text-h1 text-on-surface">Platform Overview</h2>
+<p class="font-body-md text-on-surface-variant">Welcome back, Super Admin. Here's what's happening today.</p>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="pl-xl pr-md py-sm bg-surface-container-highest border-none rounded-full w-64 focus:ring-2 focus:ring-primary" placeholder="Search data..." type="text"/>
+</div>
+<button class="p-sm rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-secondary rounded-full"></span>
+</button>
+<div class="flex items-center gap-sm pl-md border-l border-outline-variant">
+    <img alt="Admin Profile" class="w-10 h-10 rounded-full object-cover" src="https://ui-avatars.com/api/?name=Super+Admin&background=005440&color=fff"/>
+</div>
+</div>
+</header>
+<!-- KPI Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg mb-xl">
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant flex items-center gap-lg">
+<div class="w-14 h-14 rounded-full bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-h1">payments</span>
+</div>
+<div>
+<p class="font-label-caps text-on-surface-variant">Total Donations</p>
+<h3 class="font-h2 text-h2 text-on-surface" th:text="${totalGlobalDonations} + ' MAD'">2,482,900 MAD</h3>
+<p class="text-xs text-primary font-bold flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +12.5% this month
+                    </p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant flex items-center gap-lg">
+<div class="w-14 h-14 rounded-full bg-secondary-container/20 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-h1">campaign</span>
+</div>
+<div>
+<p class="font-label-caps text-on-surface-variant">Active Campaigns</p>
+<h3 class="font-h2 text-h2 text-on-surface" th:text="${nbActions}">142</h3>
+<p class="text-xs text-secondary font-bold flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">priority_high</span> 5 expiring soon
+                    </p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant flex items-center gap-lg">
+<div class="w-14 h-14 rounded-full bg-tertiary-container/20 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-h1">verified_user</span>
+</div>
+<div>
+<p class="font-label-caps text-on-surface-variant">Organizations</p>
+<h3 class="font-h2 text-h2 text-on-surface" th:text="${nbOrgs}">86</h3>
+<p class="text-xs text-on-surface-variant font-medium flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> 98% verified
+                    </p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant flex items-center gap-lg">
+<div class="w-14 h-14 rounded-full bg-primary-container/10 flex items-center justify-center text-on-primary-fixed-variant">
+<span class="material-symbols-outlined text-h1">groups</span>
+</div>
+<div>
+<p class="font-label-caps text-on-surface-variant">Total Users</p>
+<h3 class="font-h2 text-h2 text-on-surface" th:text="${nbUtilisateurs}">12.5K</h3>
+<p class="text-xs text-primary font-bold flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">person_add</span> 240 new this week
+                    </p>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-xl">
+<!-- Impact Chart -->
+<div class="lg:col-span-2 bg-surface-container-lowest p-lg rounded-xl border border-outline-variant">
+<div class="flex justify-between items-center mb-lg">
+<h3 class="font-h3 text-h3 text-on-surface">Impact Over Time</h3>
+<div class="flex gap-xs bg-surface-container p-1 rounded-lg">
+<button class="px-md py-xs text-xs font-bold rounded-md bg-white shadow-sm">1M</button>
+<button class="px-md py-xs text-xs font-medium rounded-md hover:bg-white/50">6M</button>
+<button class="px-md py-xs text-xs font-medium rounded-md hover:bg-white/50">1Y</button>
+</div>
+</div>
+<!-- Simulated Chart Area with Real Data scaling -->
+<div class="relative h-[300px] flex items-end justify-between gap-base pt-md px-md">
+<div class="w-full bg-surface-container h-full absolute top-0 left-0 opacity-10 rounded"></div>
+<div class="w-full flex items-end justify-around h-64 gap-sm px-md">
+    <div th:each="month : ${#numbers.sequence(1, 12)}" 
+         class="w-8 bg-primary rounded-t-lg group relative"
+         th:style="'height: ' + ${(monthlyStats[month] ?: T(java.math.BigDecimal).ZERO).multiply(new java.math.BigDecimal('100')).divide(totalGlobalDonations.compareTo(T(java.math.BigDecimal).ZERO) > 0 ? totalGlobalDonations : T(java.math.BigDecimal).ONE, 0, T(java.math.RoundingMode).HALF_UP)} + '%'">
+         <span class="absolute -top-8 left-1/2 -translate-x-1/2 bg-on-surface text-surface text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap"
+               th:text="${monthlyStats[month] ?: 0} + ' MAD'"></span>
+    </div>
+</div>
+</div>
+<div class="flex justify-between mt-md px-md text-xs text-on-surface-variant font-medium">
+<span>JAN</span><span>FEB</span><span>MAR</span><span>APR</span><span>MAY</span><span>JUN</span><span>JUL</span><span>AUG</span><span>SEP</span><span>OCT</span><span>NOV</span><span>DEC</span>
+</div>
+</div>
+<!-- Recent Activity Feed -->
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant">
+<h3 class="font-h3 text-h3 text-on-surface mb-lg">Recent Activity</h3>
+<div class="flex flex-col gap-lg">
+    <div th:each="don : ${recentDonations}" class="flex gap-md">
+        <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+            <span class="material-symbols-outlined text-[20px]">volunteer_activism</span>
+        </div>
+        <div>
+            <p class="font-body-sm text-on-surface font-semibold" th:text="'New Donation Received'"></p>
+            <p class="text-xs text-on-surface-variant" th:text="'&quot;' + ${don.actionCharite.titre} + '&quot; received ' + ${don.montant} + ' MAD from ' + ${don.utilisateur.prenom} + '.'"></p>
+            <p class="text-[10px] text-outline mt-1 uppercase font-bold" th:text="${#temporals.format(don.date, 'dd MMM HH:mm')}"></p>
+        </div>
+    </div>
+    <div th:if="${recentDonations.empty}" class="py-xl text-center text-on-surface-variant text-sm italic">
+        No recent activity.
+    </div>
+</div>
+<button class="w-full mt-xl text-primary font-button text-sm hover:underline">View All Activity</button>
+</div>
+</div>
+<!-- Pending Verifications Section -->
+<section class="mt-xl">
+<div class="flex justify-between items-center mb-lg">
+<h3 class="font-h2 text-h2 text-on-surface">Pending Verifications</h3>
+<button class="flex items-center gap-xs text-primary font-button hover:bg-primary-container/10 px-md py-xs rounded-lg transition-colors">
+                    View All <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg">
+    <div th:each="org : ${orgsEnAttente}" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden flex flex-col shadow-sm">
+        <div class="p-lg flex-grow">
+            <div class="flex items-center gap-md mb-md">
+                <img alt="Organization Logo" class="w-12 h-12 rounded-lg object-cover" th:src="'https://ui-avatars.com/api/?name=' + ${org.nom} + '&background=random'"/>
+                <div>
+                    <h4 class="font-h3 text-h3" th:text="${org.nom}">Atlas Resilience</h4>
+                    <p class="text-xs text-on-surface-variant" th:text="'Registered: ' + ${#temporals.format(org.dateCreation, 'MMM dd, yyyy')}">Date</p>
+                </div>
+            </div>
+            <p class="font-body-sm text-on-surface-variant line-clamp-2" th:text="${org.emailContact}">Email Contact</p>
+            <div class="mt-md flex gap-xs">
+                <span class="px-sm py-1 bg-surface-container rounded-full text-[10px] font-bold text-on-surface-variant uppercase tracking-wider" th:text="${org.matriculeFiscal}">Matricule</span>
+            </div>
+        </div>
+        <div class="p-md bg-surface-container border-t border-outline-variant flex gap-md">
+            <form th:action="@{/admin/organisations/{id}/valider(id=${org.id})}" method="post" class="flex-1">
+                <input type="hidden" name="approuver" value="true">
+                <button class="w-full bg-primary text-on-primary py-sm rounded-lg text-sm font-bold hover:opacity-90 active:scale-95 transition-all">Approve</button>
+            </form>
+            <form th:action="@{/admin/organisations/{id}/valider(id=${org.id})}" method="post" class="flex-1">
+                <input type="hidden" name="approuver" value="false">
+                <button class="w-full bg-surface-container-high text-on-surface py-sm rounded-lg text-sm font-bold hover:bg-outline-variant active:scale-95 transition-all">Reject</button>
+            </form>
+        </div>
+    </div>
+    <!-- Empty State -->
+    <div th:if="${orgsEnAttente.empty}" class="col-span-full py-xl text-center text-on-surface-variant bg-surface-container-low rounded-xl border border-dashed border-outline">
+        <p class="font-body-md">Aucune organisation en attente de vérification.</p>
+    </div>
+</div>
+</section>
+<!-- Footer Info -->
+<footer class="mt-xl pt-lg border-t border-outline-variant text-center">
+<p class="text-on-surface-variant font-body-sm">© 2024 CharityHub Global Admin Panel. All financial transactions are encrypted and secured.</p>
+</footer>
+</main>
+<!-- Floating Action Button for Emergency Announcements -->
+<button class="fixed bottom-xl right-xl w-14 h-14 bg-secondary text-on-secondary rounded-full shadow-lg flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-40 group">
+<span class="material-symbols-outlined">campaign</span>
+<span class="absolute right-full mr-md bg-on-surface text-surface text-xs font-bold px-md py-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Platform Announcement</span>
+</button>
+</body>
+</html>

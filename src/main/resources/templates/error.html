@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html class="light" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Error | CharityHub</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#005440",
+                        "secondary": "#a8380f",
+                        "on-surface": "#191c1d",
+                        "on-surface-variant": "#3f4944",
+                        "outline-variant": "#bec9c3",
+                        "surface-container": "#edeeef",
+                        "background": "#f8f9fa"
+                    },
+                    borderRadius: { "xl": "0.75rem" }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-sans min-h-screen flex flex-col">
+
+<nav class="bg-white w-full border-b border-outline-variant p-sm">
+    <div class="max-w-container-max mx-auto px-md">
+        <a class="font-bold text-primary flex items-center gap-xs text-xl no-underline" th:href="@{/}">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
+            CharityHub
+        </a>
+    </div>
+</nav>
+
+<main class="flex-grow flex flex-col items-center justify-center p-xl text-center">
+    <div class="max-w-lg">
+        <div class="mb-lg">
+            <span class="material-symbols-outlined text-secondary text-8xl">warning</span>
+        </div>
+        <h1 class="text-4xl font-bold text-primary mb-sm" th:text="'Error ' + ${status}">Error</h1>
+        <h2 class="text-2xl font-semibold mb-md" th:text="${error}">Something went wrong</h2>
+        <p class="text-on-surface-variant mb-xl text-lg">
+            Nous avons rencontré une difficulté inattendue. Cela peut être dû à une adresse incorrecte ou à un problème temporaire sur nos serveurs.
+        </p>
+        <div class="flex justify-center">
+            <a th:href="@{/}" class="bg-primary text-on-primary px-lg py-sm rounded-lg font-button text-button hover:bg-primary-container transition-all no-underline shadow-sm flex items-center gap-xs">
+                <span class="material-symbols-outlined text-sm">home</span>
+                Retour à l'accueil
+            </a>
+        </div>
+    </div>
+</main>
+
+<footer class="p-lg border-t border-outline-variant text-center text-on-surface-variant text-sm">
+    <p>&copy; 2026 CharityHub. Tous droits réservés.</p>
+</footer>
+
+</body>
+</html>

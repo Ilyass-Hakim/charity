@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html class="light" lang="en" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title th:text="${action.titre} + ' - CharityHub'">Action Detail - CharityHub</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&amp;family=Inter:wght@400;600&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#743329",
+                        "tertiary-fixed-dim": "#ffb4a8",
+                        "on-primary-fixed": "#002117",
+                        "secondary-fixed-dim": "#ffb59e",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#d9dadb",
+                        "surface-tint": "#086b53",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "on-secondary-container": "#661a00",
+                        "surface-variant": "#e1e3e4",
+                        "primary-fixed": "#a0f3d4",
+                        "surface-bright": "#f8f9fa",
+                        "surface-container": "#edeeef",
+                        "primary-container": "#0f6e56",
+                        "on-surface-variant": "#3f4944",
+                        "on-secondary-fixed": "#3a0b00",
+                        "on-tertiary-fixed": "#3b0804",
+                        "primary": "#005440",
+                        "tertiary": "#78352b",
+                        "on-secondary-fixed-variant": "#852400",
+                        "on-background": "#191c1d",
+                        "on-error": "#ffffff",
+                        "outline-variant": "#bec9c3",
+                        "on-primary-container": "#9aedcf",
+                        "secondary-container": "#fd7549",
+                        "on-error-container": "#93000a",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed": "#ffdad4",
+                        "secondary": "#a8380f",
+                        "surface": "#f8f9fa",
+                        "on-tertiary-container": "#ffd3cc",
+                        "background": "#f8f9fa",
+                        "on-surface": "#191c1d",
+                        "inverse-primary": "#84d6b9",
+                        "secondary-fixed": "#ffdbd0",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-primary-fixed-variant": "#00513e",
+                        "inverse-on-surface": "#f0f1f2",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-high": "#e7e8e9",
+                        "surface-container-low": "#f3f4f5",
+                        "inverse-surface": "#2e3132",
+                        "outline": "#6f7a74",
+                        "primary-fixed-dim": "#84d6b9",
+                        "tertiary-container": "#954c41"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "container-max": "1280px",
+                        "md": "16px",
+                        "gutter": "24px",
+                        "base": "4px",
+                        "sm": "12px",
+                        "xs": "8px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "h3": ["DM Sans"],
+                        "label-caps": ["Inter"],
+                        "button": ["Inter"],
+                        "display": ["DM Sans"],
+                        "body-sm": ["Inter"],
+                        "h2": ["DM Sans"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "h1": ["DM Sans"]
+                    },
+                    "fontSize": {
+                        "h3": ["20px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "button": ["16px", { "lineHeight": "1", "fontWeight": "600" }],
+                        "display": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "h2": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "h1": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }]
+                    }
+                }
+            },
+        }
+    </script>
+</head>
+
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
+    <!-- TopNavBar -->
+    <nav
+        class="bg-surface dark:bg-on-background w-full sticky top-0 z-50 border-b border-outline-variant dark:border-on-surface-variant shadow-sm">
+        <div class="flex justify-between items-center px-lg py-sm max-w-container-max mx-auto">
+            <div class="flex items-center gap-xl">
+                <a class="font-h2 text-h2 font-bold text-primary dark:text-primary-fixed-dim"
+                    th:href="@{/}">CharityHub</a>
+                <div class="hidden md:flex items-center gap-lg">
+                    <a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors pb-1" th:href="@{/}">Home</a>
+                    <a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors pb-1" th:href="@{/actions}">Explore</a>
+                    <a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors pb-1" th:href="@{/about}">About</a>
+                    <a sec:authorize="hasRole('ROLE_ORG_ADMIN')" 
+                        class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors flex items-center gap-xs pb-1" 
+                        th:href="@{/organisation/dashboard}">
+                        <span class="material-symbols-outlined text-[18px]">dashboard_customize</span> Console
+                    </a>
+                </div>
+            </div>
+            <div class="flex items-center gap-sm">
+                <!-- Language Toggle -->
+                <div class="flex gap-2 mr-4">
+                    <a th:href="@{/(lang=fr)}" class="text-xs font-bold text-primary">FR</a>
+                    <span class="text-xs text-outline">|</span>
+                    <a th:href="@{/(lang=ar)}" class="text-xs font-bold text-primary">AR</a>
+                </div>
+
+                <div sec:authorize="!isAuthenticated()">
+                    <a th:href="@{/auth/login}"
+                        class="bg-primary text-on-primary font-button text-button px-md py-xs rounded-lg hover:bg-primary-container transition-colors">Login</a>
+                </div>
+
+                <div sec:authorize="isAuthenticated()" class="flex items-center gap-sm">
+                    <a sec:authorize="hasRole('ROLE_ORG_ADMIN')" th:href="@{/organisation/dashboard}"
+                        class="rounded-full overflow-hidden w-10 h-10 border border-outline-variant shadow-sm hover:ring-2 hover:ring-primary/20 transition-all">
+                        <img alt="Org profile" class="w-full h-full object-cover"
+                            src="https://ui-avatars.com/api/?name=Org&background=005440&color=fff" />
+                    </a>
+                    <a sec:authorize="!hasRole('ROLE_ORG_ADMIN')" th:href="@{/utilisateur/profil}"
+                        class="rounded-full overflow-hidden w-10 h-10 border border-outline-variant shadow-sm hover:ring-2 hover:ring-primary/20 transition-all">
+                        <img alt="User profile" class="w-full h-full object-cover"
+                            src="https://ui-avatars.com/api/?name=User&background=005440&color=fff" />
+                    </a>
+                    <form th:action="@{/auth/logout}" method="post">
+                        <button type="submit" class="text-on-surface-variant hover:text-error transition-colors">
+                            <span class="material-symbols-outlined">logout</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Canvas -->
+    <main
+        class="flex-grow max-w-container-max mx-auto w-full px-md md:px-16 py-xl grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+        
+        <!-- Flash Messages -->
+        <div th:if="${success}" class="lg:col-span-12 mb-lg p-md bg-primary-container/10 border border-primary/20 rounded-xl flex items-center gap-md text-primary">
+            <span class="material-symbols-outlined">check_circle</span>
+            <span class="font-body-md" th:text="${success}">Success message goes here</span>
+        </div>
+        <div th:if="${error}" class="lg:col-span-12 mb-lg p-md bg-error-container/10 border border-error/20 rounded-xl flex items-center gap-md text-error">
+            <span class="material-symbols-outlined">error</span>
+            <span class="font-body-md" th:text="${error}">Error message goes here</span>
+        </div>
+
+        <!-- Left Column: Content -->
+        <div class="lg:col-span-8 flex flex-col gap-xl">
+            <!-- Hero Header -->
+            <div class="flex flex-col gap-sm">
+                <div class="flex items-center gap-xs text-primary font-label-caps text-label-caps">
+                    <span class="material-symbols-outlined text-sm">verified</span>
+                    <span th:text="${action.organisation.nom}">VERIFIED BY CHARITYHUB</span>
+                </div>
+                <h1 class="font-h1 text-h1 text-on-surface" th:text="${action.titre}">Action Title</h1>
+                <p class="font-body-lg text-body-lg text-on-surface-variant"
+                    th:text="${#strings.abbreviate(action.description, 150)}">Action short description...</p>
+            </div>
+            <!-- Hero Image -->
+            <div class="w-full h-[400px] rounded-xl overflow-hidden border border-outline-variant relative shadow-sm">
+                <img th:if="${not #lists.isEmpty(action.medias)}" th:src="${action.medias[0].url}" alt="Action Image"
+                    class="w-full h-full object-cover" />
+                <img th:if="${#lists.isEmpty(action.medias)}" src="https://placehold.co/1200x400?text=Pas+d'image"
+                    alt="Placeholder" class="w-full h-full object-cover" />
+
+                <div
+                    class="absolute bottom-0 left-0 w-full p-md bg-gradient-to-t from-on-background/80 to-transparent flex items-center justify-between">
+                    <span class="text-on-primary font-body-sm" th:text="${action.lieu}">Location</span>
+                    <span
+                        class="bg-surface/20 text-on-primary px-sm py-xs rounded-full font-label-caps backdrop-blur-sm border border-surface/30"
+                        th:text="${action.categorie.nom}">Category</span>
+                </div>
+            </div>
+            <!-- About Section -->
+            <div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-lg shadow-sm">
+                <h2 class="font-h2 text-h2 text-on-surface mb-md">About this Cause</h2>
+                <div class="font-body-md text-on-surface-variant space-y-sm">
+                    <p th:text="${action.description}" style="white-space: pre-wrap;"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Donation Sticky Card -->
+        <div class="lg:col-span-4 lg:sticky lg:top-24">
+            <div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-lg shadow-lg">
+                <!-- Progress -->
+                <div class="mb-lg"
+                    th:with="percentage=${action.pourcentageAtteint}">
+                    <div class="flex justify-between items-end mb-xs">
+                        <span class="font-h2 text-h2 text-on-surface font-bold"
+                            th:text="${action.montantActuel} + ' MAD'">$37,500</span>
+                        <span class="font-body-sm text-body-sm text-on-surface-variant">sur <span
+                                th:text="${action.montantObjectif}"></span> MAD</span>
+                    </div>
+                    <div class="w-full bg-surface-variant rounded-full h-3 mb-xs overflow-hidden">
+                        <div class="bg-secondary h-3 rounded-full transition-all duration-1000"
+                            th:style="'width: ' + ${percentage} + '%'"></div>
+                    </div>
+                    <div class="flex justify-between items-center text-body-sm font-body-sm">
+                        <span class="text-on-surface-variant">Impactant des vies</span>
+                        <span class="text-primary font-bold" th:text="${percentage} + '%'">75%</span>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col gap-sm mb-lg">
+                    <a th:href="@{/dons/initier/{id}(id=${action.id})}"
+                        class="w-full bg-secondary text-on-secondary font-button text-button py-sm rounded-lg hover:bg-secondary-container transition-colors flex justify-center items-center font-bold no-underline">
+                        Faire un Don Now
+                    </a>
+                    <form th:action="@{/participations/inscrire/{id}(id=${action.id})}" method="post" class="w-full">
+                        <button type="submit"
+                            class="w-full border-2 border-primary text-primary font-button text-button py-sm rounded-lg hover:bg-primary/5 transition-colors flex justify-center items-center font-bold">
+                            Participer / S'inscrire
+                        </button>
+                    </form>
+                    <button
+                        class="w-full border border-outline-variant text-on-surface-variant font-body-sm py-sm rounded-lg hover:bg-surface-variant transition-colors flex justify-center items-center">
+                        <span class="material-symbols-outlined mr-xs text-sm">share</span> Partager l'action
+                    </button>
+                </div>
+
+                <!-- Preset Amounts -->
+                <div class="mb-lg">
+                    <p class="font-label-caps text-label-caps text-on-surface-variant mb-sm uppercase">Sélectionner un
+                        montant</p>
+                    <div class="grid grid-cols-3 gap-xs mb-xs">
+                        <a th:href="@{/dons/initier/{id}(id=${action.id}, amount=100)}"
+                            class="bg-[#F0F9F7] text-primary border border-primary-container font-button text-xs py-xs rounded-lg hover:bg-primary-container hover:text-on-primary-container transition-colors flex justify-center items-center no-underline">
+                            100 MAD
+                        </a>
+                        <a th:href="@{/dons/initier/{id}(id=${action.id}, amount=250)}"
+                            class="bg-primary text-on-primary border border-primary font-button text-xs py-xs rounded-lg transition-colors flex justify-center items-center no-underline shadow-sm">
+                            250 MAD
+                        </a>
+                        <a th:href="@{/dons/initier/{id}(id=${action.id}, amount=500)}"
+                            class="bg-[#F0F9F7] text-primary border border-primary-container font-button text-xs py-xs rounded-lg hover:bg-primary-container hover:text-on-primary-container transition-colors flex justify-center items-center no-underline">
+                            500 MAD
+                        </a>
+                    </div>
+                    <a th:href="@{/dons/initier/{id}(id=${action.id})}"
+                        class="w-full bg-surface text-on-surface-variant border border-outline-variant font-button text-xs py-xs rounded-lg hover:bg-surface-variant transition-colors flex justify-center items-center no-underline">
+                        Montant Personnalisé
+                    </a>
+                </div>
+                <!-- Campaign Info -->
+                <div class="border-t border-outline-variant pt-md space-y-sm">
+                    <div class="flex items-center gap-sm text-body-sm text-on-surface-variant">
+                        <span class="material-symbols-outlined text-primary">calendar_today</span>
+                        <span>Prend fin le : <strong
+                                th:text="${#temporals.format(action.dateFin, 'dd/MM/yyyy')}"></strong></span>
+                    </div>
+                    <div class="flex items-center gap-sm text-body-sm text-on-surface-variant">
+                        <span class="material-symbols-outlined text-primary">apartment</span>
+                        <span>Organisation : <strong th:text="${action.organisation.nom}"></strong></span>
+                    </div>
+                </div>
+                <br />
+                <!-- Recent Donors -->
+                <div class="border-t border-outline-variant pt-md">
+                    <h3 class="font-label-caps text-label-caps text-on-surface-variant mb-sm uppercase">Donateurs
+                        récents</h3>
+
+                    <ul class="space-y-sm" th:if="${action.contributions != null}">
+                        <th:block th:each="c : ${action.contributions}">
+                            <!-- Only show if it's a Don -->
+                            <li th:if="${c.class.name.contains('Don')}" class="flex items-center gap-sm">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-label-caps text-[10px]">
+                                    <span
+                                        th:text="${(c.utilisateur != null && c.utilisateur.nom != null && !c.utilisateur.nom.isEmpty() ? c.utilisateur.nom.substring(0,1) : '?') + (c.utilisateur != null && c.utilisateur.prenom != null && !c.utilisateur.prenom.isEmpty() ? c.utilisateur.prenom.substring(0,1) : '')}">JD</span>
+                                </div>
+                                <div class="flex-grow">
+                                    <p class="font-body-sm text-xs text-on-surface font-semibold"
+                                        th:text="${c.utilisateur != null ? (c.utilisateur.prenom + ' ' + c.utilisateur.nom) : 'Anonyme'}">
+                                        Sarah Jenkins</p>
+                                    <p class="font-body-sm text-on-surface-variant text-[10px]">
+                                        Donated <span th:text="${c.montant}">50</span> MAD • <span
+                                            th:text="${#temporals.format(c.date, 'dd/MM')}">2 hrs ago</span>
+                                    </p>
+                                </div>
+                            </li>
+                        </th:block>
+                    </ul>
+                    <p th:if="${#lists.isEmpty(action.contributions)}" class="text-xs text-on-surface-variant italic">
+                        Soyez le premier à donner !</p>
+                    <br />
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

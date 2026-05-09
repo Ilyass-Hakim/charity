@@ -26,6 +26,15 @@ public class ParticipationService {
         Utilisateur u = utilisateurRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
 
+        // Verifier si deja inscrit
+        boolean dejaInscrit = participationRepository.findAll().stream()
+                .anyMatch(p -> p.getActionCharite().getId().equals(actionId) && 
+                              p.getUtilisateur().getId().equals(u.getId()));
+        
+        if (dejaInscrit) {
+            throw new RuntimeException("Vous êtes déjà inscrit à cette action.");
+        }
+
         Participation p = Participation.builder()
                 .statutParticipation("INSCRIT")
                 .build();

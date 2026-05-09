@@ -26,13 +26,18 @@ public class MediaService {
     private String uploadDir;
 
     public Media sauvegarder(MultipartFile fichier, ActionCharite action) {
+        if (fichier.isEmpty()) return null;
         String type = fichier.getContentType();
         if (type == null || (!type.startsWith("image/") && !type.startsWith("video/"))) {
             throw new RuntimeException("Type non supporte : " + type);
         }
 
-        String ext = Objects.requireNonNull(fichier.getOriginalFilename()).split("\\.")[1];
-        String nomFichier = UUID.randomUUID() + "." + ext;
+        String originalName = fichier.getOriginalFilename();
+        String ext = "";
+        if (originalName != null && originalName.contains(".")) {
+            ext = originalName.substring(originalName.lastIndexOf("."));
+        }
+        String nomFichier = UUID.randomUUID() + ext;
 
         try {
             Path dest = Paths.get(uploadDir).resolve(nomFichier);
