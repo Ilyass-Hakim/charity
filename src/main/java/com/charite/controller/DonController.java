@@ -1,11 +1,13 @@
 package com.charite.controller;
 
 import com.charite.dto.DonDto;
+import com.charite.repository.ActionChariteRepository;
 import com.charite.service.ActionService;
 import com.charite.service.DonService;
 import com.charite.service.StripeService;
 import com.stripe.model.PaymentIntent;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -18,21 +20,32 @@ import java.util.Map;
 @Controller
 @RequestMapping("/dons")
 @RequiredArgsConstructor
+@Slf4j
 public class DonController {
 
     private final StripeService stripeService;
     private final DonService donService;
     private final ActionService actionService;
+    private final ActionChariteRepository actionRepository;
 
-    @org.springframework.beans.factory.annotation.Value("${stripe.publishable.key}")
+    @org.springframework.beans.factory.annotation.Value("${stripe.publishable.key:}")
     private String stripePublicKey;
 
     // Affiche le formulaire de don
     @GetMapping("/initier/{actionId}")
     public String formulaireDon(@PathVariable Long actionId, Model model) {
-        model.addAttribute("action", actionService.findById(actionId));
-        model.addAttribute("stripePublicKey", stripePublicKey);
-        return "dons/formulaire";
+        System.out.println(">>> CHARGEMENT DU FORMULAIRE POUR ID: " + actionId);
+        
+        try {
+            com.charite.entity.ActionCharite action = actionService.findById(actionId);
+            model.addAttribute("action", action);
+            model.addAttribute("stripePublicKey", stripePublicKey);
+            
+            return "dons/formulaire";
+        } catch (Exception e) {
+            System.out.println(">>> ERREUR : " + e.getMessage());
+            return "redirect:/?error=not_found";
+        }
     }
 
     // Cree l'intention de paiement et retourne le clientSecret a Stripe.js

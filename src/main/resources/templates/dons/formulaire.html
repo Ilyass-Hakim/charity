@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Faire un Don - CharityHub</title>
+    <title th:text="#{donate.title} + ' - CharityHub'">Faire un Don - CharityHub</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <!-- Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
     <script id="tailwind-config">
         tailwind.config = {
           darkMode: "class",
@@ -71,19 +73,39 @@
     <style>
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
         input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        
+        .StripeElement {
+            background-color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid #bec9c3;
+            box-shadow: 0 1px 3px 0 #e1e3e4;
+            transition: box-shadow 150ms ease;
+        }
+        .StripeElement--focus {
+            box-shadow: 0 0 0 2px rgba(8, 107, 83, 0.2);
+            border-color: #086b53;
+        }
+        .StripeElement--invalid {
+            border-color: #ba1a1a;
+        }
+        [dir="rtl"] .material-symbols-outlined { transform: scaleX(-1); }
     </style>
 </head>
-<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col" th:dir="${#locale.language == 'ar' ? 'rtl' : 'ltr'}">
+
+<!-- Stockage de la clé publique Stripe de manière sûre -->
+<input type="hidden" id="stripe-pk" th:value="${stripePublicKey}"/>
 
 <main class="flex-grow flex items-center justify-center p-md md:p-xl">
     <div class="w-full max-w-2xl bg-surface-container-lowest rounded-xl border border-surface-variant p-lg md:p-xl flex flex-col gap-xl shadow-xl">
         <!-- Header -->
         <div class="flex items-center justify-between border-b border-surface-variant pb-md">
             <div>
-                <h1 class="font-h2 text-h2 text-primary">Make a Donation</h1>
-                <p class="font-body-sm text-body-sm text-on-surface-variant mt-xs" th:text="'Soutenir : ' + ${action.titre}">Support the campaign</p>
+                <h1 class="font-h2 text-h2 text-primary" th:text="#{donate.title}">Faire un Don</h1>
+                <p class="font-body-sm text-body-sm text-on-surface-variant mt-xs" th:if="${action != null}" th:text="#{donate.support(${action.titre})}">Soutenir : campagne</p>
             </div>
-            <a th:href="@{/actions/{id}(id=${action.id})}" aria-label="Close" class="text-on-surface-variant hover:text-primary transition-colors no-underline">
+            <a th:if="${action != null}" th:href="@{/actions/{id}(id=${action.id})}" aria-label="Close" class="text-on-surface-variant hover:text-primary transition-colors no-underline">
                 <span class="material-symbols-outlined">close</span>
             </a>
         </div>
@@ -91,73 +113,106 @@
         <!-- Progress Indicator -->
         <div class="flex items-center gap-sm">
             <div class="flex-1 flex flex-col gap-xs">
-                <span class="font-label-caps text-label-caps text-primary">Step 1</span>
+                <span class="font-label-caps text-label-caps" th:text="#{donate.step} + ' 1'">Étape 1</span>
                 <div class="h-2 rounded-full bg-surface-variant overflow-hidden">
-                    <div class="h-full bg-primary w-full"></div>
+                    <div id="step1-bar" class="h-full bg-primary w-full transition-all duration-500"></div>
                 </div>
             </div>
             <div class="flex-1 flex flex-col gap-xs">
-                <span class="font-label-caps text-label-caps text-on-surface-variant">Step 2</span>
+                <span class="font-label-caps text-label-caps text-on-surface-variant" id="step2-label" th:text="#{donate.step} + ' 2'">Étape 2</span>
                 <div class="h-2 rounded-full bg-surface-variant overflow-hidden">
-                    <div class="h-full bg-surface-variant w-0"></div>
+                    <div id="step2-bar" class="h-full bg-primary w-0 transition-all duration-500"></div>
                 </div>
             </div>
             <div class="flex-1 flex flex-col gap-xs">
-                <span class="font-label-caps text-label-caps text-on-surface-variant">Step 3</span>
+                <span class="font-label-caps text-label-caps text-on-surface-variant" id="step3-label" th:text="#{donate.step} + ' 3'">Étape 3</span>
                 <div class="h-2 rounded-full bg-surface-variant overflow-hidden">
-                    <div class="h-full bg-surface-variant w-0"></div>
+                    <div id="step3-bar" class="h-full bg-primary w-0 transition-all duration-500"></div>
                 </div>
             </div>
         </div>
 
-        <!-- Step 1: Select Amount Content -->
-        <div class="flex flex-col gap-lg">
-            <h2 class="font-h3 text-h3">Choisir le montant</h2>
+        <!-- Step 1: Select Amount -->
+        <div id="step-1" class="flex flex-col gap-lg">
+            <h2 class="font-h3 text-h3" th:text="#{donate.select_amount}">Choisissez un montant</h2>
             <div class="grid grid-cols-3 gap-sm">
-                <button type="button" onclick="setAmount(50)" class="amount-btn bg-surface-container-lowest border border-surface-variant hover:bg-surface-container-low text-on-background font-button text-button rounded-lg py-sm transition-colors">
-                    50 MAD
-                </button>
-                <button type="button" onclick="setAmount(100)" class="amount-btn bg-[#F0F9F7] border border-primary text-primary font-button text-button rounded-lg py-sm transition-colors">
-                    100 MAD
-                </button>
-                <button type="button" onclick="setAmount(200)" class="amount-btn bg-surface-container-lowest border border-surface-variant hover:bg-surface-container-low text-on-background font-button text-button rounded-lg py-sm transition-colors">
-                    200 MAD
-                </button>
-                <button type="button" onclick="setAmount(500)" class="amount-btn bg-surface-container-lowest border border-surface-variant hover:bg-surface-container-low text-on-background font-button text-button rounded-lg py-sm transition-colors">
-                    500 MAD
-                </button>
-                <button type="button" onclick="setAmount(1000)" class="amount-btn bg-surface-container-lowest border border-surface-variant hover:bg-surface-container-low text-on-background font-button text-button rounded-lg py-sm transition-colors">
-                    1000 MAD
-                </button>
+                <button type="button" onclick="setAmount(50)" class="amount-btn bg-surface-container-lowest border border-surface-variant hover:bg-surface-container-low text-on-background font-button text-button rounded-lg py-sm transition-colors">50 MAD</button>
+                <button type="button" onclick="setAmount(100)" class="amount-btn bg-[#F0F9F7] border border-primary text-primary font-button text-button rounded-lg py-sm transition-colors">100 MAD</button>
+                <button type="button" onclick="setAmount(200)" class="amount-btn bg-surface-container-lowest border border-surface-variant hover:bg-surface-container-low text-on-background font-button text-button rounded-lg py-sm transition-colors">200 MAD</button>
+                <button type="button" onclick="setAmount(500)" class="amount-btn bg-surface-container-lowest border border-surface-variant hover:bg-surface-container-low text-on-background font-button text-button rounded-lg py-sm transition-colors">500 MAD</button>
+                <button type="button" onclick="setAmount(1000)" class="amount-btn bg-surface-container-lowest border border-surface-variant hover:bg-surface-container-low text-on-background font-button text-button rounded-lg py-sm transition-colors">1000 MAD</button>
                 <div class="relative">
-                    <span class="absolute left-sm top-1/2 -translate-y-1/2 font-body-md text-body-md text-on-surface-variant text-xs">MAD</span>
-                    <input id="custom-amount" class="w-full bg-surface-container-lowest border border-surface-variant rounded-lg py-sm pl-10 pr-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary-fixed-dim/20 font-body-md text-body-md text-on-background" placeholder="Autre" type="number"/>
+                    <span class="absolute left-sm top-1/2 -translate-y-1/2 font-body-md text-on-surface-variant text-xs">MAD</span>
+                    <input id="custom-amount" value="100" class="w-full bg-surface-container-lowest border border-surface-variant rounded-lg py-sm pl-10 pr-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary-fixed-dim/20 font-body-md" th:placeholder="#{donate.custom_amount}" type="number"/>
                 </div>
             </div>
-            <div class="flex items-center gap-sm mt-xs">
-                <input class="rounded border-surface-variant text-primary focus:ring-primary-fixed-dim/20" id="monthly" type="checkbox"/>
-                <label class="font-body-sm text-body-sm text-on-surface-variant cursor-pointer" for="monthly">Faire de ceci un don mensuel récurrent</label>
+            
+            <div class="flex justify-between items-center pt-md border-t border-surface-variant">
+                <a th:if="${action != null}" th:href="@{/actions/{id}(id=${action.id})}" class="font-button text-button text-on-surface-variant hover:text-primary transition-colors flex items-center gap-xs no-underline">
+                    <span class="material-symbols-outlined text-[20px]">arrow_back</span> <span th:text="#{common.back}">Retour</span>
+                </a>
+                <button type="button" onclick="goToStep(2)" class="bg-secondary text-on-secondary font-button text-button rounded-lg px-xl py-sm hover:bg-secondary-container transition-colors flex items-center gap-xs shadow-md">
+                    <span th:text="#{register.next}">Continuer</span> <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                </button>
             </div>
         </div>
 
-        <!-- Action Area -->
-        <div class="flex justify-between items-center pt-md border-t border-surface-variant mt-auto">
-            <a th:href="@{/actions/{id}(id=${action.id})}" class="font-button text-button text-on-surface-variant hover:text-primary transition-colors flex items-center gap-xs no-underline">
-                <span class="material-symbols-outlined text-[20px]">arrow_back</span>
-                Retour
-            </a>
-            <button type="button" class="bg-secondary-container text-on-secondary font-button text-button rounded-lg px-xl py-sm hover:bg-secondary transition-colors flex items-center gap-xs shadow-md">
-                Continuer au Paiement
-                <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
-            </button>
+        <!-- Step 2: Payment Details -->
+        <div id="step-2" class="hidden flex flex-col gap-lg">
+            <h2 class="font-h3 text-h3" th:text="#{donate.payment_info}">Informations de paiement</h2>
+            <div class="p-md bg-primary/5 rounded-lg border border-primary/10 flex justify-between items-center">
+                <span class="text-on-surface-variant font-body-md" th:text="#{donate.amount_label}">Montant du don :</span>
+                <span class="text-primary font-bold text-xl" id="summary-amount">100 MAD</span>
+            </div>
+            
+            <form id="payment-form" class="space-y-md">
+                <div class="space-y-xs">
+                    <label class="font-label-caps text-label-caps text-on-surface-variant uppercase" th:text="#{donate.card_label}">Carte Bancaire</label>
+                    <div id="card-element"></div>
+                    <div id="card-errors" role="alert" class="text-error text-xs mt-xs"></div>
+                </div>
+                
+                <div class="flex justify-between items-center pt-md border-t border-surface-variant">
+                    <button type="button" onclick="goToStep(1)" class="font-button text-button text-on-surface-variant hover:text-primary transition-colors flex items-center gap-xs">
+                        <span class="material-symbols-outlined text-[20px]">arrow_back</span> <span th:text="#{donate.back_amount}">Modifier montant</span>
+                    </button>
+                    <button type="submit" id="submit-button" class="bg-primary text-on-primary font-button text-button rounded-lg px-xl py-sm hover:bg-primary-container transition-colors flex items-center gap-xs shadow-md">
+                        <span id="button-text" th:text="#{donate.confirm}">Confirmer le Don</span>
+                        <div id="spinner" class="hidden animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Step 3: Success -->
+        <div id="step-3" class="hidden flex flex-col items-center justify-center py-xl gap-md text-center">
+            <div class="w-16 h-16 bg-primary/10 text-primary rounded-full flex items-center justify-center mb-md">
+                <span class="material-symbols-outlined text-4xl">check_circle</span>
+            </div>
+            <h2 class="font-h2 text-h2 text-primary" th:text="#{donate.success_title}">Paiement Réussi !</h2>
+            <p class="text-on-surface-variant max-w-sm" th:text="#{donate.success_msg}">Merci pour votre générosité.</p>
         </div>
     </div>
 </main>
 
-<script>
+<script th:inline="javascript">
+    const stripePk = document.getElementById('stripe-pk').value;
+    const stripe = Stripe(stripePk);
+    const elements = stripe.elements();
+    const card = elements.create('card', {
+        style: {
+            base: {
+                fontSize: '16px',
+                color: '#191c1d',
+                fontFamily: 'Inter, sans-serif',
+                '::placeholder': { color: '#6f7a74' },
+            }
+        }
+    });
+    card.mount('#card-element');
+
     function setAmount(amount) {
         document.getElementById('custom-amount').value = amount;
-        // Logic to highlight selected button could be added here
         document.querySelectorAll('.amount-btn').forEach(btn => {
             btn.classList.remove('bg-[#F0F9F7]', 'border-primary', 'text-primary');
             btn.classList.add('bg-surface-container-lowest', 'border-surface-variant', 'text-on-background');
@@ -166,6 +221,85 @@
                 btn.classList.add('bg-[#F0F9F7]', 'border-primary', 'text-primary');
             }
         });
+    }
+
+    function goToStep(step) {
+        document.getElementById('step-1').classList.add('hidden');
+        document.getElementById('step-2').classList.add('hidden');
+        document.getElementById('step-3').classList.add('hidden');
+        document.getElementById('step-' + step).classList.remove('hidden');
+        
+        if (step >= 2) {
+            document.getElementById('step2-bar').style.width = '100%';
+            document.getElementById('summary-amount').innerText = document.getElementById('custom-amount').value + ' MAD';
+        } else {
+            document.getElementById('step2-bar').style.width = '0%';
+        }
+    }
+
+    const form = document.getElementById('payment-form');
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        setLoading(true);
+
+        const amount = document.getElementById('custom-amount').value;
+        const actionId = /*[[${action != null ? action.id : 0}]]*/ 0;
+        const errorMsg = /*[[#{donate.error_msg}]]*/ "Error";
+
+        try {
+            const response = await fetch('/dons/creer-intent', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ montant: amount, actionId: actionId })
+            });
+            const data = await response.json();
+            const clientSecret = data.clientSecret;
+
+            const result = await stripe.confirmCardPayment(clientSecret, {
+                payment_method: { card: card }
+            });
+
+            if (result.error) {
+                document.getElementById('card-errors').textContent = result.error.message;
+                setLoading(false);
+            } else {
+                if (result.paymentIntent.status === 'succeeded') {
+                    await finalizeDonation(result.paymentIntent.id, actionId, amount);
+                }
+            }
+        } catch (err) {
+            document.getElementById('card-errors').textContent = errorMsg;
+            setLoading(false);
+        }
+    });
+
+    async function finalizeDonation(paymentIntentId, actionId, amount) {
+        const formData = new FormData();
+        formData.append('paymentIntentId', paymentIntentId);
+        formData.append('actionId', actionId);
+        formData.append('montant', amount);
+
+        const response = await fetch('/dons/confirmer', {
+            method: 'POST',
+            body: formData
+        });
+
+        if (response.ok) {
+            goToStep(3);
+            setTimeout(() => { window.location.href = '/actions/' + actionId + '?don=succes'; }, 2000);
+        } else {
+            document.getElementById('card-errors').textContent = "Error";
+            setLoading(false);
+        }
+    }
+
+    function setLoading(isLoading) {
+        const submitBtn = document.getElementById('submit-button');
+        const spinner = document.getElementById('spinner');
+        const btnText = document.getElementById('button-text');
+        submitBtn.disabled = isLoading;
+        spinner.classList.toggle('hidden', !isLoading);
+        btnText.classList.toggle('hidden', isLoading);
     }
 </script>
 

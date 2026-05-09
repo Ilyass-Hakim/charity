@@ -6,6 +6,7 @@ import com.charite.entity.Utilisateur;
 import com.charite.service.ActionService;
 import com.charite.service.UtilisateurService;
 import lombok.RequiredArgsConstructor;
+import com.charite.security.SecurityUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
@@ -45,11 +46,14 @@ public class HomeController {
         // Statistiques personnelles (si connecté)
         if (authentication != null && authentication.isAuthenticated()) {
             try {
-                Utilisateur user = utilisateurService.getByEmail(authentication.getName());
-                model.addAttribute("currentUser", user);
-                
-                if (user.getMemberships() != null && !user.getMemberships().isEmpty()) {
-                    model.addAttribute("currentOrg", user.getMemberships().get(0).getOrganisation());
+                String email = SecurityUtils.getEmail(authentication);
+                if (email != null) {
+                    Utilisateur user = utilisateurService.getByEmail(email);
+                    model.addAttribute("currentUser", user);
+                    
+                    if (user.getMemberships() != null && !user.getMemberships().isEmpty()) {
+                        model.addAttribute("currentOrg", user.getMemberships().get(0).getOrganisation());
+                    }
                 }
             } catch (Exception e) {
                 // Silently fail
