@@ -46,7 +46,11 @@ public class HomeController {
         if (authentication != null && authentication.isAuthenticated()) {
             try {
                 Utilisateur user = utilisateurService.getByEmail(authentication.getName());
-                // On peut garder d'autres infos personnelles ici si besoin
+                model.addAttribute("currentUser", user);
+                
+                if (user.getMemberships() != null && !user.getMemberships().isEmpty()) {
+                    model.addAttribute("currentOrg", user.getMemberships().get(0).getOrganisation());
+                }
             } catch (Exception e) {
                 // Silently fail
             }

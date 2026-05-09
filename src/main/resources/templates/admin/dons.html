@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html class="light" lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html th:dir="${#locale.language == 'ar' ? 'rtl' : 'ltr'}" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Donations - CharityHub Admin</title>
+    <title th:text="#{admin.donations_title} + ' - CharityHub Admin'">Donations - CharityHub Admin</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -103,7 +103,9 @@
           },
         }
       </script>
-<style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+        [lang='ar'] { font-family: 'Noto Sans Arabic', sans-serif; }
         .material-symbols-outlined {
           font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24
         }
@@ -119,32 +121,32 @@
 </div>
 <div>
 <h1 class="font-h3 text-h3 text-primary">CharityHub</h1>
-<p class="font-label-caps text-label-caps text-on-surface-variant">Admin Console</p>
+<p class="font-label-caps text-label-caps text-on-surface-variant" th:text="#{admin.console}">Admin Console</p>
 </div>
 </div>
 <nav class="flex-grow flex flex-col gap-xs">
 <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg duration-200 ease-in-out no-underline" th:href="@{/admin/dashboard}">
 <span class="material-symbols-outlined">dashboard</span>
-<span class="font-label-caps">Dashboard</span>
+<span class="font-label-caps" th:text="#{admin.dashboard}">Dashboard</span>
 </a>
 <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg duration-200 ease-in-out no-underline" th:href="@{/admin/utilisateurs}">
 <span class="material-symbols-outlined">person</span>
-<span class="font-label-caps">Users</span>
+<span class="font-label-caps" th:text="#{admin.users_title}">Users</span>
 </a>
 <a class="flex items-center gap-md px-md py-sm bg-primary-container text-on-primary-container rounded-lg font-bold duration-200 ease-in-out no-underline" th:href="@{/admin/dons}">
 <span class="material-symbols-outlined icon-fill">payments</span>
-<span class="font-label-caps">Donations</span>
+<span class="font-label-caps" th:text="#{admin.donations_title}">Donations</span>
 </a>
 </nav>
 <div class="mt-auto flex flex-col gap-xs pt-md border-t border-outline-variant">
 <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg duration-200 ease-in-out no-underline" href="#">
 <span class="material-symbols-outlined">help</span>
-<span class="font-label-caps text-label-caps">Help Center</span>
+<span class="font-label-caps text-label-caps" th:text="#{dashboard.help}">Help Center</span>
 </a>
 <form th:action="@{/auth/logout}" method="post">
     <button type="submit" class="w-full flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg duration-200 ease-in-out">
         <span class="material-symbols-outlined">logout</span>
-        <span class="font-label-caps text-label-caps">Logout</span>
+        <span class="font-label-caps text-label-caps" th:text="#{dashboard.logout}">Logout</span>
     </button>
 </form>
 </div>
@@ -157,14 +159,24 @@
 <!-- Header Section -->
 <header class="flex flex-col md:flex-row md:items-center justify-between gap-md mb-lg">
 <div>
-<h1 class="font-h1 text-h1 text-on-background">Donations</h1>
-<p class="font-body-md text-body-md text-on-surface-variant mt-base">Manage and track all incoming contributions.</p>
+<h1 class="font-h1 text-h1 text-on-background" th:text="#{admin.donations_title}">Donations</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-base" th:text="#{admin.donations_subtitle}">Manage and track all incoming contributions.</p>
+</div>
+<div class="flex items-center gap-md">
+<!-- Language Toggle -->
+<div class="flex gap-2 mr-4 text-sm font-bold text-primary">
+    <a th:href="@{'' (lang='en')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'en' ? 'text-secondary font-black' : ''}">EN</a>
+    <span class="text-outline opacity-30">|</span>
+    <a th:href="@{'' (lang='fr')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'fr' ? 'text-secondary font-black' : ''}">FR</a>
+    <span class="text-outline opacity-30">|</span>
+    <a th:href="@{'' (lang='ar')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'ar' ? 'text-secondary font-black' : ''}">AR</a>
 </div>
 <div class="flex items-center gap-sm self-start md:self-auto">
 <button class="flex items-center justify-center gap-xs px-md py-sm rounded-lg border border-outline text-primary font-button text-button hover:bg-surface-variant transition-colors">
 <span class="material-symbols-outlined text-[20px]">download</span>
-                        Export CSV
+                        <span th:text="#{admin.export_csv}">Export CSV</span>
                     </button>
+</div>
 </div>
 </header>
 <!-- Filters Section (Bento-style layout) -->
@@ -172,7 +184,7 @@
 <!-- Search -->
 <div class="md:col-span-5 bg-surface-container-lowest p-sm rounded-xl border border-outline-variant flex items-center focus-within:border-primary focus-within:ring-2 focus-within:ring-primary-fixed-dim focus-within:ring-opacity-20 transition-all">
 <span class="material-symbols-outlined text-on-surface-variant ml-xs mr-sm">search</span>
-<input class="w-full bg-transparent border-none p-0 focus:ring-0 text-on-surface placeholder:text-on-surface-variant font-body-md text-body-md outline-none" placeholder="Search by Donor Name or Email" type="text"/>
+<input class="w-full bg-transparent border-none p-0 focus:ring-0 text-on-surface placeholder:text-on-surface-variant font-body-md text-body-md outline-none" th:placeholder="#{admin.search_donor_placeholder}" type="text"/>
 </div>
 <!-- Date Range -->
 <div class="md:col-span-4 bg-surface-container-lowest p-sm rounded-xl border border-outline-variant flex items-center focus-within:border-primary transition-all">
@@ -187,10 +199,10 @@
 <div class="md:col-span-3 bg-surface-container-lowest p-sm rounded-xl border border-outline-variant flex items-center pr-xs relative">
 <span class="material-symbols-outlined text-on-surface-variant ml-xs mr-sm">filter_list</span>
 <select class="w-full bg-transparent border-none p-0 focus:ring-0 text-on-surface font-body-md text-body-md outline-none appearance-none cursor-pointer">
-<option value="all">All Statuses</option>
-<option value="success">Success</option>
-<option value="pending">Pending</option>
-<option value="failed">Failed</option>
+<option value="all" th:text="#{admin.all_statuses}">All Statuses</option>
+<option value="success" th:text="#{donations.success}">Success</option>
+<option value="pending" th:text="#{donations.pending}">Pending</option>
+<option value="failed" th:text="#{categories.emergency}">Failed</option>
 </select>
 <span class="material-symbols-outlined text-on-surface-variant absolute right-sm pointer-events-none">expand_more</span>
 </div>
@@ -201,12 +213,12 @@
 <table class="w-full text-left border-collapse min-w-[800px]">
 <thead>
 <tr class="border-b border-outline-variant bg-surface-container-low text-on-surface-variant font-label-caps text-label-caps">
-<th class="p-md font-semibold">Donor</th>
-<th class="p-md font-semibold">Amount</th>
-<th class="p-md font-semibold">Campaign</th>
-<th class="p-md font-semibold">Date</th>
-<th class="p-md font-semibold">Status</th>
-<th class="p-md font-semibold text-right">Actions</th>
+<th class="p-md font-semibold" th:text="#{donations.donor}">Donor</th>
+<th class="p-md font-semibold" th:text="#{donations.amount}">Amount</th>
+<th class="p-md font-semibold" th:text="#{donations.campaign}">Campaign</th>
+<th class="p-md font-semibold" th:text="#{donations.date}">Date</th>
+<th class="p-md font-semibold" th:text="#{donations.status}">Status</th>
+<th class="p-md font-semibold text-right" th:text="#{donations.actions}">Actions</th>
 </tr>
 </thead>
 <tbody class="text-body-sm font-body-sm">
@@ -219,7 +231,7 @@
                                             JS
                                         </div>
 <div>
-<p class="font-semibold text-on-background" th:text="${don.utilisateur != null ? don.utilisateur.prenom + ' ' + don.utilisateur.nom : 'Anonymous'}">John Smith</p>
+<p class="font-semibold text-on-background" th:text="${don.utilisateur != null ? don.utilisateur.prenom + ' ' + don.utilisateur.nom : #messages.msg('admin.anonymous')}">John Smith</p>
 <p class="text-on-surface-variant text-xs" th:text="${don.utilisateur != null ? don.utilisateur.email : '--'}">john.smith@example.com</p>
 </div>
 </div>
@@ -232,7 +244,7 @@
 </td>
 <td class="p-md">
 <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-[#F0F9F7] text-surface-tint border border-primary-fixed font-label-caps text-[10px]">
-<span class="w-1.5 h-1.5 rounded-full bg-surface-tint"></span> Success
+<span class="w-1.5 h-1.5 rounded-full bg-surface-tint"></span> <span th:text="#{donations.success}">Success</span>
                                     </span>
 </td>
 <td class="p-md text-right">
@@ -242,14 +254,14 @@
 </td>
 </tr>
 <tr th:if="${dons.empty}">
-    <td colspan="6" class="p-xl text-center text-on-surface-variant italic">Aucun don enregistré pour le moment.</td>
+    <td colspan="6" class="p-xl text-center text-on-surface-variant italic" th:text="#{dashboard.no_contributions}">Aucun don enregistré pour le moment.</td>
 </tr>
 </tbody>
 </table>
 </div>
 <!-- Pagination -->
 <div class="mt-auto border-t border-outline-variant bg-surface-container-lowest p-md flex items-center justify-between">
-<p class="text-body-sm text-on-surface-variant" th:text="'Showing ' + ${dons.size()} + ' entries'"></p>
+<p class="text-body-sm text-on-surface-variant" th:text="#{admin.showing_entries(${dons.size()})}">Showing entries</p>
 <div class="flex gap-xs">
 <button class="p-1 rounded text-on-surface-variant hover:bg-surface-variant disabled:opacity-50 transition-colors" disabled="">
 <span class="material-symbols-outlined">chevron_left</span>

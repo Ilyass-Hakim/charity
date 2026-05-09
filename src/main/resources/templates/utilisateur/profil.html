@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html th:dir="${#locale.language == 'ar' ? 'rtl' : 'ltr'}" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Mon Profil - CharityHub</title>
+    <title th:text="#{nav.profile} + ' - CharityHub'">Mon Profil - CharityHub</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
     <script id="tailwind-config">
@@ -102,12 +102,10 @@
             },
         }
     </script>
+        </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet" />
     <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        body { font-family: 'Inter', sans-serif; }
-        h1, h2, h3 { font-family: 'DM Sans', sans-serif; }
+        [lang='ar'] { font-family: 'Noto Sans Arabic', sans-serif; }
     </style>
 </head>
 <body class="bg-background text-on-surface min-h-screen flex flex-col">
@@ -118,17 +116,19 @@
         <div class="flex items-center gap-xl">
             <a th:href="@{/}" class="font-h2 text-h2 font-bold text-primary no-underline">CharityHub</a>
             <nav class="hidden md:flex gap-lg items-center">
-                <a class="text-on-surface-variant font-body-md hover:text-primary transition-colors cursor-pointer no-underline" th:href="@{/}">Home</a>
-                <a class="text-on-surface-variant font-body-md hover:text-primary transition-colors cursor-pointer no-underline" th:href="@{/actions}">Explore</a>
-                <a class="text-on-surface-variant font-body-md hover:text-primary transition-colors cursor-pointer no-underline" th:href="@{/about}">About</a>
+                <a class="text-on-surface-variant font-body-md hover:text-primary transition-colors cursor-pointer no-underline" th:href="@{/}" th:text="#{nav.home}">Home</a>
+                <a class="text-on-surface-variant font-body-md hover:text-primary transition-colors cursor-pointer no-underline" th:href="@{/actions}" th:text="#{nav.explore}">Explore</a>
+                <a class="text-on-surface-variant font-body-md hover:text-primary transition-colors cursor-pointer no-underline" th:href="@{/about}" th:text="#{nav.about}">About</a>
             </nav>
         </div>
         <div class="flex items-center gap-md">
             <!-- Language Toggle -->
-            <div class="flex gap-2 mr-4">
-                <a th:href="@{/(lang=fr)}" class="text-xs font-bold text-primary no-underline">FR</a>
-                <span class="text-xs text-outline">|</span>
-                <a th:href="@{/(lang=ar)}" class="text-xs font-bold text-primary no-underline">AR</a>
+            <div class="flex gap-2 mr-4 text-sm font-bold text-primary">
+                <a th:href="@{'' (lang='en')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'en' ? 'text-secondary font-black' : ''}">EN</a>
+                <span class="text-outline opacity-30">|</span>
+                <a th:href="@{'' (lang='fr')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'fr' ? 'text-secondary font-black' : ''}">FR</a>
+                <span class="text-outline opacity-30">|</span>
+                <a th:href="@{'' (lang='ar')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'ar' ? 'text-secondary font-black' : ''}">AR</a>
             </div>
             
             <div sec:authorize="isAuthenticated()" class="flex items-center gap-sm text-on-surface-variant">
@@ -150,8 +150,8 @@
 <main class="flex-grow p-lg md:p-xl">
     <div class="max-w-6xl mx-auto">
         <header class="mb-xl">
-            <h1 class="text-h1 font-h1 text-on-background">Gestion de mon Profil</h1>
-            <p class="text-body-md text-on-surface-variant">Gérez votre profil et suivez l'historique de vos généreuses contributions.</p>
+            <h1 class="text-h1 font-h1 text-on-background" th:text="#{profile.title}">Gestion de mon Profil</h1>
+            <p class="text-body-md text-on-surface-variant" th:text="#{profile.subtitle}">Gérez votre profil et suivez l'historique de vos généreuses contributions.</p>
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
@@ -160,7 +160,7 @@
                 <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg flex flex-col items-center text-center">
                     <div class="mb-md relative">
                         <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-surface-container-high">
-                            <img alt="Profile" class="w-full h-full object-cover" th:src="'https://ui-avatars.com/api/?name=' + ${utilisateur.prenom} + '+' + ${utilisateur.nom} + '&size=128&background=005440&color=fff'"/>
+                            <img alt="Profile" class="w-full h-full object-cover" th:src="${utilisateur.photoProfil != null ? utilisateur.photoProfil : 'https://ui-avatars.com/api/?name=' + utilisateur.prenom + '+' + utilisateur.nom + '&size=128&background=005440&color=fff'}"/>
                         </div>
                         <button class="absolute bottom-0 right-0 p-xs bg-primary text-on-primary rounded-full shadow-lg cursor-pointer active:scale-95 transition-transform">
                             <span class="material-symbols-outlined text-[20px]">photo_camera</span>
@@ -168,7 +168,7 @@
                     </div>
                     <div class="space-y-base mb-lg w-full">
                         <h2 class="text-h2 font-h2 text-on-surface" th:text="${utilisateur.prenom + ' ' + utilisateur.nom}">Nom Prénom</h2>
-                        <p class="text-body-sm text-on-surface-variant">Donateur depuis 2024</p>
+                        <p class="text-body-sm text-on-surface-variant" th:text="#{profile.donor_since} + ' 2024'">Donateur depuis 2024</p>
                     </div>
                     <div class="w-full space-y-md border-t border-outline-variant pt-lg text-left">
                         <div class="flex items-center gap-sm">
@@ -181,23 +181,23 @@
                         <div class="flex items-center gap-sm">
                             <span class="material-symbols-outlined text-primary">call</span>
                             <div class="flex flex-col">
-                                <span class="text-label-caps text-on-surface-variant uppercase opacity-70">Téléphone</span>
+                                <span class="text-label-caps text-on-surface-variant uppercase opacity-70" th:text="#{register.phone}">Téléphone</span>
                                 <span class="text-body-md font-medium" th:text="${utilisateur.telephone != null ? utilisateur.telephone : '+212...'}">+212611111111</span>
                             </div>
                         </div>
                     </div>
-                    <a th:href="@{/utilisateur/profil/modifier}" class="mt-xl w-full py-sm px-md border border-primary text-primary font-button rounded-lg hover:bg-primary-fixed transition-colors active:scale-95 cursor-pointer no-underline text-center">
+                    <a th:href="@{/utilisateur/profil/modifier}" class="mt-xl w-full py-sm px-md border border-primary text-primary font-button rounded-lg hover:bg-primary-fixed transition-colors active:scale-95 cursor-pointer no-underline text-center" th:text="#{profile.modify}">
                         Modifier mon profil
                     </a>
                 </div>
 
                 <!-- Donation Summary Stats -->
                 <div class="bg-primary-container text-on-primary-container rounded-xl p-lg flex flex-col gap-md">
-                    <h3 class="text-h3 font-h3">Votre Impact</h3>
+                    <h3 class="text-h3 font-h3" th:text="#{profile.impact}">Votre Impact</h3>
                     <div class="grid grid-cols-2 gap-md">
                         <div class="flex flex-col">
                             <span class="text-display leading-none" th:text="${totalActions}">0</span>
-                            <span class="text-label-caps uppercase opacity-80">Actions</span>
+                            <span class="text-label-caps uppercase opacity-80" th:text="#{profile.actions}">Actions</span>
                         </div>
                         <div class="flex flex-col">
                             <span class="text-display leading-none" th:text="${totalMAD}">0</span>
@@ -211,20 +211,20 @@
             <section class="lg:col-span-8">
                 <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
                     <div class="p-lg border-b border-outline-variant flex justify-between items-center bg-surface-container-low/50">
-                        <h2 class="text-h2 font-h2 text-on-surface">Historique de mes Contributions</h2>
+                        <h2 class="text-h2 font-h2 text-on-surface" th:text="#{profile.history}">Historique de mes Contributions</h2>
                         <button class="flex items-center gap-xs text-primary font-button text-body-sm hover:underline cursor-pointer">
                             <span class="material-symbols-outlined text-[18px]">filter_list</span>
-                            Filtrer
+                            <span th:text="#{profile.filter}">Filtrer</span>
                         </button>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full border-collapse">
                             <thead>
                                 <tr class="bg-surface-container-low">
-                                    <th class="text-left px-lg py-md text-label-caps text-on-surface-variant uppercase tracking-wider">Date</th>
-                                    <th class="text-left px-lg py-md text-label-caps text-on-surface-variant uppercase tracking-wider">Action Charité</th>
-                                    <th class="text-right px-lg py-md text-label-caps text-on-surface-variant uppercase tracking-wider">Montant (MAD)</th>
-                                    <th class="text-center px-lg py-md text-label-caps text-on-surface-variant uppercase tracking-wider">Statut</th>
+                                    <th class="text-left px-lg py-md text-label-caps text-on-surface-variant uppercase tracking-wider" th:text="#{date}">Date</th>
+                                    <th class="text-left px-lg py-md text-label-caps text-on-surface-variant uppercase tracking-wider" th:text="#{dashboard.campaign}">Action Charité</th>
+                                    <th class="text-right px-lg py-md text-label-caps text-on-surface-variant uppercase tracking-wider" th:text="#{dashboard.amount}">Montant (MAD)</th>
+                                    <th class="text-center px-lg py-md text-label-caps text-on-surface-variant uppercase tracking-wider" th:text="#{status}">Statut</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-outline-variant">
@@ -241,19 +241,19 @@
                                         <span th:if="${contrib.class.name.contains('Participation')}" class="text-secondary">Bénévolat</span>
                                     </td>
                                     <td class="px-lg py-lg text-center">
-                                        <span class="inline-flex items-center px-sm py-base rounded-full bg-[#E6F4EA] text-[#137333] text-label-caps font-bold">
+                                        <span class="inline-flex items-center px-sm py-base rounded-full bg-[#E6F4EA] text-[#137333] text-label-caps font-bold" th:text="#{completed}">
                                             Complété
                                         </span>
                                     </td>
                                 </tr>
                                 <tr th:if="${contributions.empty}">
-                                    <td colspan="4" class="px-lg py-12 text-center text-on-surface-variant">Aucune contribution trouvée.</td>
+                                    <td colspan="4" class="px-lg py-12 text-center text-on-surface-variant" th:text="#{no_contributions}">Aucune contribution trouvée.</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="p-lg bg-surface-container-low/30 border-t border-outline-variant flex justify-between items-center">
-                        <span class="text-body-sm text-on-surface-variant" th:text="'Affichage de ' + ${contributions.size()} + ' contributions'">Stats</span>
+                        <span class="text-body-sm text-on-surface-variant" th:text="#{profile.displaying} + ' ' + ${contributions.size()} + ' ' + #{profile.actions}">Stats</span>
                         <div class="flex gap-xs">
                             <button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-variant transition-colors">
                                 <span class="material-symbols-outlined text-[18px]">chevron_left</span>
@@ -272,7 +272,7 @@
 
 <footer class="bg-on-background text-surface py-lg px-md mt-auto">
     <div class="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-md">
-        <p class="font-label-caps text-label-caps text-surface-variant">© 2024 CharityHub. Tous droits réservés.</p>
+        <p class="font-label-caps text-label-caps text-surface-variant" th:text="'© 2024 CharityHub. ' + #{footer.rights}">© 2024 CharityHub. Tous droits réservés.</p>
     </div>
 </footer>
 

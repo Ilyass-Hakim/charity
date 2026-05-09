@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html class="light" lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html th:dir="${#locale.language == 'ar' ? 'rtl' : 'ltr'}" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>About Us - CharityHub</title>
+    <title th:text="#{nav.about} + ' - CharityHub'">About Us - CharityHub</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&amp;family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -103,8 +103,10 @@
             },
         }
     </script>
+        </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet" />
     <style>
-        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        [lang='ar'] { font-family: 'Noto Sans Arabic', sans-serif; }
     </style>
 </head>
 <body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
@@ -115,33 +117,35 @@
         <div class="flex items-center gap-xl">
             <a class="font-h2 text-h2 font-bold text-primary dark:text-primary-fixed-dim no-underline" th:href="@{/}">CharityHub</a>
             <div class="hidden md:flex items-center gap-lg">
-                <a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors pb-1 no-underline" th:href="@{/}">Home</a>
-                <a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors pb-1 no-underline" th:href="@{/actions}">Explore</a>
-                <a class="font-body-md text-body-md text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-secondary pb-1 no-underline" th:href="@{/about}">About</a>
+                <a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors pb-1 no-underline" th:href="@{/}" th:text="#{nav.home}">Home</a>
+                <a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors pb-1 no-underline" th:href="@{/actions}" th:text="#{nav.explore}">Explore</a>
+                <a class="font-body-md text-body-md text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-secondary pb-1 no-underline" th:href="@{/about}" th:text="#{nav.about}">About</a>
                 <a sec:authorize="hasRole('ROLE_ORG_ADMIN')" class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors pb-1 flex items-center gap-xs no-underline" th:href="@{/organisation/dashboard}">
-                    <span class="material-symbols-outlined text-[18px]">dashboard_customize</span> Console
+                    <span class="material-symbols-outlined text-[18px]">dashboard_customize</span> <span th:text="#{nav.console}">Console</span>
                 </a>
             </div>
         </div>
         <div class="flex items-center gap-md">
             <!-- Language Toggle -->
-            <div class="flex gap-2 mr-4">
-                <a th:href="@{/(lang=fr)}" class="text-xs font-bold text-primary no-underline">FR</a>
-                <span class="text-xs text-outline">|</span>
-                <a th:href="@{/(lang=ar)}" class="text-xs font-bold text-primary no-underline">AR</a>
+            <div class="flex gap-2 mr-4 text-sm font-bold text-primary">
+                <a th:href="@{'' (lang='en')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'en' ? 'text-secondary font-black' : ''}">EN</a>
+                <span class="text-outline opacity-30">|</span>
+                <a th:href="@{'' (lang='fr')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'fr' ? 'text-secondary font-black' : ''}">FR</a>
+                <span class="text-outline opacity-30">|</span>
+                <a th:href="@{'' (lang='ar')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'ar' ? 'text-secondary font-black' : ''}">AR</a>
             </div>
 
             <div sec:authorize="!isAuthenticated()" class="flex items-center gap-sm">
-                <a th:href="@{/auth/login}" class="text-on-surface-variant hover:text-primary transition-colors no-underline">Login</a>
-                <a th:href="@{/auth/register}" class="bg-primary text-on-primary font-button text-button px-lg py-xs rounded-lg hover:bg-primary-container transition-colors shadow-sm no-underline">Get Started</a>
+                <a th:href="@{/auth/login}" class="text-on-surface-variant hover:text-primary transition-colors no-underline" th:text="#{nav.login}">Login</a>
+                <a th:href="@{/auth/register}" class="bg-primary text-on-primary font-button text-button px-lg py-xs rounded-lg hover:bg-primary-container transition-colors shadow-sm no-underline" th:text="#{nav.register}">Get Started</a>
             </div>
             
             <div sec:authorize="isAuthenticated()" class="flex items-center gap-sm">
                 <a sec:authorize="hasRole('ROLE_ORG_ADMIN')" th:href="@{/organisation/dashboard}" class="rounded-full overflow-hidden w-10 h-10 border border-outline-variant shadow-sm hover:ring-2 hover:ring-primary/20 transition-all">
-                    <img alt="Org profile" class="w-full h-full object-cover" src="https://ui-avatars.com/api/?name=Org&background=005440&color=fff"/>
+                    <img alt="Org profile" class="w-full h-full object-cover" th:src="${currentUser != null && currentUser.photoProfil != null ? currentUser.photoProfil : 'https://ui-avatars.com/api/?name=Org&background=005440&color=fff'}"/>
                 </a>
                 <a sec:authorize="!hasRole('ROLE_ORG_ADMIN')" th:href="@{/utilisateur/profil}" class="rounded-full overflow-hidden w-10 h-10 border border-outline-variant shadow-sm hover:ring-2 hover:ring-primary/20 transition-all">
-                    <img alt="User profile" class="w-full h-full object-cover" src="https://ui-avatars.com/api/?name=User&background=005440&color=fff"/>
+                    <img alt="User profile" class="w-full h-full object-cover" th:src="${currentUser != null && currentUser.photoProfil != null ? currentUser.photoProfil : 'https://ui-avatars.com/api/?name=' + (currentUser != null ? currentUser.prenom : 'User') + '&background=005440&color=fff'}"/>
                 </a>
                 <form th:action="@{/auth/logout}" method="post">
                     <button type="submit" class="p-base rounded-full hover:bg-surface-variant transition-colors text-on-surface-variant">
@@ -160,11 +164,11 @@
 <img class="w-full h-full object-cover" data-alt="A cinematic, wide-angle shot of diverse community hands coming together over a world map, softly lit by golden hour sunlight. The atmosphere is warm, hopeful, and inclusive, echoing the Deep Teal and Warm Coral tones of the CharityHub brand. The lighting is high-key with soft bokeh in the background to emphasize human connection and global reach." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2RN3H0FAbThy8twdNO56O_QZ6QElRhy4qLhZf1sjMFjWDttCXSgXCq5gtJRAlzc2FL5cov27nD2zSB_WmVWvgau7FFK_yOTItG1yL44sZtz667xC5K9IoLTwGalVo1OAS3K9TXgdRKH65y_1bWZjj9F35O2-SzqsxRCkvjvRt95vXRIjKB6tEOaZKH5SKY2tFMY433ZiSRvvTUZhbUewMclxx-gh3fs8ZFLLH0DI_87HKYfQDNrfvrSWHlvLU96uKWBLTfTlqcw"/>
 </div>
 <div class="relative max-w-container-max mx-auto text-center z-10">
-<h1 class="font-display text-display text-on-primary mb-md max-w-4xl mx-auto">Empowering global change through transparent giving.</h1>
-<p class="font-body-lg text-body-lg text-primary-fixed mb-xl max-w-2xl mx-auto">We bridge the gap between compassionate donors and verified global causes, ensuring every cent creates a measurable impact.</p>
+<h1 class="font-display text-display text-on-primary mb-md max-w-4xl mx-auto" th:text="#{about.hero_title}">Empowering global change through transparent giving.</h1>
+<p class="font-body-lg text-body-lg text-primary-fixed mb-xl max-w-2xl mx-auto" th:text="#{about.hero_subtitle}">We bridge the gap between compassionate donors and verified global causes, ensuring every cent creates a measurable impact.</p>
 <div class="flex flex-col sm:flex-row justify-center gap-md">
-<button class="px-xl py-md font-button text-button rounded-lg bg-secondary-container text-on-secondary-container hover:bg-secondary transition-all shadow-lg">Our Story</button>
-<button class="px-xl py-md font-button text-button rounded-lg border-2 border-on-primary text-on-primary hover:bg-on-primary hover:text-primary transition-all">View Our Impact</button>
+<button class="px-xl py-md font-button text-button rounded-lg bg-secondary-container text-on-secondary-container hover:bg-secondary transition-all shadow-lg" th:text="#{about.story_label}">Our Story</button>
+<button class="px-xl py-md font-button text-button rounded-lg border-2 border-on-primary text-on-primary hover:bg-on-primary hover:text-primary transition-all" th:text="#{about.milestones}">View Our Impact</button>
 </div>
 </div>
 </section>
@@ -172,10 +176,10 @@
 <section class="py-xl px-md max-w-container-max mx-auto">
 <div class="grid grid-cols-1 md:grid-cols-2 gap-xl items-center">
 <div class="order-2 md:order-1">
-<span class="font-label-caps text-label-caps text-secondary mb-xs block">OUR STORY</span>
-<h2 class="font-h1 text-h1 text-on-surface mb-md">From a Local Vision to Global Transparency</h2>
-<p class="font-body-md text-body-md text-on-surface-variant mb-md">CharityHub started in a small community center with a single question: "Where does my money actually go?" We realized that trust is the most valuable currency in philanthropy. Since then, we've built a platform that combines cutting-edge tracking technology with grassroots empathy.</p>
-<p class="font-body-md text-body-md text-on-surface-variant">Today, we support thousands of vetted organizations, providing donors with real-time updates and data-driven impact reports. Our mission remains the same: to make giving as clear as it is compassionate.</p>
+<span class="font-label-caps text-label-caps text-secondary mb-xs block" th:text="#{about.story_label}">OUR STORY</span>
+<h2 class="font-h1 text-h1 text-on-surface mb-md" th:text="#{about.story_title}">From a Local Vision to Global Transparency</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md" th:text="#{about.story_p1}">CharityHub started in a small community center with a single question: "Where does my money actually go?" We realized that trust is the most valuable currency in philanthropy. Since then, we've built a platform that combines cutting-edge tracking technology with grassroots empathy.</p>
+<p class="font-body-md text-body-md text-on-surface-variant" th:text="#{about.story_p2}">Today, we support thousands of vetted organizations, providing donors with real-time updates and data-driven impact reports. Our mission remains the same: to make giving as clear as it is compassionate.</p>
 </div>
 <div class="order-1 md:order-2">
 <div class="rounded-xl overflow-hidden border border-outline-variant bg-white">
@@ -188,8 +192,8 @@
 <section class="bg-surface-container-low py-xl px-md">
 <div class="max-w-container-max mx-auto">
 <div class="text-center mb-xl">
-<h2 class="font-h1 text-h1 text-on-surface">Measurable Milestones</h2>
-<p class="font-body-md text-body-md text-on-surface-variant">Real numbers from real people making a difference.</p>
+<h2 class="font-h1 text-h1 text-on-surface" th:text="#{about.milestones}">Measurable Milestones</h2>
+<p class="font-body-md text-body-md text-on-surface-variant" th:text="#{about.milestones_sub}">Real numbers from real people making a difference.</p>
 </div>
 <div class="grid grid-cols-2 md:grid-cols-4 gap-md">
 <div class="bg-white p-lg rounded-xl border border-outline-variant text-center">
@@ -214,7 +218,7 @@
 <!-- Core Values Section -->
 <section class="py-xl px-md max-w-container-max mx-auto">
 <div class="text-center mb-xl">
-<h2 class="font-h1 text-h1 text-on-surface">Our Core Values</h2>
+<h2 class="font-h1 text-h1 text-on-surface" th:text="#{about.values_title}">Our Core Values</h2>
 <div class="w-24 h-1 bg-secondary mx-auto mt-md rounded-full"></div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
@@ -223,24 +227,24 @@
 <div class="w-16 h-16 bg-primary-fixed rounded-full flex items-center justify-center mb-md">
 <span class="material-symbols-outlined text-primary text-3xl">visibility</span>
 </div>
-<h3 class="font-h3 text-h3 text-on-surface mb-sm">Transparency</h3>
-<p class="font-body-md text-body-md text-on-surface-variant">We provide open-ledger reporting so you know exactly where your contributions are being deployed in real-time.</p>
+<h3 class="font-h3 text-h3 text-on-surface mb-sm" th:text="#{about.transparency_title}">Transparency</h3>
+<p class="font-body-md text-body-md text-on-surface-variant" th:text="#{about.transparency_desc}">We provide open-ledger reporting so you know exactly where your contributions are being deployed in real-time.</p>
 </div>
 <!-- Community Card -->
 <div class="bg-white p-lg rounded-xl border border-outline-variant hover:border-primary transition-colors flex flex-col items-center text-center">
 <div class="w-16 h-16 bg-primary-fixed rounded-full flex items-center justify-center mb-md">
 <span class="material-symbols-outlined text-primary text-3xl">groups</span>
 </div>
-<h3 class="font-h3 text-h3 text-on-surface mb-sm">Community</h3>
-<p class="font-body-md text-body-md text-on-surface-variant">Change happens together. We foster a global ecosystem of donors, volunteers, and local activists.</p>
+<h3 class="font-h3 text-h3 text-on-surface mb-sm" th:text="#{about.community_title}">Community</h3>
+<p class="font-body-md text-body-md text-on-surface-variant" th:text="#{about.community_desc}">Change happens together. We foster a global ecosystem of donors, volunteers, and local activists.</p>
 </div>
 <!-- Accountability Card -->
 <div class="bg-white p-lg rounded-xl border border-outline-variant hover:border-primary transition-colors flex flex-col items-center text-center">
 <div class="w-16 h-16 bg-primary-fixed rounded-full flex items-center justify-center mb-md">
 <span class="material-symbols-outlined text-primary text-3xl">verified</span>
 </div>
-<h3 class="font-h3 text-h3 text-on-surface mb-sm">Accountability</h3>
-<p class="font-body-md text-body-md text-on-surface-variant">We strictly vet every organization and project to ensure ethical standards and sustainable long-term outcomes.</p>
+<h3 class="font-h3 text-h3 text-on-surface mb-sm" th:text="#{about.accountability_title}">Accountability</h3>
+<p class="font-body-md text-body-md text-on-surface-variant" th:text="#{about.accountability_desc}">We strictly vet every organization and project to ensure ethical standards and sustainable long-term outcomes.</p>
 </div>
 </div>
 </section>
@@ -251,11 +255,11 @@
 <div class="absolute top-0 left-0 w-32 h-32 bg-secondary opacity-20 rounded-full -translate-x-16 -translate-y-16"></div>
 <div class="absolute bottom-0 right-0 w-48 h-48 bg-secondary opacity-10 rounded-full translate-x-16 translate-y-16"></div>
 <div class="relative z-10">
-<h2 class="font-h1 text-h1 text-on-primary mb-md">Ready to make an impact?</h2>
-<p class="font-body-lg text-body-lg text-primary-fixed mb-xl">Join our mission and start your journey of transparent giving today. Create your account and discover causes that matter to you.</p>
+<h2 class="font-h1 text-h1 text-on-primary mb-md" th:text="#{about.cta_title}">Ready to make an impact?</h2>
+<p class="font-body-lg text-body-lg text-primary-fixed mb-xl" th:text="#{about.cta_desc}">Join our mission and start your journey of transparent giving today. Create your account and discover causes that matter to you.</p>
 <div class="flex flex-col sm:flex-row justify-center gap-md">
-<a th:href="@{/auth/register}" class="px-xl py-md font-button text-button rounded-lg bg-secondary-container text-on-secondary-container hover:bg-secondary transition-all shadow-lg no-underline">Join our mission</a>
-<a th:href="@{/auth/login}" class="px-xl py-md bg-transparent border border-on-primary text-on-primary hover:bg-white hover:text-primary transition-all no-underline">Sign in</a>
+<a th:href="@{/auth/register}" class="px-xl py-md font-button text-button rounded-lg bg-secondary-container text-on-secondary-container hover:bg-secondary transition-all shadow-lg no-underline" th:text="#{about.join}">Join our mission</a>
+<a th:href="@{/auth/login}" class="px-xl py-md bg-transparent border border-on-primary text-on-primary hover:bg-white hover:text-primary transition-all no-underline" th:text="#{nav.login}">Sign in</a>
 </div>
 </div>
 </div>
@@ -269,7 +273,7 @@
 <p class="font-body-sm text-body-sm text-surface-variant opacity-80">Empowering human-first giving experiences through technology and transparency since 2021.</p>
 </div>
 <div>
-<h4 class="font-h3 text-h3 mb-md">Quick Links</h4>
+<h4 class="font-h3 text-h3 mb-md" th:text="#{footer.quick_links}">Quick Links</h4>
 <ul class="space-y-sm font-body-sm text-surface-variant no-underline list-none p-0">
 <li><a class="hover:text-primary-fixed transition-colors no-underline" th:href="@{/actions}">Find a Campaign</a></li>
 <li><a class="hover:text-primary-fixed transition-colors no-underline" href="#">Start a Fundraiser</a></li>
@@ -288,15 +292,15 @@
 </div>
 <div>
 <h4 class="font-h3 text-h3 mb-md">Newsletter</h4>
-<p class="font-body-sm text-body-sm text-surface-variant mb-md">Get impact stories delivered to your inbox.</p>
+<p class="font-body-sm text-body-sm text-surface-variant mb-md" th:text="#{footer.newsletter_desc}">Get impact stories delivered to your inbox.</p>
 <div class="flex gap-xs">
 <input class="bg-inverse-surface border-none rounded-lg px-md py-xs text-on-primary w-full focus:ring-2 focus:ring-primary outline-none" placeholder="Email address" type="email"/>
-<button class="bg-primary text-on-primary px-md py-xs rounded-lg hover:bg-primary-container transition-all">Join</button>
+<button class="bg-primary text-on-primary px-md py-xs rounded-lg hover:bg-primary-container transition-all" th:text="#{footer.join}">Join</button>
 </div>
 </div>
 </div>
 <div class="max-w-container-max mx-auto border-t border-outline-variant mt-xl pt-lg flex flex-col md:flex-row justify-between items-center gap-md">
-<p class="font-label-caps text-label-caps text-surface-variant">© 2024 CharityHub. All rights reserved.</p>
+<p class="font-label-caps text-label-caps text-surface-variant">© 2024 CharityHub. <span th:text="#{footer.rights}">All rights reserved.</span></p>
 <div class="flex gap-lg text-surface-variant">
 <span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed">public</span>
 <span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed">share</span>

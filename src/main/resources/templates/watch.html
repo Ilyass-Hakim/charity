@@ -1,335 +1,217 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html th:dir="${#locale.language == 'ar' ? 'rtl' : 'ltr'}" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>CharityHub | Bringing Clean Water to the Atlas Mountains</title>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title th:text="#{hero.watch} + ' - CharityHub'">Watch - CharityHub</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&amp;family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-    <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        body {
-            background-color: #f8f9fa;
-        }
-        .video-container video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-    </style>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&amp;family=Inter:wght@400;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
     <script id="tailwind-config">
         tailwind.config = {
-          darkMode: "class",
-          theme: {
-            extend: {
-              "colors": {
-                      "tertiary-fixed": "#ffdad4",
-                      "on-surface": "#191c1d",
-                      "secondary-fixed": "#ffdbd0",
-                      "primary-fixed-dim": "#84d6b9",
-                      "primary": "#005440",
-                      "on-primary-fixed-variant": "#00513e",
-                      "on-secondary": "#ffffff",
-                      "on-surface-variant": "#3f4944",
-                      "outline-variant": "#bec9c3",
-                      "tertiary": "#78352b",
-                      "surface-container-low": "#f3f4f5",
-                      "on-error-container": "#93000a",
-                      "on-tertiary-container": "#ffd3cc",
-                      "on-secondary-fixed": "#3a0b00",
-                      "on-background": "#191c1d",
-                      "on-primary-fixed": "#002117",
-                      "inverse-on-surface": "#f0f1f2",
-                      "on-tertiary-fixed": "#3b0804",
-                      "inverse-surface": "#2e3132",
-                      "error-container": "#ffdad6",
-                      "surface-container-highest": "#e1e3e4",
-                      "secondary-fixed-dim": "#ffb59e",
-                      "on-error": "#ffffff",
-                      "tertiary-container": "#954c41",
-                      "surface-dim": "#d9dadb",
-                      "inverse-primary": "#84d6b9",
-                      "background": "#f8f9fa",
-                      "surface-container-lowest": "#ffffff",
-                      "primary-container": "#0f6e56",
-                      "secondary-container": "#fd7549",
-                      "tertiary-fixed-dim": "#ffb4a8",
-                      "on-tertiary-fixed-variant": "#743329",
-                      "on-secondary-container": "#661a00",
-                      "surface-container": "#edeeef",
-                      "surface": "#f8f9fa",
-                      "on-secondary-fixed-variant": "#852400",
-                      "surface-tint": "#086b53",
-                      "surface-variant": "#e1e3e4",
-                      "surface-bright": "#f8f9fa",
-                      "on-primary-container": "#9aedcf",
-                      "primary-fixed": "#a0f3d4",
-                      "outline": "#6f7a74",
-                      "error": "#ba1a1a",
-                      "surface-container-high": "#e7e8e9",
-                      "secondary": "#a8380f",
-                      "on-primary": "#ffffff",
-                      "on-tertiary": "#ffffff"
-              },
-              "borderRadius": {
-                      "DEFAULT": "0.25rem",
-                      "lg": "0.5rem",
-                      "xl": "0.75rem",
-                      "full": "9999px"
-              },
-              "spacing": {
-                      "sm": "12px",
-                      "md": "16px",
-                      "container-max": "1280px",
-                      "xs": "8px",
-                      "xl": "32px",
-                      "gutter": "24px",
-                      "base": "4px",
-                      "lg": "24px"
-              },
-              "fontFamily": {
-                      "label-caps": ["Inter"],
-                      "h3": ["DM Sans"],
-                      "h1": ["DM Sans"],
-                      "body-lg": ["Inter"],
-                      "h2": ["DM Sans"],
-                      "display": ["DM Sans"],
-                      "body-sm": ["Inter"],
-                      "body-md": ["Inter"],
-                      "button": ["Inter"]
-              },
-              "fontSize": {
-                      "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
-                      "h3": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
-                      "h1": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
-                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
-                      "h2": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
-                      "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                      "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
-                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
-                      "button": ["16px", {"lineHeight": "1", "fontWeight": "600"}]
-              }
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#005440",
+                        "secondary": "#a8380f",
+                        "background": "#f8f9fa",
+                        "on-background": "#191c1d",
+                        "surface": "#f8f9fa",
+                        "on-surface": "#191c1d",
+                        "outline-variant": "#bec9c3",
+                        "surface-variant": "#e1e3e4",
+                        "on-surface-variant": "#3f4944",
+                        "primary-container": "#0f6e56",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#fd7549",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "container-max": "1280px",
+                        "md": "16px",
+                        "gutter": "24px",
+                        "base": "4px",
+                        "sm": "12px",
+                        "xs": "8px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Inter"],
+                        "h3": ["DM Sans"],
+                        "h1": ["DM Sans"],
+                        "body-lg": ["Inter"],
+                        "h2": ["DM Sans"],
+                        "display": ["DM Sans"],
+                        "body-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "button": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "h3": ["20px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "h1": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "h2": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "display": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "button": ["16px", { "lineHeight": "1", "fontWeight": "600" }]
+                    }
+                }
             },
-          },
         }
     </script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+        [lang='ar'] { font-family: 'Noto Sans Arabic', sans-serif; }
+    </style>
 </head>
-<body class="font-body-md text-on-surface bg-background">
-<!-- TopNavBar Component -->
-<nav class="bg-surface dark:bg-on-background w-full sticky top-0 z-50 border-b border-outline-variant dark:border-on-surface-variant cursor-default">
-<div class="flex justify-between items-center px-lg py-sm max-w-container-max mx-auto h-16">
-<div class="flex items-center gap-xl">
-<a th:href="@{/}" class="no-underline flex items-center gap-sm">
-    <span class="font-h2 text-h2 font-bold text-primary dark:text-primary-fixed-dim">CharityHub</span>
-</a>
-<div class="hidden md:flex items-center gap-lg border-l border-outline-variant pl-lg">
-<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors no-underline flex items-center gap-xs" th:href="@{/}">
-    <span class="material-symbols-outlined text-sm">arrow_back</span> Back to Home
-</a>
-</div>
-</div>
-<div class="flex items-center gap-md">
-<div class="hidden lg:flex items-center bg-surface-container-low px-md py-xs rounded-full border border-outline-variant">
-<span class="material-symbols-outlined text-on-surface-variant mr-xs">search</span>
-<input class="bg-transparent border-none focus:ring-0 text-body-sm w-48" placeholder="Search causes..." type="text"/>
-</div>
-<button class="bg-primary text-on-primary px-md py-xs rounded-lg font-button hover:bg-primary-container hover:text-on-primary-container transition-all cursor-pointer active:scale-95">Donate Now</button>
-<div class="flex items-center gap-sm ml-sm text-on-surface-variant">
-<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">notifications</span>
-<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant cursor-pointer">
-<img alt="User profile" src="https://ui-avatars.com/api/?name=User&background=005440&color=fff" />
-</div>
-</div>
-</div>
-</div>
-</nav>
-<main class="max-w-container-max mx-auto px-md md:px-lg py-xl">
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-xl">
-<!-- Primary Video Column -->
-<div class="lg:col-span-8 flex flex-col gap-lg">
-<!-- Cinematic Video Player -->
-<div class="relative w-full aspect-video rounded-xl overflow-hidden bg-black shadow-lg border border-outline-variant group video-container">
-    <video autoplay playsinline loop controls>
-        <source src="/watch.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
-</div>
-<!-- Content Information -->
-<div class="flex flex-col gap-md">
-<div class="flex flex-col gap-xs">
-    <div class="flex items-center gap-xs text-secondary font-label-caps text-label-caps uppercase">
-        <span class="material-symbols-outlined text-sm">emergency</span> Urgent Humanitarian Need
-    </div>
-    <h1 class="font-h1 text-h1 text-on-surface">Atlas Mountains: A Community in Crisis — Supporting Families in Need</h1>
-</div>
-<div class="flex items-center gap-md p-md bg-surface-container rounded-xl border border-outline-variant">
-<div class="w-12 h-12 rounded-full overflow-hidden">
-<img alt="Organization Logo" src="https://ui-avatars.com/api/?name=Atlas+Reach&background=005440&color=fff"/>
-</div>
-<div>
-<p class="font-h3 text-h3 text-primary">Atlas Reach Foundation</p>
-<p class="font-body-sm text-body-sm text-on-surface-variant">Verified Organization • 12.4k Supporters</p>
-</div>
-<button class="ml-auto bg-primary text-on-primary px-lg py-sm rounded-full font-button hover:bg-primary-container transition-all">Follow</button>
-</div>
-<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant">
-<h2 class="font-h2 text-h2 mb-md">Why Join CharityHub?</h2>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-lg font-body-md text-on-surface-variant">
-    <div class="flex gap-md">
-        <span class="material-symbols-outlined text-primary">verified</span>
-        <div>
-            <strong class="text-on-surface block">Radical Transparency</strong>
-            <p class="text-sm">Track your donation's impact with real-time field reports and financial clarity.</p>
-        </div>
-    </div>
-    <div class="flex gap-md">
-        <span class="material-symbols-outlined text-primary">volunteer_activism</span>
-        <div>
-            <strong class="text-on-surface block">Direct Impact</strong>
-            <p class="text-sm">We provide essential resources directly to families, ensuring help reaches those who need it most.</p>
-        </div>
-    </div>
-    <div class="flex gap-md">
-        <span class="material-symbols-outlined text-primary">diversity_3</span>
-        <div>
-            <strong class="text-on-surface block">Local Empowerment</strong>
-            <p class="text-sm">We work with local leaders to foster sustainable growth and long-term community resilience.</p>
-        </div>
-    </div>
-    <div class="flex gap-md">
-        <span class="material-symbols-outlined text-primary">security</span>
-        <div>
-            <strong class="text-on-surface block">Verified Safety</strong>
-            <p class="text-sm">Every organization is strictly audited before being allowed to raise funds on our platform.</p>
-        </div>
-    </div>
-</div>
 
-<div class="mt-lg pt-lg border-t border-outline-variant" th:if="${action != null}"
-    th:with="percentage=${action.montantObjectif != null && action.montantObjectif.compareTo(0) > 0 ? (action.montantActuel.multiply(100).divide(action.montantObjectif, 0, T(java.math.RoundingMode).HALF_UP)) : 0}">
-<div class="flex justify-between items-end mb-xs">
-<span class="font-label-caps text-label-caps text-primary uppercase font-bold">Live Funding Progress</span>
-<span class="font-h3 text-h3 text-secondary"><span th:text="${action.montantActuel}"></span> MAD <span class="text-on-surface-variant font-body-md">/ <span th:text="${action.montantObjectif}"></span> MAD Target</span></span>
-</div>
-<div class="w-full h-3 bg-surface-container rounded-full overflow-hidden">
-<div class="bg-secondary h-full" th:style="'width: ' + ${percentage} + '%'"></div>
-</div>
-<div class="grid grid-cols-3 mt-md gap-sm">
-<div class="flex flex-col">
-<span class="font-body-sm text-body-sm text-on-surface-variant">Supporters</span>
-<span class="font-button text-on-surface" th:text="${action.contributions != null ? action.contributions.size() : 0}">1,248</span>
-</div>
-<div class="flex flex-col">
-<span class="font-body-sm text-body-sm text-on-surface-variant">Status</span>
-<span class="font-button text-on-surface" th:text="${action.statutAction}">Active</span>
-</div>
-<div class="flex flex-col">
-<span class="font-body-sm text-body-sm text-on-surface-variant">Progress</span>
-<span class="font-button text-on-surface" th:text="${percentage} + '%'">70%</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- Sidebar Column -->
-<aside class="lg:col-span-4 flex flex-col gap-lg">
-<!-- Donation Card -->
-<div class="bg-white p-lg rounded-xl border border-outline-variant shadow-lg flex flex-col gap-md" th:if="${action != null}">
-    <div class="flex items-center gap-sm text-primary mb-xs">
-        <span class="material-symbols-outlined icon-fill">volunteer_activism</span>
-        <h3 class="font-h3 text-h3">Empower a Life</h3>
-    </div>
-    <p class="font-body-sm text-body-sm text-on-surface-variant">Every second counts. Your gift today provides essential resources and hope to the most vulnerable families in the Atlas region.</p>
-    
-    <div class="grid grid-cols-3 gap-xs mb-xs">
-        <a th:href="@{/dons/initier/{id}(id=${action.id}, amount=100)}"
-            class="bg-surface-container-low text-primary border border-outline-variant font-button text-xs py-sm rounded-lg hover:bg-primary hover:text-white transition-all flex justify-center items-center no-underline">
-            100 MAD
-        </a>
-        <a th:href="@{/dons/initier/{id}(id=${action.id}, amount=250)}"
-            class="bg-primary text-on-primary border border-primary font-button text-xs py-sm rounded-lg transition-all flex justify-center items-center no-underline shadow-sm">
-            250 MAD
-        </a>
-        <a th:href="@{/dons/initier/{id}(id=${action.id}, amount=500)}"
-            class="bg-surface-container-low text-primary border border-outline-variant font-button text-xs py-sm rounded-lg hover:bg-primary hover:text-white transition-all flex justify-center items-center no-underline">
-            500 MAD
-        </a>
-    </div>
+<body class="font-body-md text-on-surface bg-background min-h-screen flex flex-col">
+    <!-- TopNavBar -->
+    <nav class="bg-surface w-full sticky top-0 z-50 border-b border-outline-variant shadow-sm">
+        <div class="flex justify-between items-center px-lg py-sm max-w-container-max mx-auto h-16">
+            <div class="flex items-center gap-xl">
+                <a th:href="@{/}" class="no-underline flex items-center gap-sm">
+                    <span class="font-h2 text-h2 font-bold text-primary">CharityHub</span>
+                </a>
+                <div class="hidden md:flex items-center gap-lg border-l border-outline-variant pl-lg">
+                    <a class="font-body-md text-on-surface-variant hover:text-primary transition-colors no-underline flex items-center gap-xs"
+                        th:href="@{/}">
+                        <span class="material-symbols-outlined text-sm">arrow_back</span> <span th:text="#{common.back}">Back to Home</span>
+                    </a>
+                </div>
+            </div>
+            <div class="flex items-center gap-md">
+                <div class="hidden lg:flex items-center bg-surface-container-low px-md py-xs rounded-full border border-outline-variant">
+                    <span class="material-symbols-outlined text-on-surface-variant mr-xs">search</span>
+                    <input class="bg-transparent border-none focus:ring-0 text-body-sm w-48" th:placeholder="#{explore.search_placeholder}" type="text"/>
+                </div>
+                <!-- Language Toggle -->
+                <div class="flex gap-2 mr-4 text-sm font-bold text-primary">
+                    <a th:href="@{'' (lang='en')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'en' ? 'text-secondary font-black' : ''}">EN</a>
+                    <span class="text-outline opacity-30">|</span>
+                    <a th:href="@{'' (lang='fr')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'fr' ? 'text-secondary font-black' : ''}">FR</a>
+                    <span class="text-outline opacity-30">|</span>
+                    <a th:href="@{'' (lang='ar')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'ar' ? 'text-secondary font-black' : ''}">AR</a>
+                </div>
+                <div sec:authorize="isAuthenticated()" class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+                    <img th:src="${currentUser != null && currentUser.photoProfil != null ? currentUser.photoProfil : 'https://ui-avatars.com/api/?name=' + (currentUser != null ? currentUser.prenom : 'User') + '&background=005440&color=fff'}" class="w-full h-full object-cover" />
+                </div>
+            </div>
+        </div>
+    </nav>
 
-    <a th:href="@{/dons/initier/{id}(id=${action.id})}"
-        class="w-full bg-secondary text-on-secondary py-md rounded-lg font-h3 hover:bg-secondary-container transition-all shadow-md active:scale-95 flex justify-center items-center no-underline font-bold">
-        Donate Now
-    </a>
-    
-    <div class="flex items-center justify-center gap-xs text-on-surface-variant text-[10px] uppercase font-bold tracking-wider">
-        <span class="material-symbols-outlined text-[16px]">verified_user</span>
-        <span>Secure encrypted transaction</span>
-    </div>
-</div>
-<!-- Related Impact Stories -->
-<div class="flex flex-col gap-md">
-<h3 class="font-h3 text-h3 flex items-center gap-sm">
-                        Related Impact Stories
-                        <span class="material-symbols-outlined text-primary">auto_awesome</span>
-</h3>
-<!-- Story Card 1 -->
-<div class="group flex gap-md cursor-pointer hover:bg-surface-container rounded-lg p-xs transition-all">
-<div class="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0">
-<img alt="Related story 1" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=200&auto=format&fit=crop"/>
-</div>
-<div class="flex flex-col justify-center">
-<h4 class="font-button text-on-surface leading-tight mb-xs group-hover:text-primary transition-colors">Educational Growth in Rural Benin</h4>
-<p class="font-body-sm text-body-sm text-on-surface-variant">12 min read • 5k views</p>
-</div>
-</div>
-<!-- Story Card 2 -->
-<div class="group flex gap-md cursor-pointer hover:bg-surface-container rounded-lg p-xs transition-all">
-<div class="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0">
-<img alt="Related story 2" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=200&auto=format&fit=crop"/>
-</div>
-<div class="flex flex-col justify-center">
-<h4 class="font-button text-on-surface leading-tight mb-xs group-hover:text-primary transition-colors">Solar Power: Lighting Up the Night</h4>
-<p class="font-body-sm text-body-sm text-on-surface-variant">8 min read • 3.2k views</p>
-</div>
-</div>
-<button class="mt-md text-primary font-button flex items-center gap-xs hover:underline justify-center py-sm border border-outline-variant rounded-lg">
-                        View More Impact Stories
-                        <span class="material-symbols-outlined">arrow_forward</span>
-</button>
-</div>
-</aside>
-</div>
-</main>
-<!-- Simple Footer -->
-<footer class="bg-surface-container-high py-xl mt-xl border-t border-outline-variant">
-<div class="max-w-container-max mx-auto px-lg grid grid-cols-1 md:grid-cols-4 gap-xl">
-<div class="col-span-2">
-<span class="font-h2 text-h2 font-bold text-primary mb-md block">CharityHub</span>
-<p class="text-on-surface-variant max-w-md">Empowering global change through transparent, high-impact storytelling and secure community-driven support. Join us in making a difference, one story at a time.</p>
-</div>
-<div>
-<h4 class="font-button text-on-surface mb-md">Quick Links</h4>
-<ul class="space-y-sm text-on-surface-variant font-body-sm">
-<li><a class="hover:text-primary" href="#">Our Impact</a></li>
-<li><a class="hover:text-primary" href="#">How it Works</a></li>
-<li><a class="hover:text-primary" href="#">Privacy Policy</a></li>
-<li><a class="hover:text-primary" href="#">Contact Support</a></li>
-</ul>
-</div>
-<div>
-<h4 class="font-button text-on-surface mb-md">Newsletter</h4>
-<p class="text-body-sm text-on-surface-variant mb-md">Get weekly updates on global impact projects.</p>
-<div class="flex gap-xs">
-<input class="w-full bg-surface-container rounded-lg border border-outline-variant px-md py-xs text-body-sm focus:ring-1 focus:ring-primary outline-none" placeholder="Email" type="email"/>
-<button class="bg-primary text-on-primary p-xs rounded-lg flex items-center justify-center">
-<span class="material-symbols-outlined">send</span>
-</button>
-</div>
-</div>
-</div>
-</footer>
-</body></html>
+    <main class="max-w-container-max mx-auto px-md md:px-lg py-xl flex-grow w-full">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-xl">
+            <!-- Primary Video Column -->
+            <div class="lg:col-span-8 flex flex-col gap-lg">
+                <div class="relative w-full aspect-video rounded-xl overflow-hidden bg-black shadow-lg border border-outline-variant group">
+                    <video autoplay playsinline loop controls class="w-full h-full object-cover">
+                        <source src="/watch.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+
+                <div class="flex flex-col gap-md">
+                    <div class="flex flex-col gap-xs">
+                        <div class="flex items-center gap-xs text-secondary font-label-caps text-label-caps uppercase">
+                            <span class="material-symbols-outlined text-sm">emergency</span> <span th:text="#{urgent.title}">Urgent</span>
+                        </div>
+                        <h1 class="font-h1 text-h1 text-on-surface" th:text="${action != null ? action.titre : 'Atlas Mountains Relief Effort'}">Atlas Mountains: A Community in Crisis</h1>
+                    </div>
+
+                    <div class="flex items-center gap-md p-md bg-white rounded-xl border border-outline-variant shadow-sm" th:if="${action != null && action.organisation != null}">
+                        <div class="w-12 h-12 rounded-full overflow-hidden">
+                            <img alt="Org Logo" th:src="'https://ui-avatars.com/api/?name=' + ${action.organisation.nom} + '&background=005440&color=fff'"/>
+                        </div>
+                        <div>
+                            <p class="font-h3 text-h3 text-primary" th:text="${action.organisation.nom}">Atlas Reach Foundation</p>
+                            <p class="font-body-sm text-on-surface-variant" th:text="#{detail.verified}">Verified Organization</p>
+                        </div>
+                        <button class="ml-auto bg-primary text-white px-lg py-sm rounded-full font-button hover:bg-primary-container transition-all">Follow</button>
+                    </div>
+
+                    <div class="bg-white p-lg rounded-xl border border-outline-variant shadow-sm">
+                        <h2 class="font-h2 text-h2 mb-md" th:text="#{about.values_title}">Why Join CharityHub?</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-lg font-body-md text-on-surface-variant">
+                            <div class="flex gap-md">
+                                <span class="material-symbols-outlined text-primary">verified</span>
+                                <div>
+                                    <strong class="text-on-surface block" th:text="#{about.transparency_title}">Radical Transparency</strong>
+                                    <p class="text-sm" th:text="#{about.transparency_desc}">Track impact in real-time.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-md">
+                                <span class="material-symbols-outlined text-primary">volunteer_activism</span>
+                                <div>
+                                    <strong class="text-on-surface block" th:text="#{about.community_title}">Direct Impact</strong>
+                                    <p class="text-sm" th:text="#{about.community_desc}">Help reaches those who need it most.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-lg pt-lg border-t border-outline-variant" th:if="${action != null}"
+                            th:with="percentage=${action.pourcentageAtteint}">
+                            <div class="flex justify-between items-end mb-xs">
+                                <span class="font-label-caps text-label-caps text-primary uppercase font-bold" th:text="#{impact.title}">Live Progress</span>
+                                <span class="font-h3 text-h3 text-secondary"><span th:text="${action.montantActuel}"></span> MAD / <span th:text="${action.montantObjectif}"></span> MAD</span>
+                            </div>
+                            <div class="w-full h-3 bg-surface-variant rounded-full overflow-hidden">
+                                <div class="bg-secondary h-full transition-all duration-1000" th:style="'width: ' + ${percentage} + '%'"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <aside class="lg:col-span-4 flex flex-col gap-lg">
+                <div class="bg-white p-lg rounded-xl border border-outline-variant shadow-lg flex flex-col gap-md" th:if="${action != null}">
+                    <div class="flex items-center gap-sm text-primary">
+                        <span class="material-symbols-outlined">volunteer_activism</span>
+                        <h3 class="font-h3 text-h3" th:text="#{urgent.donate_now}">Donate Now</h3>
+                    </div>
+                    <p class="text-body-sm text-on-surface-variant" th:text="#{hero.subtitle}">Every second counts.</p>
+                    <a th:href="@{/dons/initier/{id}(id=${action.id})}" class="w-full bg-secondary text-white py-md rounded-lg font-bold text-center no-underline hover:bg-secondary-container shadow-md" th:text="#{urgent.donate_now}">Donate Now</a>
+                </div>
+
+                <div class="flex flex-col gap-md">
+                    <h3 class="font-h3 text-h3" th:text="#{featured.title}">Related Impact Stories</h3>
+                    <div class="space-y-md">
+                        <div class="flex gap-md p-xs hover:bg-surface-variant/20 rounded-lg transition-colors cursor-pointer">
+                            <div class="w-20 h-20 bg-primary/10 rounded-lg flex-shrink-0"></div>
+                            <div>
+                                <h4 class="font-bold text-sm text-on-surface">Education Growth in Benin</h4>
+                                <p class="text-[10px] text-on-surface-variant">12 min read</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="bg-surface-container-high py-lg border-t border-outline-variant">
+        <div class="max-w-container-max mx-auto px-md text-center text-on-surface-variant text-body-sm">
+            <p>&copy; 2026 CharityHub. <span th:text="#{footer.rights}">All rights reserved.</span></p>
+        </div>
+    </footer>
+</body>
+
+</html>

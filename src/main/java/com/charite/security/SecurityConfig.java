@@ -20,6 +20,7 @@ public class SecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
     private final CustomOAuth2UserService oAuth2UserService;
+    private final CustomAuthenticationSuccessHandler successHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -41,14 +42,14 @@ public class SecurityConfig {
             .formLogin(form -> form
                 .loginPage("/auth/login")
                 .loginProcessingUrl("/auth/login")
-                .defaultSuccessUrl("/dashboard", true)
+                .successHandler(successHandler)
                 .failureUrl("/auth/login?error=true")
                 .permitAll()
             )
             .oauth2Login(oauth2 -> oauth2
                 .loginPage("/auth/login")
                 .userInfoEndpoint(u -> u.userService(oAuth2UserService))
-                .successHandler(oAuth2SuccessHandler())
+                .successHandler(successHandler)
             )
             .logout(logout -> logout
                 .logoutUrl("/auth/logout")
@@ -74,12 +75,5 @@ public class SecurityConfig {
             .passwordEncoder(passwordEncoder())
             .and()
             .build();
-    }
-
-    @Bean
-    public AuthenticationSuccessHandler oAuth2SuccessHandler() {
-        SimpleUrlAuthenticationSuccessHandler successHandler = new SimpleUrlAuthenticationSuccessHandler();
-        successHandler.setDefaultTargetUrl("/dashboard");
-        return successHandler;
     }
 }

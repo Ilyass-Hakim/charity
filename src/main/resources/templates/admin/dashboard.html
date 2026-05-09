@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html class="light" lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html th:dir="${#locale.language == 'ar' ? 'rtl' : 'ltr'}" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Dashboard Admin - CharityHub</title>
+    <title th:text="#{admin.dashboard} + ' - CharityHub'">Dashboard Admin - CharityHub</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
     <script id="tailwind-config">
@@ -102,7 +102,9 @@
             }
         }
     </script>
-<style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+        [lang='ar'] { font-family: 'Noto Sans Arabic', sans-serif; }
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
@@ -119,32 +121,32 @@
 </div>
 <div>
 <h1 class="font-h3 text-h3 text-primary">CharityHub</h1>
-<p class="font-label-caps text-label-caps text-on-surface-variant">Admin Console</p>
+<p class="font-label-caps text-label-caps text-on-surface-variant" th:text="#{admin.console}">Admin Console</p>
 </div>
 </div>
 <nav class="flex-grow flex flex-col gap-xs">
 <a class="flex items-center gap-md px-md py-sm bg-primary-container text-on-primary-container rounded-lg font-bold duration-200 ease-in-out no-underline" th:href="@{/admin/dashboard}">
 <span class="material-symbols-outlined">dashboard</span>
-<span class="font-label-caps">Dashboard</span>
+<span class="font-label-caps" th:text="#{admin.dashboard}">Dashboard</span>
 </a>
 <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg duration-200 ease-in-out no-underline" th:href="@{/admin/utilisateurs}">
 <span class="material-symbols-outlined">person</span>
-<span class="font-label-caps">Users</span>
+<span class="font-label-caps" th:text="#{admin.users_title}">Users</span>
 </a>
 <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg duration-200 ease-in-out no-underline" th:href="@{/admin/dons}">
 <span class="material-symbols-outlined">payments</span>
-<span class="font-label-caps">Donations</span>
+<span class="font-label-caps" th:text="#{admin.donations_title}">Donations</span>
 </a>
 </nav>
 <div class="mt-auto flex flex-col gap-xs pt-md border-t border-outline-variant">
 <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg duration-200 ease-in-out no-underline" href="#">
 <span class="material-symbols-outlined">help</span>
-<span class="font-label-caps text-label-caps">Help Center</span>
+<span class="font-label-caps text-label-caps" th:text="#{dashboard.help}">Help Center</span>
 </a>
 <form th:action="@{/auth/logout}" method="post">
     <button type="submit" class="w-full flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg duration-200 ease-in-out">
         <span class="material-symbols-outlined">logout</span>
-        <span class="font-label-caps text-label-caps">Logout</span>
+        <span class="font-label-caps text-label-caps" th:text="#{dashboard.logout}">Logout</span>
     </button>
 </form>
 </div>
@@ -154,20 +156,28 @@
 <!-- Top Header -->
 <header class="flex justify-between items-center mb-xl">
 <div>
-<h2 class="font-h1 text-h1 text-on-surface">Platform Overview</h2>
-<p class="font-body-md text-on-surface-variant">Welcome back, Super Admin. Here's what's happening today.</p>
+<h2 class="font-h1 text-h1 text-on-surface" th:text="#{admin.overview}">Platform Overview</h2>
+<p class="font-body-md text-on-surface-variant" th:text="#{admin.welcome}">Welcome back, Super Admin. Here's what's happening today.</p>
 </div>
 <div class="flex items-center gap-md">
+<!-- Language Toggle -->
+<div class="flex gap-2 mr-4 text-sm font-bold text-primary">
+    <a th:href="@{'' (lang='en')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'en' ? 'text-secondary font-black' : ''}">EN</a>
+    <span class="text-outline opacity-30">|</span>
+    <a th:href="@{'' (lang='fr')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'fr' ? 'text-secondary font-black' : ''}">FR</a>
+    <span class="text-outline opacity-30">|</span>
+    <a th:href="@{'' (lang='ar')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'ar' ? 'text-secondary font-black' : ''}">AR</a>
+</div>
 <div class="relative">
 <span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline">search</span>
-<input class="pl-xl pr-md py-sm bg-surface-container-highest border-none rounded-full w-64 focus:ring-2 focus:ring-primary" placeholder="Search data..." type="text"/>
+<input class="pl-xl pr-md py-sm bg-surface-container-highest border-none rounded-full w-64 focus:ring-2 focus:ring-primary" th:placeholder="#{admin.search_placeholder}" type="text"/>
 </div>
 <button class="p-sm rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant relative">
 <span class="material-symbols-outlined">notifications</span>
 <span class="absolute top-2 right-2 w-2 h-2 bg-secondary rounded-full"></span>
 </button>
 <div class="flex items-center gap-sm pl-md border-l border-outline-variant">
-    <img alt="Admin Profile" class="w-10 h-10 rounded-full object-cover" src="https://ui-avatars.com/api/?name=Super+Admin&background=005440&color=fff"/>
+    <img alt="Admin Profile" class="w-10 h-10 rounded-full object-cover" th:src="${currentUser != null && currentUser.photoProfil != null ? currentUser.photoProfil : 'https://ui-avatars.com/api/?name=Super+Admin&background=005440&color=fff'}"/>
 </div>
 </div>
 </header>
@@ -178,7 +188,7 @@
 <span class="material-symbols-outlined text-h1">payments</span>
 </div>
 <div>
-<p class="font-label-caps text-on-surface-variant">Total Donations</p>
+<p class="font-label-caps text-on-surface-variant" th:text="#{admin.total_donations}">Total Donations</p>
 <h3 class="font-h2 text-h2 text-on-surface" th:text="${totalGlobalDonations} + ' MAD'">2,482,900 MAD</h3>
 <p class="text-xs text-primary font-bold flex items-center gap-xs">
 <span class="material-symbols-outlined text-[14px]">trending_up</span> +12.5% this month
@@ -190,7 +200,7 @@
 <span class="material-symbols-outlined text-h1">campaign</span>
 </div>
 <div>
-<p class="font-label-caps text-on-surface-variant">Active Campaigns</p>
+<p class="font-label-caps text-on-surface-variant" th:text="#{admin.active_campaigns}">Active Campaigns</p>
 <h3 class="font-h2 text-h2 text-on-surface" th:text="${nbActions}">142</h3>
 <p class="text-xs text-secondary font-bold flex items-center gap-xs">
 <span class="material-symbols-outlined text-[14px]">priority_high</span> 5 expiring soon
@@ -202,7 +212,7 @@
 <span class="material-symbols-outlined text-h1">verified_user</span>
 </div>
 <div>
-<p class="font-label-caps text-on-surface-variant">Organizations</p>
+<p class="font-label-caps text-on-surface-variant" th:text="#{admin.organizations}">Organizations</p>
 <h3 class="font-h2 text-h2 text-on-surface" th:text="${nbOrgs}">86</h3>
 <p class="text-xs text-on-surface-variant font-medium flex items-center gap-xs">
 <span class="material-symbols-outlined text-[14px]">check_circle</span> 98% verified
@@ -214,7 +224,7 @@
 <span class="material-symbols-outlined text-h1">groups</span>
 </div>
 <div>
-<p class="font-label-caps text-on-surface-variant">Total Users</p>
+<p class="font-label-caps text-on-surface-variant" th:text="#{admin.total_users}">Total Users</p>
 <h3 class="font-h2 text-h2 text-on-surface" th:text="${nbUtilisateurs}">12.5K</h3>
 <p class="text-xs text-primary font-bold flex items-center gap-xs">
 <span class="material-symbols-outlined text-[14px]">person_add</span> 240 new this week
@@ -226,7 +236,7 @@
 <!-- Impact Chart -->
 <div class="lg:col-span-2 bg-surface-container-lowest p-lg rounded-xl border border-outline-variant">
 <div class="flex justify-between items-center mb-lg">
-<h3 class="font-h3 text-h3 text-on-surface">Impact Over Time</h3>
+<h3 class="font-h3 text-h3 text-on-surface" th:text="#{admin.impact_time}">Impact Over Time</h3>
 <div class="flex gap-xs bg-surface-container p-1 rounded-lg">
 <button class="px-md py-xs text-xs font-bold rounded-md bg-white shadow-sm">1M</button>
 <button class="px-md py-xs text-xs font-medium rounded-md hover:bg-white/50">6M</button>
@@ -251,31 +261,31 @@
 </div>
 <!-- Recent Activity Feed -->
 <div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant">
-<h3 class="font-h3 text-h3 text-on-surface mb-lg">Recent Activity</h3>
+<h3 class="font-h3 text-h3 text-on-surface mb-lg" th:text="#{admin.recent_activity}">Recent Activity</h3>
 <div class="flex flex-col gap-lg">
     <div th:each="don : ${recentDonations}" class="flex gap-md">
         <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
             <span class="material-symbols-outlined text-[20px]">volunteer_activism</span>
         </div>
         <div>
-            <p class="font-body-sm text-on-surface font-semibold" th:text="'New Donation Received'"></p>
-            <p class="text-xs text-on-surface-variant" th:text="'&quot;' + ${don.actionCharite.titre} + '&quot; received ' + ${don.montant} + ' MAD from ' + ${don.utilisateur.prenom} + '.'"></p>
+            <p class="font-body-sm text-on-surface font-semibold" th:text="#{admin.new_donation_received}">New Donation Received</p>
+            <p class="text-xs text-on-surface-variant" th:text="#{admin.donation_activity_detail(${don.actionCharite.titre}, ${don.montant}, ${don.utilisateur.prenom})}"></p>
             <p class="text-[10px] text-outline mt-1 uppercase font-bold" th:text="${#temporals.format(don.date, 'dd MMM HH:mm')}"></p>
         </div>
     </div>
-    <div th:if="${recentDonations.empty}" class="py-xl text-center text-on-surface-variant text-sm italic">
+    <div th:if="${recentDonations.empty}" class="py-xl text-center text-on-surface-variant text-sm italic" th:text="#{admin.no_activity}">
         No recent activity.
     </div>
 </div>
-<button class="w-full mt-xl text-primary font-button text-sm hover:underline">View All Activity</button>
+<button class="w-full mt-xl text-primary font-button text-sm hover:underline" th:text="#{admin.view_all_activity}">View All Activity</button>
 </div>
 </div>
 <!-- Pending Verifications Section -->
 <section class="mt-xl">
 <div class="flex justify-between items-center mb-lg">
-<h3 class="font-h2 text-h2 text-on-surface">Pending Verifications</h3>
+<h3 class="font-h2 text-h2 text-on-surface" th:text="#{admin.pending_verifications}">Pending Verifications</h3>
 <button class="flex items-center gap-xs text-primary font-button hover:bg-primary-container/10 px-md py-xs rounded-lg transition-colors">
-                    View All <span class="material-symbols-outlined">arrow_forward</span>
+                    <span th:text="#{admin.view_all}">View All</span> <span class="material-symbols-outlined">arrow_forward</span>
 </button>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg">
@@ -296,29 +306,29 @@
         <div class="p-md bg-surface-container border-t border-outline-variant flex gap-md">
             <form th:action="@{/admin/organisations/{id}/valider(id=${org.id})}" method="post" class="flex-1">
                 <input type="hidden" name="approuver" value="true">
-                <button class="w-full bg-primary text-on-primary py-sm rounded-lg text-sm font-bold hover:opacity-90 active:scale-95 transition-all">Approve</button>
+                <button class="w-full bg-primary text-on-primary py-sm rounded-lg text-sm font-bold hover:opacity-90 active:scale-95 transition-all" th:text="#{admin.approve}">Approve</button>
             </form>
             <form th:action="@{/admin/organisations/{id}/valider(id=${org.id})}" method="post" class="flex-1">
                 <input type="hidden" name="approuver" value="false">
-                <button class="w-full bg-surface-container-high text-on-surface py-sm rounded-lg text-sm font-bold hover:bg-outline-variant active:scale-95 transition-all">Reject</button>
+                <button class="w-full bg-surface-container-high text-on-surface py-sm rounded-lg text-sm font-bold hover:bg-outline-variant active:scale-95 transition-all" th:text="#{admin.reject}">Reject</button>
             </form>
         </div>
     </div>
     <!-- Empty State -->
     <div th:if="${orgsEnAttente.empty}" class="col-span-full py-xl text-center text-on-surface-variant bg-surface-container-low rounded-xl border border-dashed border-outline">
-        <p class="font-body-md">Aucune organisation en attente de vérification.</p>
+        <p class="font-body-md" th:text="#{admin.no_pending}">Aucune organisation en attente de vérification.</p>
     </div>
 </div>
 </section>
 <!-- Footer Info -->
 <footer class="mt-xl pt-lg border-t border-outline-variant text-center">
-<p class="text-on-surface-variant font-body-sm">© 2024 CharityHub Global Admin Panel. All financial transactions are encrypted and secured.</p>
+<p class="text-on-surface-variant font-body-sm">© <span th:text="#{admin.footer}">2024 CharityHub Global Admin Panel. All financial transactions are encrypted and secured.</span></p>
 </footer>
 </main>
 <!-- Floating Action Button for Emergency Announcements -->
 <button class="fixed bottom-xl right-xl w-14 h-14 bg-secondary text-on-secondary rounded-full shadow-lg flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-40 group">
 <span class="material-symbols-outlined">campaign</span>
-<span class="absolute right-full mr-md bg-on-surface text-surface text-xs font-bold px-md py-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Platform Announcement</span>
+<span class="absolute right-full mr-md bg-on-surface text-surface text-xs font-bold px-md py-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none" th:text="#{admin.announcement}">Platform Announcement</span>
 </button>
 </body>
 </html>

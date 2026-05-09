@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html th:dir="${#locale.language == 'ar' ? 'rtl' : 'ltr'}" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Login - CharityHub</title>
+    <title th:text="#{nav.login} + ' - CharityHub'">Login - CharityHub</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -103,12 +103,10 @@
             }
         }
     </script>
+        </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet" />
     <style>
-        .input-halo:focus {
-            box-shadow: 0 0 0 2px rgba(132, 214, 185, 0.2);
-            border-color: #005440;
-            outline: none;
-        }
+        [lang='ar'] { font-family: 'Noto Sans Arabic', sans-serif; }
     </style>
 </head>
 <body class="bg-background text-on-background min-h-screen flex items-center justify-center p-md md:p-gutter font-body-md antialiased">
@@ -119,29 +117,37 @@
 <img alt="Community volunteers" class="absolute inset-0 w-full h-full object-cover opacity-90 mix-blend-multiply" data-alt="A warm, highly detailed photograph of diverse community volunteers working together in a bright, modern community center. Sunlight streams through large windows, highlighting the deep teal aprons and warm coral accents of their clothing. The mood is inspiring, collaborative, and hopeful, with a clean aesthetic matching a professional charity platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-dpyYjSyD-d6gg_cfog9gVTCp4dMvIt6lSQC_Bz1JH1OOQpjfrmMuCGyxvaLWo72XvzXPb_BDu6wTUd7RejrP_uRI0JxUWBlK89Bl5PBPoLbtPDcTbOEfZQtW3Gt4CO3ayGMmNL7mh_u6E_cKFa2fgdnDgAV6FVOnvD7_uouaOBpyQmIfp40IIDcT4ELbuDHNiROBN-Bbl5U7oohawbh4cK1xKPXy4m5T6wl2U30q46oZbkxbvWjRnSjbQQ2v2v1q6jviIdi2BQ"/>
 <div class="absolute inset-0 bg-primary-container/80 mix-blend-overlay"></div>
 <div class="absolute inset-0 p-xl flex flex-col justify-end text-on-primary">
-<h2 class="font-h1 text-h1 text-on-primary mb-sm">Empower Communities</h2>
-<p class="font-body-lg text-body-lg text-primary-fixed">Join CharityHub today and make a transparent, lasting impact on the causes you care about most.</p>
+<h2 class="font-h1 text-h1 text-on-primary mb-sm" th:text="#{register.title}">Empower Communities</h2>
+<p class="font-body-lg text-body-lg text-primary-fixed" th:text="#{register.subtitle}">Join CharityHub today and make a transparent, lasting impact on the causes you care about most.</p>
 </div>
 </section>
 <!-- Right Side: Login Form -->
-<section class="w-full md:w-1/2 p-lg md:p-xl flex flex-col justify-center bg-surface-container-lowest">
+<section class="w-full md:w-1/2 p-lg md:p-xl flex flex-col justify-center bg-surface-container-lowest relative">
+    <!-- Language Toggle -->
+    <div class="absolute top-4 right-4 flex gap-2 text-xs font-bold text-primary">
+        <a th:href="@{'' (lang='en')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'en' ? 'text-secondary font-black' : ''}">EN</a>
+        <span class="text-outline opacity-30">|</span>
+        <a th:href="@{'' (lang='fr')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'fr' ? 'text-secondary font-black' : ''}">FR</a>
+        <span class="text-outline opacity-30">|</span>
+        <a th:href="@{'' (lang='ar')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'ar' ? 'text-secondary font-black' : ''}">AR</a>
+    </div>
 <header class="mb-xl text-center md:text-left">
-<h1 class="font-h2 text-h2 text-primary mb-xs" th:text="#{nav.login}">Welcome back</h1>
-<p class="font-body-sm text-body-sm text-on-surface-variant">Please enter your details to sign in.</p>
+<h1 class="font-h2 text-h2 text-primary mb-xs" th:text="#{login.title}">Welcome back</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant" th:text="#{login.subtitle}">Please enter your details to sign in.</p>
 </header>
 
 <!-- Alerts -->
-<div th:if="${param.error}" class="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm border border-red-200">
+<div th:if="${param.error}" class="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm border border-red-200" th:text="#{login.error}">
     Email ou mot de passe incorrect.
 </div>
-<div th:if="${param.logout}" class="mb-4 p-3 bg-green-100 text-green-700 rounded-lg text-sm border border-green-200">
+<div th:if="${param.logout}" class="mb-4 p-3 bg-green-100 text-green-700 rounded-lg text-sm border border-green-200" th:text="#{login.logout_success}">
     Vous avez été déconnecté avec succès.
 </div>
 
 <form th:action="@{/auth/login}" method="post" class="flex flex-col gap-md">
 <!-- Email Input -->
 <div class="flex flex-col gap-base">
-<label class="font-label-caps text-label-caps text-on-surface" for="username">Email Address</label>
+<label class="font-label-caps text-label-caps text-on-surface" for="username" th:text="#{login.email}">Email Address</label>
 <div class="relative">
 <span aria-hidden="true" class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline">mail</span>
 <input class="w-full pl-xl pr-sm py-sm bg-surface-container-lowest border border-surface-variant rounded-lg font-body-sm text-body-sm text-on-surface input-halo placeholder:text-outline transition-all" id="username" name="username" placeholder="   you@example.com" required="" type="email"/>
@@ -150,8 +156,8 @@
 <!-- Password Input -->
 <div class="flex flex-col gap-base">
 <div class="flex justify-between items-center">
-<label class="font-label-caps text-label-caps text-on-surface" for="password">Password</label>
-<a class="font-body-sm text-body-sm text-primary hover:text-primary-container transition-colors" href="#">Forgot Password?</a>
+<label class="font-label-caps text-label-caps text-on-surface" for="password" th:text="#{login.password}">Password</label>
+<a class="font-body-sm text-body-sm text-primary hover:text-primary-container transition-colors" href="#" th:text="#{login.forgot}">Forgot Password?</a>
 </div>
 <div class="relative">
 <span aria-hidden="true" class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline">lock</span>
@@ -159,7 +165,7 @@
 </div>
 </div>
 <!-- Primary Action -->
-<button class="w-full mt-sm py-sm bg-primary hover:bg-primary-container text-on-primary font-button text-button rounded-lg transition-colors flex items-center justify-center gap-xs" type="submit">
+<button class="w-full mt-sm py-sm bg-primary hover:bg-primary-container text-on-primary font-button text-button rounded-lg transition-colors flex items-center justify-center gap-xs" type="submit" th:text="#{login.submit}">
                     Sign In
                 </button>
 </form>
@@ -179,7 +185,7 @@
                 Continue with Google
             </a>
 <p class="mt-xl text-center font-body-sm text-body-sm text-on-surface-variant">
-                Don't have an account? <a class="text-primary font-medium hover:text-primary-container transition-colors" th:href="@{/auth/register}">Sign up</a>
+                <span th:text="#{login.no_account}">Don't have an account?</span> <a class="text-primary font-medium hover:text-primary-container transition-colors" th:href="@{/auth/register}" th:text="#{login.register}">Register here</a>
 </p>
 </section>
 </main>

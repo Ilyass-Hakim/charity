@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html th:dir="${#locale.language == 'ar' ? 'rtl' : 'ltr'}" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Register - CharityHub</title>
+    <title th:text="#{nav.register} + ' - CharityHub'">Register - CharityHub</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -105,22 +105,27 @@
           }
         }
     </script>
+        </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet" />
     <style>
-        .material-symbols-outlined {
-          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .icon-fill { font-variation-settings: 'FILL' 1; }
-        .step-inactive { opacity: 0.5; }
-        .hidden { display: none; }
+        [lang='ar'] { font-family: 'Noto Sans Arabic', sans-serif; }
     </style>
 </head>
 <body class="bg-background text-on-background font-body-md min-h-screen flex items-center justify-center p-md md:p-xl">
 
-<main class="w-full max-w-3xl bg-surface rounded-xl border border-outline-variant p-lg md:p-xl shadow-lg">
+<main class="w-full max-w-3xl bg-surface rounded-xl border border-outline-variant p-lg md:p-xl shadow-lg relative">
+    <!-- Language Toggle -->
+    <div class="absolute top-4 right-4 flex gap-2 text-xs font-bold text-primary">
+        <a th:href="@{'' (lang='en')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'en' ? 'text-secondary font-black' : ''}">EN</a>
+        <span class="text-outline opacity-30">|</span>
+        <a th:href="@{'' (lang='fr')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'fr' ? 'text-secondary font-black' : ''}">FR</a>
+        <span class="text-outline opacity-30">|</span>
+        <a th:href="@{'' (lang='ar')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'ar' ? 'text-secondary font-black' : ''}">AR</a>
+    </div>
     <!-- Header -->
     <header class="text-center mb-xl">
-        <h1 class="font-display text-display text-primary mb-xs">Join CharityHub</h1>
-        <p class="font-body-lg text-body-lg text-on-surface-variant">Create your account to start making an impact.</p>
+        <h1 class="font-display text-display text-primary mb-xs" th:text="#{register.title}">Join CharityHub</h1>
+        <p class="font-body-lg text-body-lg text-on-surface-variant" th:text="#{register.subtitle}">Create your account to start making an impact.</p>
     </header>
 
     <!-- Stepper -->
@@ -148,9 +153,9 @@
             </li>
         </ol>
         <div class="flex justify-between mt-sm max-w-[280px] sm:max-w-[360px] mx-auto font-label-caps text-label-caps text-on-surface-variant px-2">
-            <span id="step1-label" class="text-primary font-bold">Role</span>
-            <span id="step2-label">Info</span>
-            <span id="step3-label">Confirm</span>
+            <span id="step1-label" class="text-primary font-bold" th:text="#{register.role}">Role</span>
+            <span id="step2-label" th:text="#{register.info}">Info</span>
+            <span id="step3-label" th:text="#{register.confirm}">Confirm</span>
         </div>
     </nav>
 
@@ -159,13 +164,13 @@
         
         <!-- Flash Error -->
         <div th:if="${error}" class="mb-6 p-4 bg-error-container text-on-error-container rounded-lg text-body-sm border border-error/20" th:text="${error}"></div>
-        <div th:if="${#fields.hasAnyErrors()}" class="mb-6 p-4 bg-error-container text-on-error-container rounded-lg text-body-sm border border-error/20">
+        <div th:if="${#fields.hasAnyErrors()}" class="mb-6 p-4 bg-error-container text-on-error-container rounded-lg text-body-sm border border-error/20" th:text="#{register.error_fix}">
             Veuillez corriger les erreurs ci-dessous.
         </div>
 
         <!-- STEP 1: ROLE SELECTION -->
         <div id="step1-content" class="space-y-lg animate-fadeIn">
-            <h2 class="font-h2 text-h2 text-on-background text-center">Choose your account type</h2>
+            <h2 class="font-h2 text-h2 text-on-background text-center" th:text="#{register.choose_type}">Choose your account type</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
                 <!-- User Role -->
                 <label class="relative cursor-pointer group">
@@ -173,8 +178,8 @@
                     <div class="p-lg rounded-xl border-2 border-outline-variant bg-surface-container-lowest transition-all peer-checked:border-primary peer-checked:bg-primary/5 hover:border-primary/50 flex flex-col items-center text-center gap-md">
                         <span class="material-symbols-outlined text-4xl text-primary" style="font-size: 48px;">person</span>
                         <div>
-                            <p class="font-h3 text-h3 text-on-surface">Individual / Donor</p>
-                            <p class="font-body-sm text-body-sm text-on-surface-variant mt-xs">I want to browse actions and make donations.</p>
+                            <p class="font-h3 text-h3 text-on-surface" th:text="#{register.individual}">Individual / Donor</p>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant mt-xs" th:text="#{register.individual_desc}">I want to browse actions and make donations.</p>
                         </div>
                     </div>
                 </label>
@@ -184,45 +189,45 @@
                     <div class="p-lg rounded-xl border-2 border-outline-variant bg-surface-container-lowest transition-all peer-checked:border-primary peer-checked:bg-primary/5 hover:border-primary/50 flex flex-col items-center text-center gap-md">
                         <span class="material-symbols-outlined text-4xl text-secondary" style="font-size: 48px;">corporate_fare</span>
                         <div>
-                            <p class="font-h3 text-h3 text-on-surface">Organisation</p>
-                            <p class="font-body-sm text-body-sm text-on-surface-variant mt-xs">I represent a charity and want to post actions.</p>
+                            <p class="font-h3 text-h3 text-on-surface" th:text="#{register.org}">Organisation</p>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant mt-xs" th:text="#{register.org_desc}">I represent a charity and want to post actions.</p>
                         </div>
                     </div>
                 </label>
             </div>
             <div class="flex justify-end pt-md border-t border-outline-variant">
                 <button type="button" onclick="nextStep(2)" class="px-lg py-sm rounded-lg bg-primary text-on-primary font-button text-button hover:bg-primary-container transition-all flex items-center gap-xs shadow-sm">
-                    Next Step <span class="material-symbols-outlined">arrow_forward</span>
+                    <span th:text="#{register.next}">Next Step</span> <span class="material-symbols-outlined">arrow_forward</span>
                 </button>
             </div>
         </div>
 
         <!-- STEP 2: INFORMATION ENTRY -->
         <div id="step2-content" class="hidden space-y-lg animate-fadeIn">
-            <h2 id="step2-title" class="font-h2 text-h2 text-on-background">Account Details</h2>
+            <h2 id="step2-title" class="font-h2 text-h2 text-on-background" th:text="#{register.account_details}">Account Details</h2>
             
             <div class="space-y-md">
                 <!-- Common Contact Fields -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
                     <div>
-                        <label class="block font-label-caps text-label-caps text-on-surface mb-base" for="nom">Nom <span class="text-error">*</span></label>
+                        <label class="block font-label-caps text-label-caps text-on-surface mb-base" for="nom"><span th:text="#{register.nom}">Nom</span> <span class="text-error">*</span></label>
                         <input type="text" th:field="*{nom}" class="block w-full rounded-lg border border-outline-variant bg-surface py-sm px-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary-fixed-dim/20 focus:outline-none transition-shadow" required/>
                         <p class="text-error text-xs mt-1" th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}"></p>
                     </div>
                     <div id="prenom-container">
-                        <label class="block font-label-caps text-label-caps text-on-surface mb-base" for="prenom">Prénom</label>
+                        <label class="block font-label-caps text-label-caps text-on-surface mb-base" for="prenom" th:text="#{register.prenom}">Prénom</label>
                         <input type="text" th:field="*{prenom}" class="block w-full rounded-lg border border-outline-variant bg-surface py-sm px-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary-fixed-dim/20 focus:outline-none transition-shadow"/>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
                     <div>
-                        <label class="block font-label-caps text-label-caps text-on-surface mb-base" for="email">Email Address <span class="text-error">*</span></label>
+                        <label class="block font-label-caps text-label-caps text-on-surface mb-base" for="email"><span th:text="#{register.email}">Email Address</span> <span class="text-error">*</span></label>
                         <input type="email" th:field="*{email}" class="block w-full rounded-lg border border-outline-variant bg-surface py-sm px-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary-fixed-dim/20 focus:outline-none transition-shadow" required/>
                         <p class="text-error text-xs mt-1" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
                     </div>
                     <div>
-                        <label class="block font-label-caps text-label-caps text-on-surface mb-base" for="telephone">Phone Number</label>
+                        <label class="block font-label-caps text-label-caps text-on-surface mb-base" for="telephone" th:text="#{register.phone}">Phone Number</label>
                         <input type="text" th:field="*{telephone}" class="block w-full rounded-lg border border-outline-variant bg-surface py-sm px-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary-fixed-dim/20 focus:outline-none transition-shadow" placeholder="+212600000000"/>
                     </div>
                 </div>
@@ -231,51 +236,51 @@
                 <div id="org-specific-fields" class="hidden space-y-md">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
                         <div>
-                            <label class="block font-label-caps text-label-caps text-on-surface mb-base" for="nomOrganisation">Organisation Name <span class="text-error">*</span></label>
+                            <label class="block font-label-caps text-label-caps text-on-surface mb-base" for="nomOrganisation"><span th:text="#{register.org_name}">Organisation Name</span> <span class="text-error">*</span></label>
                             <input type="text" th:field="*{nomOrganisation}" id="nomOrgInput" class="block w-full rounded-lg border border-outline-variant bg-surface py-sm px-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary-fixed-dim/20 focus:outline-none transition-shadow"/>
                         </div>
                         <div>
-                            <label class="block font-label-caps text-label-caps text-on-surface mb-base" for="matriculeFiscal">Tax ID / Matricule Fiscal</label>
+                            <label class="block font-label-caps text-label-caps text-on-surface mb-base" for="matriculeFiscal" th:text="#{register.tax_id}">Tax ID / Matricule Fiscal</label>
                             <input type="text" th:field="*{matriculeFiscal}" class="block w-full rounded-lg border border-outline-variant bg-surface py-sm px-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary-fixed-dim/20 focus:outline-none transition-shadow"/>
                         </div>
                     </div>
                     <div>
-                        <label class="block font-label-caps text-label-caps text-on-surface mb-base" for="adresseLegale">Legal Address</label>
+                        <label class="block font-label-caps text-label-caps text-on-surface mb-base" for="adresseLegale" th:text="#{register.legal_address}">Legal Address</label>
                         <input type="text" th:field="*{adresseLegale}" class="block w-full rounded-lg border border-outline-variant bg-surface py-sm px-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary-fixed-dim/20 focus:outline-none transition-shadow"/>
                     </div>
                     <div>
-                        <label class="block font-label-caps text-label-caps text-on-surface mb-base" for="descriptionMission">Mission Description</label>
+                        <label class="block font-label-caps text-label-caps text-on-surface mb-base" for="descriptionMission" th:text="#{register.mission}">Mission Description</label>
                         <textarea th:field="*{descriptionMission}" rows="3" class="block w-full rounded-lg border border-outline-variant bg-surface py-sm px-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary-fixed-dim/20 focus:outline-none transition-shadow"></textarea>
                     </div>
                 </div>
 
                 <!-- Password -->
                 <div>
-                    <label class="block font-label-caps text-label-caps text-on-surface mb-base" for="motDePasse">Password <span class="text-error">*</span></label>
+                    <label class="block font-label-caps text-label-caps text-on-surface mb-base" for="motDePasse"><span th:text="#{register.password}">Password</span> <span class="text-error">*</span></label>
                     <input type="password" th:field="*{motDePasse}" class="block w-full rounded-lg border border-outline-variant bg-surface py-sm px-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary-fixed-dim/20 focus:outline-none transition-shadow" required minlength="6"/>
                     <p class="text-error text-xs mt-1" th:if="${#fields.hasErrors('motDePasse')}" th:errors="*{motDePasse}"></p>
                 </div>
             </div>
 
             <div class="pt-md border-t border-outline-variant flex justify-between gap-sm">
-                <button type="button" onclick="nextStep(1)" class="px-lg py-sm rounded-lg border border-outline text-on-surface font-button text-button hover:bg-surface-container transition-colors">
+                <button type="button" onclick="nextStep(1)" class="px-lg py-sm rounded-lg border border-outline text-on-surface font-button text-button hover:bg-surface-container transition-colors" th:text="#{register.back}">
                     Back
                 </button>
                 <button type="button" onclick="nextStep(3)" class="px-lg py-sm rounded-lg bg-primary text-on-primary font-button text-button hover:bg-primary-container transition-colors flex items-center gap-xs shadow-sm">
-                    Review <span class="material-symbols-outlined">arrow_forward</span>
+                    <span th:text="#{register.review}">Review</span> <span class="material-symbols-outlined">arrow_forward</span>
                 </button>
             </div>
         </div>
 
         <!-- STEP 3: CONFIRMATION -->
         <div id="step3-content" class="hidden space-y-lg animate-fadeIn">
-            <h2 class="font-h2 text-h2 text-on-background">Review & Confirm</h2>
+            <h2 class="font-h2 text-h2 text-on-background" th:text="#{register.review_confirm}">Review & Confirm</h2>
             <div class="bg-surface-container-low p-lg rounded-xl space-y-md border border-outline-variant">
                 <div class="grid grid-cols-2 gap-sm text-body-sm">
-                    <span class="text-on-surface-variant font-bold">Account Type:</span>
+                    <span class="text-on-surface-variant font-bold" th:text="#{register.account_type}">Account Type:</span>
                     <span id="sum-type" class="text-primary font-bold">...</span>
                     
-                    <span class="text-on-surface-variant font-bold">Name:</span>
+                    <span class="text-on-surface-variant font-bold" th:text="#{register.name}">Name:</span>
                     <span id="sum-name">...</span>
                     
                     <span class="text-on-surface-variant font-bold">Email:</span>
@@ -283,30 +288,38 @@
 
                     <div id="sum-org-box" class="col-span-2 hidden pt-md border-t border-outline-variant/30 mt-md">
                          <div class="grid grid-cols-2 gap-sm">
-                            <span class="text-on-surface-variant font-bold">Organisation:</span>
+                            <span class="text-on-surface-variant font-bold" th:text="#{register.org_name}">Organisation:</span>
                             <span id="sum-org-name">...</span>
                          </div>
                     </div>
                 </div>
                 <div class="p-sm bg-primary/5 rounded-lg border border-primary/10">
-                    <p class="text-body-sm italic text-on-surface-variant">By clicking "Confirm", you agree to our Terms of Service and Privacy Policy.</p>
+                    <p class="text-body-sm italic text-on-surface-variant" th:text="#{register.terms}">By clicking "Confirm", you agree to our Terms of Service and Privacy Policy.</p>
                 </div>
             </div>
 
             <div class="pt-md border-t border-outline-variant flex justify-between gap-sm">
-                <button type="button" onclick="nextStep(2)" class="px-lg py-sm rounded-lg border border-outline text-on-surface font-button text-button hover:bg-surface-container transition-colors">
+                <button type="button" onclick="nextStep(2)" class="px-lg py-sm rounded-lg border border-outline text-on-surface font-button text-button hover:bg-surface-container transition-colors" th:text="#{register.back}">
                     Back
                 </button>
                 <button type="submit" class="px-xl py-sm rounded-lg bg-primary text-on-primary font-button text-button hover:bg-primary-container transition-colors flex items-center gap-xs shadow-lg">
-                    Confirm & Register <span class="material-symbols-outlined">check_circle</span>
+                    <span th:text="#{register.confirm_register}">Confirm & Register</span> <span class="material-symbols-outlined">check_circle</span>
                 </button>
             </div>
         </div>
     </form>
     
+    <!-- JS Translation Placeholders -->
+    <div class="hidden" id="js-translations">
+        <span id="t-org-details" th:text="#{register.org_details}">Organisation Details</span>
+        <span id="t-pers-details" th:text="#{register.account_details}">Personal Details</span>
+        <span id="t-contact-name" th:text="#{register.contact_name}">Contact Person Name</span>
+        <span id="t-nom" th:text="#{register.nom}">Nom</span>
+    </div>
+
     <div class="mt-xl text-center">
         <p class="font-body-sm text-body-sm text-on-surface-variant">
-            Already have an account? <a th:href="@{/auth/login}" class="text-primary font-bold hover:underline transition-all">Sign in</a>
+            <span th:text="#{register.already_account}">Already have an account?</span> <a th:href="@{/auth/login}" class="text-primary font-bold hover:underline transition-all" th:text="#{register.sign_in}">Sign in</a>
         </p>
     </div>
 </main>
@@ -359,14 +372,14 @@
         if (role === 'ORG') {
             orgFields.classList.remove('hidden');
             prenomContainer.classList.add('hidden');
-            title.innerText = "Organisation Details";
-            nomLabel.innerHTML = "Contact Person Name <span class='text-error'>*</span>";
+            title.innerText = document.getElementById('t-org-details').innerText;
+            nomLabel.innerHTML = document.getElementById('t-contact-name').innerText + " <span class='text-error'>*</span>";
             document.getElementById('nomOrgInput').required = true;
         } else {
             orgFields.classList.add('hidden');
             prenomContainer.classList.remove('hidden');
-            title.innerText = "Personal Details";
-            nomLabel.innerHTML = "Nom <span class='text-error'>*</span>";
+            title.innerText = document.getElementById('t-pers-details').innerText;
+            nomLabel.innerHTML = document.getElementById('t-nom').innerText + " <span class='text-error'>*</span>";
             document.getElementById('nomOrgInput').required = false;
         }
     }

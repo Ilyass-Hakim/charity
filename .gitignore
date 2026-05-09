@@ -34,5 +34,18 @@ build/
 
 ### Secrets ###
 .env
+.env.*
+.env.properties
 
+### OS Files ###
+.DS_Store
+Thumbs.db
+*.log
+
+### Dependencies ###
+node_modules/
+dist/
+
+### App Specific ###
 uploads/
+temp/

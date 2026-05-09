@@ -1,5 +1,7 @@
 package com.charite.controller;
 
+import com.charite.service.FileService;
+
 import com.charite.dto.OrganisationDto;
 import com.charite.entity.MembreOrganisation;
 import com.charite.entity.Organisation;
@@ -29,6 +31,7 @@ public class OrganisationController {
     private final ActionService actionService;
     private final UtilisateurService utilisateurService;
     private final MembreOrganisationRepository membreRepository;
+    private final FileService fileService;
 
     @GetMapping("/inscription")
     public String inscriptionForm(Model model) {
@@ -143,11 +146,18 @@ public class OrganisationController {
     @PostMapping("/settings")
     public String updateSettings(org.springframework.security.core.Authentication authentication,
                                  @ModelAttribute Organisation organisation,
+                                 @org.springframework.web.bind.annotation.RequestParam(value = "logoFile", required = false) org.springframework.web.multipart.MultipartFile logoFile,
                                  RedirectAttributes ra) {
         String email = com.charite.security.SecurityUtils.getEmail(authentication);
         Utilisateur u = utilisateurService.getByEmail(email);
         Organisation existingOrg = u.getMemberships().get(0).getOrganisation();
         
+        // Update logo if provided
+        if (logoFile != null && !logoFile.isEmpty()) {
+            String logoPath = fileService.saveFile(logoFile);
+            existingOrg.setLogo(logoPath);
+        }
+
         // Update fields
         existingOrg.setNom(organisation.getNom());
         existingOrg.setDescription(organisation.getDescription());

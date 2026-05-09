@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html class="light" lang="en" xmlns:th="http://www.thymeleaf.org">
+<html th:dir="${#locale.language == 'ar' ? 'rtl' : 'ltr'}" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>My Campaigns - CharityHub</title>
+    <title th:text="#{campaigns.title} + ' - CharityHub'">My Campaigns - CharityHub</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -83,9 +83,10 @@
             }
         }
     </script>
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet" />
     <style>
-        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-        .icon-fill { font-variation-settings: 'FILL' 1; }
+        [lang='ar'] { font-family: 'Noto Sans Arabic', sans-serif; }
     </style>
 </head>
 <body class="bg-background text-on-background antialiased flex flex-col md:flex-row min-h-screen">
@@ -99,33 +100,33 @@
         </div>
         <div>
             <div class="font-h3 text-h3 text-primary">CharityHub</div>
-            <div class="font-label-caps text-label-caps text-on-surface-variant">Admin Console</div>
+            <div class="font-label-caps text-label-caps text-on-surface-variant" th:text="#{dashboard.console}">Admin Console</div>
         </div>
     </div>
     <a th:href="@{/actions/creer}" class="bg-primary text-on-primary font-button text-button rounded-lg px-md py-sm mb-md hover:bg-primary-container transition-colors flex items-center justify-center gap-xs no-underline shadow-sm">
-        <span class="material-symbols-outlined" style="font-size: 18px;">add</span> New Campaign
+        <span class="material-symbols-outlined" style="font-size: 18px;">add</span> <span th:text="#{dashboard.new_campaign}">New Campaign</span>
     </a>
     <nav class="flex-1 flex flex-col gap-xs">
         <a class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg font-label-caps text-label-caps no-underline transition-all" th:href="@{/organisation/dashboard}">
-            <span class="material-symbols-outlined">dashboard</span> Dashboard
+            <span class="material-symbols-outlined">dashboard</span> <span th:text="#{dashboard.home}">Dashboard</span>
         </a>
         <a class="flex items-center gap-sm px-md py-sm bg-primary-container text-on-primary-container rounded-lg font-bold font-label-caps text-label-caps no-underline transition-all" th:href="@{/organisation/campaigns}">
-            <span class="material-symbols-outlined icon-fill">volunteer_activism</span> My Campaigns
+            <span class="material-symbols-outlined icon-fill">volunteer_activism</span> <span th:text="#{dashboard.my_campaigns}">My Campaigns</span>
         </a>
         <a class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg font-label-caps text-label-caps no-underline transition-all" th:href="@{/organisation/donations}">
-            <span class="material-symbols-outlined">payments</span> Donations
+            <span class="material-symbols-outlined">payments</span> <span th:text="#{dashboard.donations}">Donations</span>
         </a>
         <a class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg font-label-caps text-label-caps no-underline transition-all" th:href="@{/organisation/settings}">
-            <span class="material-symbols-outlined">settings</span> Settings
+            <span class="material-symbols-outlined">settings</span> <span th:text="#{dashboard.settings}">Settings</span>
         </a>
     </nav>
     <div class="mt-auto flex flex-col gap-xs border-t border-outline-variant pt-md">
         <a class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg font-label-caps text-label-caps no-underline transition-all" href="#">
-            <span class="material-symbols-outlined">help</span> Help Center
+            <span class="material-symbols-outlined">help</span> <span th:text="#{dashboard.help}">Help Center</span>
         </a>
         <form th:action="@{/auth/logout}" method="post">
             <button type="submit" class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-error/10 hover:text-error rounded-lg font-label-caps text-label-caps w-full text-left transition-all">
-                <span class="material-symbols-outlined">logout</span> Logout
+                <span class="material-symbols-outlined">logout</span> <span th:text="#{dashboard.logout}">Logout</span>
             </button>
         </form>
     </div>
@@ -137,11 +138,11 @@
     <header class="bg-surface border-b border-outline-variant w-full sticky top-0 z-30">
         <div class="flex justify-between items-center px-lg py-sm">
             <nav class="flex gap-lg items-center">
-                <a class="font-body-md text-on-surface-variant hover:text-primary transition-colors pb-1 no-underline" th:href="@{/}">Home</a>
-                <a class="font-body-md text-on-surface-variant hover:text-primary transition-colors pb-1 no-underline" th:href="@{/actions}">Explore</a>
-                <a class="font-body-md text-on-surface-variant hover:text-primary transition-colors pb-1 no-underline" th:href="@{/about}">About</a>
+                <a class="font-body-md text-on-surface-variant hover:text-primary transition-colors pb-1 no-underline" th:href="@{/}" th:text="#{nav.home}">Home</a>
+                <a class="font-body-md text-on-surface-variant hover:text-primary transition-colors pb-1 no-underline" th:href="@{/actions}" th:text="#{nav.explore}">Explore</a>
+                <a class="font-body-md text-on-surface-variant hover:text-primary transition-colors pb-1 no-underline" th:href="@{/about}" th:text="#{nav.about}">About</a>
                 <a class="font-body-md text-on-surface-variant hover:text-primary transition-colors pb-1 flex items-center gap-xs no-underline" th:href="@{/organisation/dashboard}">
-                    <span class="material-symbols-outlined text-[18px]">dashboard_customize</span> Console
+                    <span class="material-symbols-outlined text-[18px]">dashboard_customize</span> <span th:text="#{nav.console}">Console</span>
                 </a>
             </nav>
             <div class="flex items-center gap-sm">
@@ -159,12 +160,22 @@
         <!-- Page Header -->
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-xl gap-md">
             <div>
-                <h1 class="font-h1 text-h1 text-on-surface mb-base">My Campaigns</h1>
-                <p class="font-body-md text-body-md text-on-surface-variant" th:text="'Managing campaigns for ' + ${organisation.nom}">Manage your initiatives.</p>
+                <h1 class="font-h1 text-h1 text-on-surface mb-base" th:text="#{campaigns.title}">My Campaigns</h1>
+                <p class="font-body-md text-body-md text-on-surface-variant" th:text="#{campaigns.subtitle} + ' ' + ${organisation.nom}">Manage your initiatives.</p>
             </div>
-            <a th:href="@{/actions/creer}" class="bg-primary text-on-primary font-button text-button rounded-lg px-lg py-sm hover:bg-primary-container transition-colors flex items-center gap-xs no-underline shadow-md">
-                <span class="material-symbols-outlined" style="font-size: 20px;">add</span> New Campaign
-            </a>
+            <div class="flex items-center gap-lg">
+                <!-- Language Toggle -->
+                <div class="flex gap-2 mr-4 text-sm font-bold text-primary">
+                    <a th:href="@{'' (lang='en')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'en' ? 'text-secondary font-black' : ''}">EN</a>
+                    <span class="text-outline opacity-30">|</span>
+                    <a th:href="@{'' (lang='fr')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'fr' ? 'text-secondary font-black' : ''}">FR</a>
+                    <span class="text-outline opacity-30">|</span>
+                    <a th:href="@{'' (lang='ar')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'ar' ? 'text-secondary font-black' : ''}">AR</a>
+                </div>
+                <a th:href="@{/actions/creer}" class="bg-primary text-on-primary font-button text-button rounded-lg px-lg py-sm hover:bg-primary-container transition-colors flex items-center gap-xs no-underline shadow-md">
+                    <span class="material-symbols-outlined" style="font-size: 20px;">add</span> <span th:text="#{dashboard.new_campaign}">New Campaign</span>
+                </a>
+            </div>
         </div>
 
         <!-- Campaigns Grid -->
@@ -189,7 +200,7 @@
                     <!-- Progress Bar -->
                     <div class="mb-lg">
                         <div class="flex justify-between items-center text-xs mb-xs">
-                            <span class="text-on-surface-variant" th:text="${action.montantActuel} + ' MAD raised'">0 MAD raised</span>
+                            <span class="text-on-surface-variant" th:text="${action.montantActuel} + ' MAD ' + #{campaigns.raised}">0 MAD raised</span>
                             <span class="font-bold text-primary" th:text="${#numbers.formatDecimal(action.pourcentageAtteint, 1, 0)} + '%'">0%</span>
                         </div>
                         <div class="w-full h-2 bg-surface-variant rounded-full overflow-hidden">
@@ -198,9 +209,9 @@
                     </div>
 
                     <div class="flex gap-sm">
-                        <a th:href="@{/actions/{id}(id=${action.id})}" class="flex-1 bg-surface-container-high text-on-surface text-center py-xs rounded-lg font-button text-button no-underline hover:bg-surface-variant transition-colors">Details</a>
+                        <a th:href="@{/actions/{id}(id=${action.id})}" class="flex-1 bg-surface-container-high text-on-surface text-center py-xs rounded-lg font-button text-button no-underline hover:bg-surface-variant transition-colors" th:text="#{campaigns.details}">Details</a>
                         <form th:action="@{/actions/{id}/archiver(id=${action.id})}" method="post" class="flex-1">
-                            <button type="submit" class="w-full bg-transparent border border-error text-error py-xs rounded-lg font-button text-button hover:bg-error/10 transition-colors">Archive</button>
+                            <button type="submit" class="w-full bg-transparent border border-error text-error py-xs rounded-lg font-button text-button hover:bg-error/10 transition-colors" th:text="#{campaigns.archive}">Archive</button>
                         </form>
                     </div>
                 </div>
@@ -211,10 +222,10 @@
                 <div class="w-20 h-20 bg-surface-variant rounded-full flex items-center justify-center mx-auto mb-md">
                     <span class="material-symbols-outlined text-[40px] text-on-surface-variant">volunteer_activism</span>
                 </div>
-                <h3 class="font-h3 text-h3 text-on-surface">No campaigns yet</h3>
-                <p class="text-on-surface-variant mt-xs mb-lg">Start your first initiative to make an impact.</p>
+                <h3 class="font-h3 text-h3 text-on-surface" th:text="#{campaigns.no_campaigns}">No campaigns yet</h3>
+                <p class="text-on-surface-variant mt-xs mb-lg" th:text="#{campaigns.start_first}">Start your first initiative to make an impact.</p>
                 <a th:href="@{/actions/creer}" class="bg-primary text-on-primary font-button text-button rounded-lg px-lg py-sm hover:bg-primary-container transition-colors inline-flex items-center gap-xs no-underline">
-                    <span class="material-symbols-outlined">add</span> Create Campaign
+                    <span class="material-symbols-outlined">add</span> <span th:text="#{campaigns.create}">Create Campaign</span>
                 </a>
             </div>
         </div>

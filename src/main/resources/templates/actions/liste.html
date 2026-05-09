@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html class="light" lang="en" xmlns:th="http://www.thymeleaf.org"
+<html th:dir="${#locale.language == 'ar' ? 'rtl' : 'ltr'}" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org"
     xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Discover Campaigns - CharityHub</title>
+    <title th:text="#{nav.explore} + ' - CharityHub'">Discover Campaigns - CharityHub</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link
         href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&amp;family=Inter:wght@400;600;700&amp;display=swap"
@@ -109,17 +109,10 @@
             },
         }
     </script>
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet" />
     <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-            display: inline-block;
-            line-height: 1;
-        }
-
-        body {
-            background-color: #f8f9fa;
-            color: #191c1d;
-        }
+        [lang='ar'] { font-family: 'Noto Sans Arabic', sans-serif; }
     </style>
 </head>
 
@@ -133,34 +126,41 @@
                 <a class="font-h2 text-h2 font-bold text-primary dark:text-primary-fixed-dim"
                     th:href="@{/}">CharityHub</a>
                 <nav class="hidden md:flex gap-lg items-center">
-                    <a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors pb-1" th:href="@{/}">Home</a>
-                    <a class="font-body-md text-body-md text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-secondary pb-1" th:href="@{/actions}">Explore</a>
-                    <a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors pb-1" th:href="@{/about}">About</a>
+                    <a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors pb-1 no-underline" th:href="@{/}" th:text="#{nav.home}">Home</a>
+                    <a class="font-body-md text-body-md text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-secondary pb-1 no-underline" th:href="@{/actions}" th:text="#{nav.explore}">Explore</a>
+                    <a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors pb-1 no-underline" th:href="@{/about}" th:text="#{nav.about}">About</a>
                     <a sec:authorize="hasRole('ROLE_ORG_ADMIN')" 
-                        class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors flex items-center gap-xs pb-1" 
+                        class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors flex items-center gap-xs pb-1 no-underline" 
                         th:href="@{/organisation/dashboard}">
-                        <span class="material-symbols-outlined text-[18px]">dashboard_customize</span> Console
+                        <span class="material-symbols-outlined text-[18px]">dashboard_customize</span> <span th:text="#{nav.console}">Console</span>
                     </a>
                 </nav>
             </div>
             <div class="flex items-center gap-md">
+                <!-- Language Toggle -->
+                <div class="flex gap-2 mr-4 text-sm font-bold text-primary">
+                    <a th:href="@{'' (lang='en')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'en' ? 'text-secondary font-black' : ''}">EN</a>
+                    <span class="text-outline opacity-30">|</span>
+                    <a th:href="@{'' (lang='fr')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'fr' ? 'text-secondary font-black' : ''}">FR</a>
+                    <span class="text-outline opacity-30">|</span>
+                    <a th:href="@{'' (lang='ar')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'ar' ? 'text-secondary font-black' : ''}">AR</a>
+                </div>
                 <div sec:authorize="!isAuthenticated()" class="flex items-center gap-sm">
                     <a th:href="@{/auth/login}"
-                        class="text-on-surface-variant hover:text-primary transition-colors">Login</a>
+                        class="text-on-surface-variant hover:text-primary transition-colors no-underline" th:text="#{nav.login}">Login</a>
                     <a th:href="@{/auth/register}"
-                        class="bg-primary text-on-primary font-button text-button px-lg py-xs rounded-lg hover:bg-primary-container transition-all">Get
-                        Started</a>
+                        class="bg-primary text-on-primary font-button text-button px-lg py-xs rounded-lg hover:bg-primary-container transition-all no-underline" th:text="#{nav.register}">Get Started</a>
                 </div>
                 <div sec:authorize="isAuthenticated()" class="flex items-center gap-sm">
                     <a sec:authorize="hasRole('ROLE_ORG_ADMIN')" th:href="@{/organisation/dashboard}"
                         class="rounded-full overflow-hidden w-10 h-10 border border-outline-variant shadow-sm hover:ring-2 hover:ring-primary/20 transition-all">
                         <img alt="Org profile" class="w-full h-full object-cover"
-                            src="https://ui-avatars.com/api/?name=Org&background=005440&color=fff" />
+                            th:src="${currentUser != null && currentUser.photoProfil != null ? currentUser.photoProfil : 'https://ui-avatars.com/api/?name=Org&background=005440&color=fff'}" />
                     </a>
                     <a sec:authorize="!hasRole('ROLE_ORG_ADMIN')" th:href="@{/utilisateur/profil}"
                         class="rounded-full overflow-hidden w-10 h-10 border border-outline-variant shadow-sm hover:ring-2 hover:ring-primary/20 transition-all">
                         <img alt="User profile" class="w-full h-full object-cover"
-                            src="https://ui-avatars.com/api/?name=User&background=005440&color=fff" />
+                            th:src="${currentUser != null && currentUser.photoProfil != null ? currentUser.photoProfil : 'https://ui-avatars.com/api/?name=' + (currentUser != null ? currentUser.prenom : 'User') + '&background=005440&color=fff'}" />
                     </a>
                 </div>
             </div>
@@ -180,8 +180,8 @@
 
         <!-- Hero Title Section -->
         <div class="mb-xl">
-            <h1 class="font-display text-display text-on-background mb-xs">Discover Campaigns</h1>
-            <p class="text-on-surface-variant max-w-2xl font-body-lg text-body-lg">Support causes that matter. Every
+            <h1 class="font-display text-display text-on-background mb-xs" th:text="#{explore.title}">Discover Campaigns</h1>
+            <p class="text-on-surface-variant max-w-2xl font-body-lg text-body-lg" th:text="#{explore.subtitle}">Support causes that matter. Every
                 contribution brings us closer to a world driven by empathy and lasting impact.</p>
         </div>
 
@@ -194,18 +194,18 @@
                         class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline">search</span>
                     <input type="text" name="keyword" th:value="${keyword}"
                         class="w-full pl-xl pr-md py-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                        placeholder="   Filter by keywords, organizations..." />
+                        th:placeholder="#{explore.search_placeholder}" />
                 </div>
 
                 <!-- Category Selector -->
                 <div class="flex flex-wrap gap-xs items-center w-full lg:w-auto">
-                    <span class="text-label-caps font-label-caps text-outline mr-xs">CATEGORY</span>
+                    <span class="text-label-caps font-label-caps text-outline mr-xs" th:text="#{explore.category}">CATEGORY</span>
                     <a th:href="@{/actions(keyword=${keyword})}"
                         th:class="${categorieSelectionnee == null || categorieSelectionnee == '' ? 'px-md py-xs bg-primary text-on-primary rounded-full font-label-caps text-label-caps transition-all' : 'px-md py-xs bg-surface-container-low text-on-surface-variant border border-outline-variant hover:bg-surface-variant rounded-full font-label-caps text-label-caps transition-all'}"
-                        class="no-underline">All</a>
+                        class="no-underline" th:text="#{explore.all}">All</a>
 
                     <th:block th:each="cat : ${categories}">
-                        <a th:href="@{/actions(categorie=${cat.nom}, keyword=${keyword})}" th:text="${cat.nom}"
+                        <a th:href="@{/actions(categorie=${cat.nom}, keyword=${keyword})}" th:text="#{ 'category.' + ${cat.nom} }"
                             th:class="${cat.nom == categorieSelectionnee ? 'px-md py-xs bg-primary text-on-primary rounded-full font-label-caps text-label-caps transition-all' : 'px-md py-xs bg-surface-container-low text-on-surface-variant border border-outline-variant hover:bg-surface-variant rounded-full font-label-caps text-label-caps transition-all'}"
                             class="no-underline">Environment</a>
                     </th:block>
@@ -242,9 +242,9 @@
                             th:with="percentage=${action.pourcentageAtteint}">
                             <div class="flex justify-between items-end mb-xs">
                                 <span class="text-label-caps font-label-caps text-secondary font-bold"
-                                    th:text="${percentage} + '% Funded'">75% Funded</span>
+                                    th:text="${#numbers.formatDecimal(percentage, 1, 0)} + '% ' + #{explore.funded}">75% Funded</span>
                                 <span class="text-body-sm text-on-surface-variant"><b class="text-on-surface"
-                                        th:text="${action.montantActuel} + ' MAD'">$120,000</b> récoltés</span>
+                                        th:text="${action.montantActuel != null ? action.montantActuel : 0} + ' MAD'">$120,000</b> <span th:text="#{explore.raised}">récoltés</span></span>
                             </div>
                             <div class="w-full bg-surface-variant h-3 rounded-full overflow-hidden mb-lg">
                                 <div class="bg-secondary h-full rounded-full"
@@ -252,9 +252,9 @@
                             </div>
                             <div class="flex items-center justify-between">
                                 <span class="text-label-caps font-label-caps text-outline"
-                                    th:text="'Objectif: ' + ${action.montantObjectif} + ' MAD'">Goal: $160,000</span>
+                                    th:text="#{explore.goal} + ': ' + ${action.montantObjectif} + ' MAD'">Goal: $160,000</span>
                                 <a th:href="@{/actions/{id}(id=${action.id})}"
-                                    class="bg-primary text-on-primary px-lg py-xs rounded-lg font-button text-button hover:bg-primary-container transition-all no-underline">View
+                                    class="bg-primary text-on-primary px-lg py-xs rounded-lg font-button text-button hover:bg-primary-container transition-all no-underline" th:text="#{explore.view_details}">View
                                     Details</a>
                             </div>
                         </div>
@@ -267,8 +267,8 @@
         <div th:if="${actions.empty}"
             class="text-center py-20 bg-white rounded-xl border border-outline-variant shadow-sm">
             <span class="material-symbols-outlined text-outline text-6xl mb-md">search_off</span>
-            <h4 class="font-h2 text-h2 text-on-surface mb-xs">No campaigns found</h4>
-            <p class="text-on-surface-variant">Try adjusting your filters or keywords.</p>
+            <h4 class="font-h2 text-h2 text-on-surface mb-xs" th:text="#{explore.no_results}">No campaigns found</h4>
+            <p class="text-on-surface-variant" th:text="#{explore.no_results_sub}">Try adjusting your filters or keywords.</p>
         </div>
 
         <!-- Pagination -->
@@ -279,10 +279,10 @@
             <div class="flex gap-2">
                 <a th:if="${actions.hasPrevious()}"
                     th:href="@{/actions(page=${actions.number - 1}, categorie=${categorieSelectionnee}, keyword=${keyword})}"
-                    class="px-lg py-md border border-primary text-primary font-button text-button rounded-lg hover:bg-primary-fixed transition-all no-underline">Previous</a>
+                    class="px-lg py-md border border-primary text-primary font-button text-button rounded-lg hover:bg-primary-fixed transition-all no-underline" th:text="#{explore.previous}">Previous</a>
                 <a th:if="${actions.hasNext()}"
                     th:href="@{/actions(page=${actions.number + 1}, categorie=${categorieSelectionnee}, keyword=${keyword})}"
-                    class="px-lg py-md border border-primary text-primary font-button text-button rounded-lg hover:bg-primary-fixed transition-all no-underline">Next</a>
+                    class="px-lg py-md border border-primary text-primary font-button text-button rounded-lg hover:bg-primary-fixed transition-all no-underline" th:text="#{explore.next}">Next</a>
             </div>
         </div>
     </main>
@@ -322,7 +322,7 @@
         </div>
         <div
             class="max-w-container-max mx-auto px-md md:px-xl pt-xl mt-xl border-t border-outline-variant flex flex-col md:flex-row justify-between items-center gap-md">
-            <p class="text-outline text-label-caps font-label-caps">© 2026 CharityHub. All Rights Reserved.</p>
+            <p class="text-outline text-label-caps font-label-caps">© 2026 CharityHub. <span th:text="#{footer.rights}">All Rights Reserved.</span></p>
             <div class="flex gap-lg">
                 <span class="text-outline material-symbols-outlined">public</span>
                 <span class="text-outline material-symbols-outlined">share</span>

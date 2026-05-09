@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html class="light" lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html th:dir="${#locale.language == 'ar' ? 'rtl' : 'ltr'}" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>CharityHub - Home</title>
+    <title th:text="#{app.title}">CharityHub - Home</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -103,10 +103,10 @@
             }
         }
     </script>
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+        [lang='ar'] { font-family: 'Noto Sans Arabic', sans-serif; }
     </style>
 </head>
 <body class="bg-background text-on-background font-body-md antialiased min-h-screen flex flex-col">
@@ -117,34 +117,36 @@
 <div class="flex items-center gap-xl">
 <a class="font-h2 text-h2 font-bold text-primary dark:text-primary-fixed-dim" th:href="@{/}">CharityHub</a>
 <div class="hidden md:flex items-center gap-lg">
-    <a class="font-body-md text-body-md text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-secondary pb-1" th:href="@{/}">Home</a>
-    <a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors pb-1" th:href="@{/actions}">Explore</a>
-    <a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors pb-1" th:href="@{/about}">About</a>
+    <a class="font-body-md text-body-md text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-secondary pb-1" th:href="@{/}" th:text="#{nav.home}">Home</a>
+    <a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors pb-1" th:href="@{/actions}" th:text="#{nav.explore}">Explore</a>
+    <a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors pb-1" th:href="@{/about}" th:text="#{nav.about}">About</a>
     <a sec:authorize="hasRole('ROLE_ORG_ADMIN')" class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors pb-1 flex items-center gap-xs" th:href="@{/organisation/dashboard}">
-        <span class="material-symbols-outlined text-[18px]">dashboard_customize</span> Console
+        <span class="material-symbols-outlined text-[18px]">dashboard_customize</span> <span th:text="#{nav.console}">Console</span>
     </a>
 </div>
 </div>
 <div class="flex items-center gap-md">
     <!-- Language Toggle -->
-    <div class="flex gap-2 mr-4">
-        <a th:href="@{/(lang=fr)}" class="text-xs font-bold text-primary">FR</a>
-        <span class="text-xs text-outline">|</span>
-        <a th:href="@{/(lang=ar)}" class="text-xs font-bold text-primary">AR</a>
+    <div class="flex gap-2 mr-4 text-sm font-bold text-primary">
+        <a th:href="@{'' (lang='en')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'en' ? 'text-secondary font-black' : ''}">EN</a>
+        <span class="text-outline opacity-30">|</span>
+        <a th:href="@{'' (lang='fr')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'fr' ? 'text-secondary font-black' : ''}">FR</a>
+        <span class="text-outline opacity-30">|</span>
+        <a th:href="@{'' (lang='ar')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'ar' ? 'text-secondary font-black' : ''}">AR</a>
     </div>
 
     <div sec:authorize="!isAuthenticated()" class="flex items-center gap-sm">
-        <a th:href="@{/auth/login}" class="text-on-surface-variant hover:text-primary transition-colors">Login</a>
-        <a th:href="@{/auth/register}" class="bg-primary text-on-primary font-button text-button px-lg py-xs rounded-lg hover:bg-primary-container transition-colors shadow-sm">Get Started</a>
+        <a th:href="@{/auth/login}" class="text-on-surface-variant hover:text-primary transition-colors" th:text="#{nav.login}">Login</a>
+        <a th:href="@{/auth/register}" class="bg-primary text-on-primary font-button text-button px-lg py-xs rounded-lg hover:bg-primary-container transition-colors shadow-sm" th:text="#{nav.register}">Get Started</a>
     </div>
     
     <div sec:authorize="isAuthenticated()" class="flex items-center gap-sm">
         <!-- Profile Link: Dashboard for Orgs, Profile for Users -->
         <a sec:authorize="hasRole('ROLE_ORG_ADMIN')" th:href="@{/organisation/dashboard}" class="rounded-full overflow-hidden w-10 h-10 border border-outline-variant shadow-sm hover:ring-2 hover:ring-primary/20 transition-all">
-            <img alt="Org profile" class="w-full h-full object-cover" src="https://ui-avatars.com/api/?name=Org&background=005440&color=fff"/>
+            <img alt="Org profile" class="w-full h-full object-cover" th:src="${currentUser != null && currentUser.photoProfil != null ? currentUser.photoProfil : 'https://ui-avatars.com/api/?name=Org&background=005440&color=fff'}"/>
         </a>
         <a sec:authorize="!hasRole('ROLE_ORG_ADMIN')" th:href="@{/utilisateur/profil}" class="rounded-full overflow-hidden w-10 h-10 border border-outline-variant shadow-sm hover:ring-2 hover:ring-primary/20 transition-all">
-            <img alt="User profile" class="w-full h-full object-cover" src="https://ui-avatars.com/api/?name=User&background=005440&color=fff"/>
+            <img alt="User profile" class="w-full h-full object-cover" th:src="${currentUser != null && currentUser.photoProfil != null ? currentUser.photoProfil : 'https://ui-avatars.com/api/?name=' + (currentUser != null ? currentUser.prenom : 'User') + '&background=005440&color=fff'}"/>
         </a>
         
         <form th:action="@{/auth/logout}" method="post">
@@ -158,19 +160,30 @@
 </nav>
 
 <main class="max-w-container-max mx-auto px-md md:px-[64px] py-xl space-y-[48px] w-full">
+    <!-- Alerts -->
+    <div class="mb-md" th:if="${success != null || error != null}">
+        <div th:if="${success != null}" class="bg-primary/10 border border-primary text-primary px-lg py-sm rounded-lg flex items-center gap-md shadow-sm">
+            <span class="material-symbols-outlined">check_circle</span>
+            <span th:text="${success}">Success message</span>
+        </div>
+        <div th:if="${error != null}" class="bg-error/10 border border-error text-error px-lg py-sm rounded-lg flex items-center gap-md shadow-sm">
+            <span class="material-symbols-outlined">error</span>
+            <span th:text="${error}">Error message</span>
+        </div>
+    </div>
 <!-- Hero Section (Bento Style) -->
 <section class="grid grid-cols-1 md:grid-cols-12 gap-gutter min-h-[400px]">
 <div class="md:col-span-8 rounded-xl overflow-hidden relative group shadow-md">
 <div class="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-all z-10"></div>
 <img alt="Hero Image" class="w-full h-full object-cover absolute inset-0" src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070&auto=format&fit=crop"/>
 <div class="absolute inset-0 z-20 flex flex-col justify-end p-[32px] md:p-[48px]">
-<h1 class="font-display text-display text-white mb-sm drop-shadow-md">Make an Impact Today</h1>
-<p class="font-body-lg text-body-lg text-white/90 max-w-2xl mb-lg drop-shadow-sm">Join thousands of donors making a difference across the globe. Your contribution, big or small, creates lasting change.</p>
+<h1 class="font-display text-display text-white mb-sm drop-shadow-md" th:text="#{hero.title}">Make an Impact Today</h1>
+<p class="font-body-lg text-body-lg text-white/90 max-w-2xl mb-lg drop-shadow-sm" th:text="#{hero.subtitle}">Join thousands of donors making a difference across the globe. Your contribution, big or small, creates lasting change.</p>
 <div class="flex gap-md">
-<a th:href="@{/actions}" class="bg-primary text-on-primary font-button text-button px-lg py-[12px] rounded-lg hover:bg-primary-container transition-colors shadow-sm w-fit no-underline">
+<a th:href="@{/actions}" class="bg-primary text-on-primary font-button text-button px-lg py-[12px] rounded-lg hover:bg-primary-container transition-colors shadow-sm w-fit no-underline" th:text="#{hero.explore}">
                             Explore Causes
                         </a>
-<a th:href="@{/watch}" class="bg-white/10 backdrop-blur-md border border-white/30 text-white font-button text-button px-lg py-[12px] rounded-lg hover:bg-white/20 transition-colors w-fit no-underline">
+<a th:href="@{/watch}" class="bg-white/10 backdrop-blur-md border border-white/30 text-white font-button text-button px-lg py-[12px] rounded-lg hover:bg-white/20 transition-colors w-fit no-underline" th:text="#{hero.watch}">
                             Watch Video
                         </a>
 </div>
@@ -180,11 +193,11 @@
 <!-- Urgent Appeal Card -->
 <div th:if="${urgentAction != null}" class="md:col-span-4 bg-surface-container-low rounded-xl border border-outline-variant p-lg flex flex-col justify-between shadow-sm">
 <div>
-<h2 class="font-h3 text-h3 text-on-surface mb-xs">Urgent Appeal</h2>
+<h2 class="font-h3 text-h3 text-on-surface mb-xs" th:text="#{urgent.title}">Urgent Appeal</h2>
 <p class="font-body-sm text-body-sm text-on-surface-variant mb-md" th:text="${urgentAction.titre}">Emergency relief campaign...</p>
 <div class="space-y-xs mb-md" th:with="percentage=${urgentAction.montantObjectif != null && urgentAction.montantObjectif.compareTo(0) > 0 ? (urgentAction.montantActuel.multiply(100).divide(urgentAction.montantObjectif, 0, T(java.math.RoundingMode).HALF_UP)) : 0}">
 <div class="flex justify-between text-body-sm">
-<span class="text-on-surface-variant">Raised</span>
+<span class="text-on-surface-variant" th:text="#{urgent.raised}">Raised</span>
 <span class="font-medium text-on-surface"><span th:text="${urgentAction.montantActuel}"></span> / <span th:text="${urgentAction.montantObjectif}"></span> MAD</span>
 </div>
 <div class="w-full bg-surface-variant rounded-full h-[8px] overflow-hidden">
@@ -194,7 +207,7 @@
 </div>
 <div class="space-y-sm">
     <div class="mb-lg">
-        <p class="font-label-caps text-label-caps text-on-surface-variant mb-sm uppercase">Sélectionner un montant</p>
+        <p class="font-label-caps text-label-caps text-on-surface-variant mb-sm uppercase" th:text="#{urgent.select_amount}">Sélectionner un montant</p>
         <div class="grid grid-cols-3 gap-xs mb-xs">
             <a th:href="@{/dons/initier/{id}(id=${urgentAction.id}, amount=100)}"
                 class="bg-[#F0F9F7] text-primary border border-primary-container font-button text-xs py-xs rounded-lg hover:bg-primary-container hover:text-on-primary-container transition-colors flex justify-center items-center no-underline">
@@ -210,25 +223,31 @@
             </a>
         </div>
         <a th:href="@{/dons/initier/{id}(id=${urgentAction.id})}"
-            class="w-full bg-surface text-on-surface-variant border border-outline-variant font-button text-xs py-xs rounded-lg hover:bg-surface-variant transition-colors flex justify-center items-center no-underline">
+            class="w-full bg-surface text-on-surface-variant border border-outline-variant font-button text-xs py-xs rounded-lg hover:bg-surface-variant transition-colors flex justify-center items-center no-underline" th:text="#{urgent.custom_amount}">
             Montant Personnalisé
         </a>
     </div>
     
     <div class="flex flex-col gap-sm">
         <a th:href="@{/dons/initier/{id}(id=${urgentAction.id})}"
-            class="w-full bg-secondary text-on-secondary font-button text-button py-sm rounded-lg hover:bg-secondary-container transition-colors flex justify-center items-center font-bold no-underline">
+            class="w-full bg-secondary text-on-secondary font-button text-button py-sm rounded-lg hover:bg-secondary-container transition-colors flex justify-center items-center font-bold no-underline" th:text="#{urgent.donate_now}">
             Faire un Don Now
         </a>
-        <form th:action="@{/participations/inscrire/{id}(id=${urgentAction.id})}" method="post" class="w-full">
+        <div sec:authorize="!isAuthenticated()" class="w-full">
+            <a th:href="@{/auth/login}"
+                class="w-full border-2 border-primary text-primary font-button text-button py-sm rounded-lg hover:bg-primary/5 transition-colors flex justify-center items-center font-bold no-underline" th:text="#{urgent.participate}">
+                Participer / S'inscrire
+            </a>
+        </div>
+        <form sec:authorize="isAuthenticated()" th:action="@{/participations/inscrire/{id}(id=${urgentAction.id})}" method="post" class="w-full">
             <button type="submit"
-                class="w-full border-2 border-primary text-primary font-button text-button py-sm rounded-lg hover:bg-primary/5 transition-colors flex justify-center items-center font-bold">
+                class="w-full border-2 border-primary text-primary font-button text-button py-sm rounded-lg hover:bg-primary/5 transition-colors flex justify-center items-center font-bold" th:text="#{urgent.participate}">
                 Participer / S'inscrire
             </button>
         </form>
         <button
             class="w-full border border-outline-variant text-on-surface-variant font-body-sm py-sm rounded-lg hover:bg-surface-variant transition-colors flex justify-center items-center">
-            <span class="material-symbols-outlined mr-xs text-sm">share</span> Partager l'action
+            <span class="material-symbols-outlined mr-xs text-sm">share</span> <span th:text="#{urgent.share}">Partager l'action</span>
         </button>
     </div>
 </div>
@@ -237,14 +256,14 @@
 
 <!-- Global Impact Summary -->
 <section>
-<h2 class="font-h2 text-h2 text-on-surface mb-lg">Global Impact</h2>
+<h2 class="font-h2 text-h2 text-on-surface mb-lg" th:text="#{impact.title}">Global Impact</h2>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
 <div class="bg-white rounded-[12px] border border-outline-variant p-[24px] hover:bg-surface-bright transition-colors group flex items-center gap-md shadow-sm">
 <div class="w-[48px] h-[48px] rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
 <span class="material-symbols-outlined">volunteer_activism</span>
 </div>
 <div>
-<p class="font-body-sm text-body-sm text-on-surface-variant">Total Donated</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant" th:text="#{impact.donated}">Total Donated</p>
 <p class="font-h2 text-h2 text-on-surface" th:text="${totalDonated} + ' MAD'">$1,250</p>
 </div>
 </div>
@@ -253,7 +272,7 @@
 <span class="material-symbols-outlined">public</span>
 </div>
 <div>
-<p class="font-body-sm text-body-sm text-on-surface-variant">Causes Supported</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant" th:text="#{impact.causes}">Causes Supported</p>
 <p class="font-h2 text-h2 text-on-surface" th:text="${causesSupported}">5</p>
 </div>
 </div>
@@ -262,7 +281,7 @@
 <span class="material-symbols-outlined">group</span>
 </div>
 <div>
-<p class="font-body-sm text-body-sm text-on-surface-variant">Lives Touched (Est.)</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant" th:text="#{impact.lives}">Lives Touched (Est.)</p>
 <p class="font-h2 text-h2 text-on-surface" th:text="${livesTouched} + '+'">120+</p>
 </div>
 </div>
@@ -272,9 +291,9 @@
 <!-- Featured Campaigns -->
 <section>
 <div class="flex justify-between items-end mb-lg">
-<h2 class="font-h2 text-h2 text-on-surface">Featured Campaigns</h2>
+<h2 class="font-h2 text-h2 text-on-surface" th:text="#{featured.title}">Featured Campaigns</h2>
 <a class="font-button text-button text-primary hover:text-primary-container flex items-center gap-xs no-underline" th:href="@{/actions}">
-                    View All <span class="material-symbols-outlined text-sm">arrow_forward</span>
+    <span th:text="#{featured.view_all}">View All</span> <span class="material-symbols-outlined text-sm">arrow_forward</span>
 </a>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
@@ -297,8 +316,8 @@
                         <span class="font-medium text-on-surface"><span th:text="${action.montantActuel}"></span> MAD</span>
                         <span class="text-on-surface-variant" th:text="${percentage} + '%'">75%</span>
                     </div>
-                    <a th:href="@{/actions/{id}(id=${action.id})}" class="block mt-4 text-center bg-primary/5 text-primary font-button text-xs py-2 rounded hover:bg-primary/10 transition-colors no-underline">
-                        View Details
+                    <a th:href="@{/actions/{id}(id=${action.id})}" class="block mt-4 text-center bg-primary/5 text-primary font-button text-xs py-2 rounded hover:bg-primary/10 transition-colors no-underline" th:text="#{featured.view_details}">
+                        <span th:text="#{featured.view_details}">View Details</span>
                     </a>
                 </div>
             </div>
@@ -310,7 +329,7 @@
 
 <footer class="mt-auto border-t border-outline-variant bg-surface-container-lowest py-lg">
     <div class="max-w-container-max mx-auto px-md text-center text-on-surface-variant font-body-sm">
-        <p>&copy; 2026 CharityHub. All rights reserved.</p>
+        <p>&copy; 2026 CharityHub. <span th:text="#{footer.rights}">All rights reserved.</span></p>
     </div>
 </footer>
 

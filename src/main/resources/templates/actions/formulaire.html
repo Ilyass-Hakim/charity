@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html class="light" lang="en" xmlns:th="http://www.thymeleaf.org">
+<html th:dir="${#locale.language == 'ar' ? 'rtl' : 'ltr'}" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Create New Campaign - CharityHub</title>
+    <title th:text="#{create.title} + ' - CharityHub'">Create New Campaign - CharityHub</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -81,7 +81,9 @@
           },
         }
     </script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet" />
     <style>
+        [lang='ar'] { font-family: 'Noto Sans Arabic', sans-serif; }
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
     </style>
 </head>
@@ -96,25 +98,40 @@
             </div>
             <span class="font-h2 text-h2 text-primary font-bold">CharityHub</span>
         </a>
-        <a th:href="@{/organisation/dashboard}" class="text-on-surface-variant hover:text-primary font-button text-button flex items-center gap-xs no-underline transition-colors">
-            <span class="material-symbols-outlined">close</span> Exit Editor
-        </a>
+        <div class="flex items-center gap-lg">
+            <!-- Language Toggle -->
+            <div class="flex gap-2 mr-4 text-sm font-bold text-primary">
+                <a th:href="@{'' (lang='en')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'en' ? 'text-secondary font-black' : ''}">EN</a>
+                <span class="text-outline opacity-30">|</span>
+                <a th:href="@{'' (lang='fr')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'fr' ? 'text-secondary font-black' : ''}">FR</a>
+                <span class="text-outline opacity-30">|</span>
+                <a th:href="@{'' (lang='ar')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'ar' ? 'text-secondary font-black' : ''}">AR</a>
+            </div>
+            <!-- Profile Icon -->
+            <a th:href="@{/utilisateur/profil}" class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant transition-transform active:scale-95 shadow-inner">
+                <img th:if="${currentUser != null}" th:src="${currentUser.photoProfil != null ? currentUser.photoProfil : 'https://ui-avatars.com/api/?name=' + currentUser.prenom + '+' + currentUser.nom + '&background=005440&color=fff'}" class="w-full h-full object-cover"/>
+                <img th:if="${currentUser == null}" src="https://ui-avatars.com/api/?name=User&background=005440&color=fff" class="w-full h-full object-cover"/>
+            </a>
+            <a th:href="@{/organisation/dashboard}" class="text-on-surface-variant hover:text-primary font-button text-button flex items-center gap-xs no-underline transition-colors">
+                <span class="material-symbols-outlined">close</span> <span th:text="#{create.exit}">Exit Editor</span>
+            </a>
+        </div>
     </div>
 </header>
 
 <main class="max-w-5xl mx-auto px-md md:px-xl py-xl w-full">
     <!-- Breadcrumbs -->
     <nav class="flex items-center gap-xs text-on-surface-variant font-body-sm mb-lg">
-        <a class="hover:text-primary transition-colors no-underline" th:href="@{/}">Home</a>
+        <a class="hover:text-primary transition-colors no-underline" th:href="@{/}" th:text="#{nav.home}">Home</a>
         <span class="material-symbols-outlined text-[16px]">chevron_right</span>
-        <a class="hover:text-primary transition-colors no-underline" th:href="@{/organisation/campaigns}">My Campaigns</a>
+        <a class="hover:text-primary transition-colors no-underline" th:href="@{/organisation/campaigns}" th:text="#{create.breadcrumb_campaigns}">My Campaigns</a>
         <span class="material-symbols-outlined text-[16px]">chevron_right</span>
-        <span class="text-on-surface font-semibold">New Campaign</span>
+        <span class="text-on-surface font-semibold" th:text="#{create.breadcrumb_new}">New Campaign</span>
     </nav>
 
     <div class="mb-xl">
-        <h2 class="font-h1 text-h1 text-on-background">Create New Campaign</h2>
-        <p class="text-on-surface-variant font-body-lg mt-xs">Complete the details below to launch your initiative and start receiving support.</p>
+        <h2 class="font-h1 text-h1 text-on-background" th:text="#{create.title}">Create New Campaign</h2>
+        <p class="text-on-surface-variant font-body-lg mt-xs" th:text="#{create.subtitle}">Complete the details below to launch your initiative and start receiving support.</p>
     </div>
 
     <form th:action="@{/actions/creer}" th:object="${dto}" method="post" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
@@ -126,34 +143,34 @@
             <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm">
                 <h3 class="font-h3 text-h3 mb-lg text-primary flex items-center gap-xs border-b border-outline-variant pb-md">
                     <span class="material-symbols-outlined">description</span>
-                    Campaign Basics
+                    <span th:text="#{create.basics}">Campaign Basics</span>
                 </h3>
                 <div class="space-y-lg">
                     <div class="flex flex-col gap-xs">
-                        <label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Campaign Title</label>
-                        <input th:field="*{titre}" class="w-full px-md py-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-body-md bg-surface" placeholder="e.g., Clean Water for Atlas Villages" type="text" required/>
+                        <label class="font-label-caps text-label-caps text-on-surface-variant uppercase" th:text="#{create.field_title}">Campaign Title</label>
+                        <input th:field="*{titre}" class="w-full px-md py-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-body-md bg-surface" th:placeholder="#{create.field_title_placeholder}" type="text" required/>
                     </div>
                     
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-lg">
                         <div class="flex flex-col gap-xs">
-                            <label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Category</label>
+                            <label class="font-label-caps text-label-caps text-on-surface-variant uppercase" th:text="#{create.field_category}">Category</label>
                             <select th:field="*{categorieNom}" class="w-full px-md py-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-body-md bg-surface" required>
-                                <option value="">Select category</option>
+                                <option value="" th:text="#{create.field_category_placeholder}">Select category</option>
                                 <option th:each="cat : ${categories}" th:value="${cat.nom}" th:text="${cat.nom}">EDUCATION</option>
                             </select>
                         </div>
                         <div class="flex flex-col gap-xs">
-                            <label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Location / Lieu</label>
+                            <label class="font-label-caps text-label-caps text-on-surface-variant uppercase" th:text="#{create.field_location}">Location / Lieu</label>
                             <div class="relative">
                                 <span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant">location_on</span>
-                                <input th:field="*{lieu}" class="w-full pl-xl pr-md py-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-body-md bg-surface" placeholder="City, Region" type="text" required/>
+                                <input th:field="*{lieu}" class="w-full pl-xl pr-md py-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-body-md bg-surface" th:placeholder="#{create.field_location_placeholder}" type="text" required/>
                             </div>
                         </div>
                     </div>
                     
                     <div class="flex flex-col gap-xs">
-                        <label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Detailed Description</label>
-                        <textarea th:field="*{description}" class="w-full px-md py-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-body-md resize-none bg-surface" placeholder="Tell the story of your campaign, why it matters, and how the funds will be used..." rows="8" required></textarea>
+                        <label class="font-label-caps text-label-caps text-on-surface-variant uppercase" th:text="#{create.field_description}">Detailed Description</label>
+                        <textarea th:field="*{description}" class="w-full px-md py-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-body-md resize-none bg-surface" th:placeholder="#{create.field_description_placeholder}" rows="8" required></textarea>
                     </div>
                 </div>
             </div>
@@ -162,14 +179,14 @@
             <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm">
                 <h3 class="font-h3 text-h3 mb-lg text-primary flex items-center gap-xs border-b border-outline-variant pb-md">
                     <span class="material-symbols-outlined">photo_library</span>
-                    Photos / Media
+                    <span th:text="#{create.media_title}">Photos / Media</span>
                 </h3>
                 <div class="border-2 border-dashed border-outline-variant rounded-xl p-xl flex flex-col items-center justify-center bg-surface-container-low hover:bg-surface-variant transition-colors cursor-pointer group relative">
                     <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-md group-hover:scale-110 transition-transform">
                         <span class="material-symbols-outlined text-[32px]">cloud_upload</span>
                     </div>
-                    <p class="font-h3 text-h3 text-on-surface mb-xs">Choose your photos</p>
-                    <p class="text-on-surface-variant font-body-sm text-center max-w-xs">Upload high-quality images to increase transparency. JPG, PNG.</p>
+                    <p class="font-h3 text-h3 text-on-surface mb-xs" th:text="#{create.media_drop}">Choose your photos</p>
+                    <p class="text-on-surface-variant font-body-sm text-center max-w-xs" th:text="#{create.media_help}">Upload high-quality images to increase transparency. JPG, PNG.</p>
                     <input class="absolute inset-0 opacity-0 cursor-pointer" type="file" name="medias" multiple/>
                 </div>
             </div>
@@ -182,11 +199,11 @@
             <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm">
                 <h3 class="font-h3 text-h3 mb-lg text-primary flex items-center gap-xs border-b border-outline-variant pb-md">
                     <span class="material-symbols-outlined">payments</span>
-                    Financial Goal
+                    <span th:text="#{create.goal_title}">Financial Goal</span>
                 </h3>
                 <div class="space-y-lg">
                     <div class="flex flex-col gap-xs">
-                        <label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Target Amount</label>
+                        <label class="font-label-caps text-label-caps text-on-surface-variant uppercase" th:text="#{create.goal_field}">Target Amount</label>
                         <div class="relative">
                             <input th:field="*{montantObjectif}" class="w-full pr-xl pl-md py-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-body-md font-bold bg-surface" placeholder="0.00" type="number" step="0.01" required/>
                             <span class="absolute right-md top-1/2 -translate-y-1/2 font-bold text-on-surface-variant">MAD</span>
@@ -195,7 +212,7 @@
                     <div class="p-md bg-primary-container/10 rounded-lg border border-primary/20">
                         <div class="flex items-start gap-sm">
                             <span class="material-symbols-outlined text-primary text-[20px]">info</span>
-                            <p class="text-body-sm text-on-surface-variant">Setting a realistic goal increases donor confidence.</p>
+                            <p class="text-body-sm text-on-surface-variant" th:text="#{create.goal_help}">Setting a realistic goal increases donor confidence.</p>
                         </div>
                     </div>
                 </div>
@@ -205,15 +222,15 @@
             <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm">
                 <h3 class="font-h3 text-h3 mb-lg text-primary flex items-center gap-xs border-b border-outline-variant pb-md">
                     <span class="material-symbols-outlined">calendar_month</span>
-                    Campaign Timeline
+                    <span th:text="#{create.timeline_title}">Campaign Timeline</span>
                 </h3>
                 <div class="space-y-lg">
                     <div class="flex flex-col gap-xs">
-                        <label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Start Date</label>
+                        <label class="font-label-caps text-label-caps text-on-surface-variant uppercase" th:text="#{create.timeline_start}">Start Date</label>
                         <input th:field="*{dateDebut}" class="w-full px-md py-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-body-md bg-surface" type="date" required/>
                     </div>
                     <div class="flex flex-col gap-xs">
-                        <label class="font-label-caps text-label-caps text-on-surface-variant uppercase">End Date</label>
+                        <label class="font-label-caps text-label-caps text-on-surface-variant uppercase" th:text="#{create.timeline_end}">End Date</label>
                         <input th:field="*{dateFin}" class="w-full px-md py-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-body-md bg-surface" type="date" required/>
                     </div>
                 </div>
@@ -221,20 +238,20 @@
             
             <!-- Tip Card -->
             <div class="bg-primary text-on-primary rounded-xl p-lg shadow-md">
-                <h4 class="font-h3 text-h3 mb-sm">Quick Tip</h4>
-                <p class="font-body-sm opacity-90">Adding a compelling story and multiple photos can increase your chance of reaching your goal by up to 50%.</p>
+                <h4 class="font-h3 text-h3 mb-sm" th:text="#{create.tip_title}">Quick Tip</h4>
+                <p class="font-body-sm opacity-90" th:text="#{create.tip_text}">Adding a compelling story and multiple photos can increase your chance of reaching your goal by up to 50%.</p>
             </div>
         </div>
 
         <!-- Sticky Bottom Actions -->
         <div class="col-span-12 sticky bottom-8 z-30 mt-xl">
             <div class="bg-surface/80 backdrop-blur-md border border-outline-variant rounded-xl p-md flex items-center justify-end gap-md shadow-xl">
-                <a th:href="@{/organisation/campaigns}" class="px-xl py-sm bg-surface-container-high text-on-surface rounded-lg font-button text-button border border-outline-variant hover:bg-surface-variant transition-all no-underline">
+                <a th:href="@{/organisation/campaigns}" class="px-xl py-sm bg-surface-container-high text-on-surface rounded-lg font-button text-button border border-outline-variant hover:bg-surface-variant transition-all no-underline" th:text="#{create.cancel}">
                     Cancel
                 </a>
                 <button class="px-xl py-sm bg-secondary text-on-primary rounded-lg font-button text-button shadow-md hover:opacity-90 active:scale-95 transition-all flex items-center gap-xs" type="submit">
                     <span class="material-symbols-outlined">rocket_launch</span>
-                    Publish Campaign
+                    <span th:text="#{create.publish}">Publish Campaign</span>
                 </button>
             </div>
         </div>
@@ -243,10 +260,10 @@
 
 <footer class="mt-xl py-lg border-t border-outline-variant bg-surface-container-low w-full">
     <div class="max-w-container-max mx-auto px-lg flex flex-col md:flex-row justify-between items-center gap-md">
-        <p class="text-body-sm text-on-surface-variant">© 2024 CharityHub. Empowering change together.</p>
+        <p class="text-body-sm text-on-surface-variant">© <span th:text="#{footer.copyright}">2024 CharityHub. All rights reserved.</span> <span th:text="#{footer.empower}">Empowering change together.</span></p>
         <div class="flex items-center gap-lg">
-            <a class="text-body-sm text-on-surface-variant hover:text-primary no-underline transition-colors" href="#">Help Center</a>
-            <a class="text-body-sm text-on-surface-variant hover:text-primary no-underline transition-colors" href="#">Support</a>
+            <a class="text-body-sm text-on-surface-variant hover:text-primary no-underline transition-colors" href="#" th:text="#{footer.help}">Help Center</a>
+            <a class="text-body-sm text-on-surface-variant hover:text-primary no-underline transition-colors" href="#" th:text="#{footer.support}">Support</a>
         </div>
     </div>
 </footer>

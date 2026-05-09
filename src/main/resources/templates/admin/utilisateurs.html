@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html class="light" lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html th:dir="${#locale.language == 'ar' ? 'rtl' : 'ltr'}" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>CharityHub | Super-Admin User Management</title>
+    <title th:text="#{admin.users_title} + ' - CharityHub'">CharityHub | Super-Admin User Management</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -103,7 +103,9 @@
             },
         }
     </script>
-<style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+        [lang='ar'] { font-family: 'Noto Sans Arabic', sans-serif; }
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
@@ -122,32 +124,32 @@
 </div>
 <div>
 <h1 class="font-h3 text-h3 text-primary">CharityHub</h1>
-<p class="font-label-caps text-label-caps text-on-surface-variant">Admin Console</p>
+<p class="font-label-caps text-label-caps text-on-surface-variant" th:text="#{admin.console}">Admin Console</p>
 </div>
 </div>
 <nav class="flex-grow flex flex-col gap-xs">
 <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg duration-200 ease-in-out no-underline" th:href="@{/admin/dashboard}">
 <span class="material-symbols-outlined">dashboard</span>
-<span class="font-label-caps">Dashboard</span>
+<span class="font-label-caps" th:text="#{admin.dashboard}">Dashboard</span>
 </a>
 <a class="flex items-center gap-md px-md py-sm bg-primary-container text-on-primary-container rounded-lg font-bold duration-200 ease-in-out no-underline" th:href="@{/admin/utilisateurs}">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
-<span class="font-label-caps">Users</span>
+<span class="font-label-caps" th:text="#{admin.users_title}">Users</span>
 </a>
 <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg duration-200 ease-in-out no-underline" th:href="@{/admin/dons}">
 <span class="material-symbols-outlined">payments</span>
-<span class="font-label-caps">Donations</span>
+<span class="font-label-caps" th:text="#{admin.donations_title}">Donations</span>
 </a>
 </nav>
 <div class="mt-auto flex flex-col gap-xs pt-md border-t border-outline-variant">
 <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg duration-200 ease-in-out no-underline" href="#">
 <span class="material-symbols-outlined">help</span>
-<span class="font-label-caps text-label-caps">Help Center</span>
+<span class="font-label-caps text-label-caps" th:text="#{dashboard.help}">Help Center</span>
 </a>
 <form th:action="@{/auth/logout}" method="post">
     <button type="submit" class="w-full flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-variant rounded-lg duration-200 ease-in-out">
         <span class="material-symbols-outlined">logout</span>
-        <span class="font-label-caps text-label-caps">Logout</span>
+        <span class="font-label-caps text-label-caps" th:text="#{dashboard.logout}">Logout</span>
     </button>
 </form>
 </div>
@@ -158,13 +160,21 @@
 <!-- Header & Stats Row -->
 <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-md mb-xl">
 <div>
-<h2 class="font-h1 text-h1 text-on-surface">User Management</h2>
-<p class="font-body-md text-on-surface-variant">Oversee donors and platform impact leaders.</p>
+<h2 class="font-h1 text-h1 text-on-surface" th:text="#{admin.users_title}">User Management</h2>
+<p class="font-body-md text-on-surface-variant" th:text="#{admin.users_subtitle}">Oversee donors and platform impact leaders.</p>
 </div>
 <div class="flex items-center gap-md">
+<!-- Language Toggle -->
+<div class="flex gap-2 mr-4 text-sm font-bold text-primary">
+    <a th:href="@{'' (lang='en')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'en' ? 'text-secondary font-black' : ''}">EN</a>
+    <span class="text-outline opacity-30">|</span>
+    <a th:href="@{'' (lang='fr')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'fr' ? 'text-secondary font-black' : ''}">FR</a>
+    <span class="text-outline opacity-30">|</span>
+    <a th:href="@{'' (lang='ar')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'ar' ? 'text-secondary font-black' : ''}">AR</a>
+</div>
 <button class="bg-primary text-on-primary px-lg py-sm rounded-lg font-button flex items-center gap-sm cursor-pointer active:scale-95 transition-all">
 <span class="material-symbols-outlined">person_add</span>
-                    Invite Member
+                    <span th:text="#{admin.invite_member}">Invite Member</span>
                 </button>
 </div>
 </header>
@@ -172,16 +182,16 @@
 <section class="bg-surface border border-outline-variant rounded-xl p-md mb-lg flex flex-col md:flex-row gap-md items-center shadow-sm">
 <div class="relative flex-1 w-full">
 <span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline">search</span>
-<input class="w-full pl-[48px] pr-md py-sm bg-background border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-body-md" placeholder="Search users by name, email, or ID..." type="text"/>
+<input class="w-full pl-[48px] pr-md py-sm bg-background border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-body-md" th:placeholder="#{admin.user_search_placeholder}" type="text"/>
 </div>
 <div class="flex items-center gap-sm w-full md:w-auto">
 <button class="flex-1 md:flex-none border border-outline-variant px-md py-sm rounded-lg flex items-center justify-center gap-xs font-button text-on-surface hover:bg-surface-variant transition-colors">
 <span class="material-symbols-outlined">filter_list</span>
-                    Filters
+                    <span th:text="#{admin.filters}">Filters</span>
                 </button>
 <button class="flex-1 md:flex-none border border-outline-variant px-md py-sm rounded-lg flex items-center justify-center gap-xs font-button text-on-surface hover:bg-surface-variant transition-colors">
 <span class="material-symbols-outlined">download</span>
-                    Export CSV
+                    <span th:text="#{admin.export_csv}">Export CSV</span>
                 </button>
 </div>
 </section>
@@ -191,12 +201,12 @@
 <table class="w-full border-collapse text-left">
 <thead>
 <tr class="bg-surface-container border-b border-outline-variant">
-<th class="px-lg py-md font-label-caps text-on-surface-variant">User Name</th>
-<th class="px-lg py-md font-label-caps text-on-surface-variant">Email Address</th>
-<th class="px-lg py-md font-label-caps text-on-surface-variant text-right">Total Donated</th>
-<th class="px-lg py-md font-label-caps text-on-surface-variant">Role</th>
-<th class="px-lg py-md font-label-caps text-on-surface-variant">Status</th>
-<th class="px-lg py-md font-label-caps text-on-surface-variant text-center">Actions</th>
+<th class="px-lg py-md font-label-caps text-on-surface-variant" th:text="#{admin.user_name}">User Name</th>
+<th class="px-lg py-md font-label-caps text-on-surface-variant" th:text="#{admin.email_address}">Email Address</th>
+<th class="px-lg py-md font-label-caps text-on-surface-variant text-right" th:text="#{admin.total_donated}">Total Donated</th>
+<th class="px-lg py-md font-label-caps text-on-surface-variant" th:text="#{admin.role}">Role</th>
+<th class="px-lg py-md font-label-caps text-on-surface-variant" th:text="#{admin.status}">Status</th>
+<th class="px-lg py-md font-label-caps text-on-surface-variant text-center" th:text="#{admin.actions}">Actions</th>
 </tr>
 </thead>
 <tbody class="divide-y divide-outline-variant">
@@ -215,7 +225,7 @@
 <td class="px-lg py-md font-body-md text-primary font-bold text-right" th:text="${userDonations[user.id]} + ' MAD'">$12,450.00</td>
 <td class="px-lg py-md font-body-sm text-on-surface-variant" th:text="${user.role != null ? user.role.nom : 'USER'}">Role</td>
 <td class="px-lg py-md">
-<span class="px-sm py-xs bg-primary-container/20 text-primary-container text-[11px] font-bold rounded-full uppercase tracking-wider border border-primary/20">Active</span>
+<span class="px-sm py-xs bg-primary-container/20 text-primary-container text-[11px] font-bold rounded-full uppercase tracking-wider border border-primary/20" th:text="#{explore.ongoing}">Active</span>
 </td>
 <td class="px-lg py-md text-center">
 <div class="flex items-center justify-center gap-sm">
@@ -233,7 +243,7 @@
 </div>
 <!-- Pagination -->
 <div class="p-md bg-surface-container border-t border-outline-variant flex flex-col md:flex-row justify-between items-center gap-md">
-<p class="font-body-sm text-on-surface-variant" th:text="'Showing ' + ${utilisateurs.size()} + ' users'"></p>
+<p class="font-body-sm text-on-surface-variant" th:text="#{admin.showing_users(${utilisateurs.size()})}">Showing users</p>
 <div class="flex items-center gap-xs">
 <button class="w-10 h-10 flex items-center justify-center border border-outline-variant rounded-lg hover:bg-surface-variant transition-colors disabled:opacity-50" disabled="">
 <span class="material-symbols-outlined">chevron_left</span>
@@ -249,7 +259,7 @@
 <section class="mt-xl grid grid-cols-1 md:grid-cols-4 gap-lg">
 <div class="bg-surface border border-outline-variant rounded-xl p-lg flex flex-col justify-between h-32">
 <div class="flex justify-between items-start">
-<span class="font-label-caps text-on-surface-variant">Total Users</span>
+<span class="font-label-caps text-on-surface-variant" th:text="#{admin.total_users}">Total Users</span>
 <span class="material-symbols-outlined text-primary">group</span>
 </div>
 <div>
@@ -262,32 +272,32 @@
 </div>
 <div class="bg-surface border border-outline-variant rounded-xl p-lg flex flex-col justify-between h-32">
 <div class="flex justify-between items-start">
-<span class="font-label-caps text-on-surface-variant">Active Donors</span>
+<span class="font-label-caps text-on-surface-variant" th:text="#{admin.active_donors}">Active Donors</span>
 <span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">favorite</span>
 </div>
 <div>
 <div class="text-h2 font-h2 text-on-surface" th:text="${activeDonorsCount}">3,892</div>
-<div class="font-body-sm text-on-surface-variant" th:text="${totalUsersCount > 0 ? (activeDonorsCount * 100 / totalUsersCount) + '%' : '0%'} + ' of total base'">27% of total base</div>
+<div class="font-body-sm text-on-surface-variant" th:text="#{admin.of_total_base(${totalUsersCount > 0 ? (activeDonorsCount * 100 / totalUsersCount) : 0})}">27% of total base</div>
 </div>
 </div>
 <div class="bg-surface border border-outline-variant rounded-xl p-lg flex flex-col justify-between h-32">
 <div class="flex justify-between items-start">
-<span class="font-label-caps text-on-surface-variant">Pending Approvals</span>
+<span class="font-label-caps text-on-surface-variant" th:text="#{admin.pending_approvals}">Pending Approvals</span>
 <span class="material-symbols-outlined text-tertiary">pending_actions</span>
 </div>
 <div>
 <div class="text-h2 font-h2 text-on-surface" th:text="${pendingApprovalsCount}">42</div>
-<div class="font-body-sm text-tertiary font-bold" th:if="${pendingApprovalsCount > 0}">Needs attention</div>
+<div class="font-body-sm text-tertiary font-bold" th:if="${pendingApprovalsCount > 0}" th:text="#{admin.needs_attention}">Needs attention</div>
 </div>
 </div>
 <div class="bg-surface border border-outline-variant rounded-xl p-lg flex flex-col justify-between h-32">
 <div class="flex justify-between items-start">
-<span class="font-label-caps text-on-surface-variant">Impact Status</span>
+<span class="font-label-caps text-on-surface-variant" th:text="#{admin.impact_status}">Impact Status</span>
 <span class="material-symbols-outlined text-primary">stars</span>
 </div>
 <div>
-<div class="text-h2 font-h2 text-on-surface">Premium</div>
-<div class="font-body-sm text-on-surface-variant">Lifetime average</div>
+<div class="text-h2 font-h2 text-on-surface" th:text="#{admin.premium}">Premium</div>
+<div class="font-body-sm text-on-surface-variant" th:text="#{admin.lifetime_avg}">Lifetime average</div>
 </div>
 </div>
 </section>
