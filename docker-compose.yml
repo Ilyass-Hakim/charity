@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: charite-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: charite_db
+      POSTGRES_USER: ${DB_PROD_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PROD_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  mongodb:
+    image: mongo:6.0
+    container_name: charite-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+
+  app:
+    build: .
+    container_name: charite-app
+    restart: always
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres
+      - mongodb
+    env_file:
+      - .env
+    environment:
+      # Override DB URLs to use service names instead of localhost
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/charite_db
+      SPRING_DATA_MONGODB_URI: mongodb://mongodb:27017/charite
+      # Pass necessary variables from .env
+      DB_PROD_USERNAME: ${DB_PROD_USERNAME}
+      DB_PROD_PASSWORD: ${DB_PROD_PASSWORD}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      STRIPE_TEST_SK: ${STRIPE_TEST_SK}
+      STRIPE_TEST_PK: ${STRIPE_TEST_PK}
+      GMAIL_USERNAME: ${GMAIL_USERNAME}
+      GMAIL_PASSWORD: ${GMAIL_PASSWORD}
+
+volumes:
+  pgdata:
+  mongodata:
