@@ -47,8 +47,11 @@
         </div>
         <h1 class="text-4xl font-bold text-primary mb-sm" th:text="'Error ' + ${status}">Error</h1>
         <h2 class="text-2xl font-semibold mb-md" th:text="${error}">Something went wrong</h2>
-        <p class="text-on-surface-variant mb-xl text-lg">
+        <p class="text-on-surface-variant mb-base text-lg">
             Nous avons rencontré une difficulté inattendue. Cela peut être dû à une adresse incorrecte ou à un problème temporaire sur nos serveurs.
+        </p>
+        <p class="text-error font-mono text-sm mb-xl bg-error/5 p-sm rounded border border-error/20" th:if="${message}" th:text="${message}">
+            Error details will appear here.
         </p>
         <div class="flex justify-center">
             <a th:href="@{/}" class="bg-primary text-on-primary px-lg py-sm rounded-lg font-button text-button hover:bg-primary-container transition-all no-underline shadow-sm flex items-center gap-xs">

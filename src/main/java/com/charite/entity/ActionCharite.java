@@ -54,8 +54,9 @@ public class ActionCharite {
     @JoinColumn(name = "organisation_id", nullable = false)
     private Organisation organisation;
 
-    // Medias associes (images, videos)
-    @OneToMany(mappedBy = "actionCharite", cascade = CascadeType.ALL)
+    // Medias associes (images, videos) - Stockes dans MongoDB
+    @Transient
+    @Builder.Default
     private List<Media> medias = new ArrayList<>();
 
     // Contributions recues (Dons + Participations)

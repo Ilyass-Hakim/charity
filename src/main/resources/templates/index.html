@@ -108,6 +108,7 @@
     <style>
         [lang='ar'] { font-family: 'Noto Sans Arabic', sans-serif; }
     </style>
+    <link rel="icon" type="image/png" th:href="@{/images/logo.png}"/>
 </head>
 <body class="bg-background text-on-background font-body-md antialiased min-h-screen flex flex-col">
 
@@ -115,7 +116,10 @@
 <nav class="bg-surface dark:bg-on-background w-full sticky top-0 z-50 border-b border-outline-variant dark:border-on-surface-variant shadow-sm">
 <div class="flex justify-between items-center px-lg py-sm max-w-container-max mx-auto">
 <div class="flex items-center gap-xl">
-<a class="font-h2 text-h2 font-bold text-primary dark:text-primary-fixed-dim" th:href="@{/}">CharityHub</a>
+<a class="flex items-center gap-xs no-underline" th:href="@{/}">
+    <img th:src="@{/images/logo.png}" class="w-8 h-8 object-contain" alt="Logo"/>
+    <span class="font-h2 text-h2 font-bold text-primary dark:text-primary-fixed-dim">CharityHub</span>
+</a>
 <div class="hidden md:flex items-center gap-lg">
     <a class="font-body-md text-body-md text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-secondary pb-1" th:href="@{/}" th:text="#{nav.home}">Home</a>
     <a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors pb-1" th:href="@{/actions}" th:text="#{nav.explore}">Explore</a>

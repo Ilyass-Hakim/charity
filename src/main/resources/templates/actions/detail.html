@@ -80,6 +80,7 @@
     <style>
         [lang='ar'] { font-family: 'Noto Sans Arabic', sans-serif; }
     </style>
+    <link rel="icon" type="image/png" th:href="@{/images/logo.png}"/>
 </head>
 
 <body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
@@ -87,11 +88,17 @@
     <nav class="bg-surface w-full sticky top-0 z-50 border-b border-outline-variant shadow-sm">
         <div class="flex justify-between items-center px-lg py-sm max-w-container-max mx-auto h-16">
             <div class="flex items-center gap-xl">
-                <a class="font-h2 text-h2 font-bold text-primary no-underline" th:href="@{/}">CharityHub</a>
+                <a class="flex items-center gap-xs no-underline" th:href="@{/}">
+                    <img th:src="@{/images/logo.png}" class="w-8 h-8 object-contain" alt="Logo"/>
+                    <span class="font-h2 text-h2 font-bold text-primary dark:text-primary-fixed-dim">CharityHub</span>
+                </a>
                 <div class="hidden md:flex items-center gap-lg">
                     <a class="font-body-md text-on-surface-variant hover:text-primary transition-colors no-underline" th:href="@{/}" th:text="#{nav.home}">Home</a>
                     <a class="font-body-md text-on-surface-variant hover:text-primary transition-colors no-underline" th:href="@{/actions}" th:text="#{nav.explore}">Explore</a>
                     <a class="font-body-md text-on-surface-variant hover:text-primary transition-colors no-underline" th:href="@{/about}" th:text="#{nav.about}">About</a>
+                    <a sec:authorize="hasRole('ROLE_ORG_ADMIN')" class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors pb-1 flex items-center gap-xs no-underline" th:href="@{/organisation/dashboard}">
+                        <span class="material-symbols-outlined text-[18px]">dashboard_customize</span> <span th:text="#{nav.console}">Console</span>
+                    </a>
                 </div>
             </div>
             <div class="flex items-center gap-sm">
@@ -109,8 +116,15 @@
                 </div>
 
                 <div sec:authorize="isAuthenticated()" class="flex items-center gap-sm">
-                    <a th:href="@{/utilisateur/profil}" class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
-                        <img th:src="${currentUser != null && currentUser.photoProfil != null ? currentUser.photoProfil : 'https://ui-avatars.com/api/?name=' + (currentUser != null ? currentUser.prenom : 'User') + '&background=005440&color=fff'}" class="w-full h-full object-cover" />
+                    <a sec:authorize="hasRole('ROLE_ORG_ADMIN')" th:href="@{/organisation/dashboard}"
+                        class="rounded-full overflow-hidden w-10 h-10 border border-outline-variant shadow-sm hover:ring-2 hover:ring-primary/20 transition-all">
+                        <img alt="Org profile" class="w-full h-full object-cover"
+                            th:src="${currentOrg != null && currentOrg.logo != null ? currentOrg.logo : 'https://ui-avatars.com/api/?name=Org&background=005440&color=fff'}" />
+                    </a>
+                    <a sec:authorize="!hasRole('ROLE_ORG_ADMIN')" th:href="@{/utilisateur/profil}"
+                        class="rounded-full overflow-hidden w-10 h-10 border border-outline-variant shadow-sm hover:ring-2 hover:ring-primary/20 transition-all">
+                        <img alt="User profile" class="w-full h-full object-cover"
+                            th:src="${currentUser != null && currentUser.photoProfil != null ? currentUser.photoProfil : 'https://ui-avatars.com/api/?name=' + (currentUser != null ? currentUser.prenom : 'User') + '&background=005440&color=fff'}" />
                     </a>
                     <form th:action="@{/auth/logout}" method="post">
                         <button type="submit" class="text-on-surface-variant hover:text-error transition-colors">

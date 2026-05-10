@@ -51,7 +51,7 @@ public class MediaService {
                 .url("/uploads/" + nomFichier)
                 .type(type)
                 .nom(fichier.getOriginalFilename())
-                .actionCharite(action)
+                .actionChariteId(action.getId())
                 .build());
     }
 }

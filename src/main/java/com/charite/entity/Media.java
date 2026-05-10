@@ -1,30 +1,25 @@
 package com.charite.entity;
 
-import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "medias")
+@Document(collection = "medias")
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
 public class Media {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Column(nullable = false)
     private String url; // chemin local ou URL Cloudinary
 
     private String type; // 'image/jpeg', 'image/png', 'video/mp4'
     private String nom;  // nom original du fichier
 
-    @CreationTimestamp
-    private LocalDateTime dateUpload;
+    @Builder.Default
+    private LocalDateTime dateUpload = LocalDateTime.now();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "action_charite_id", nullable = false)
-    private ActionCharite actionCharite;
+    private Long actionChariteId; // Lien vers l'entite JPA ActionCharite
 }

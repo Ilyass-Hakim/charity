@@ -114,6 +114,7 @@
     <style>
         [lang='ar'] { font-family: 'Noto Sans Arabic', sans-serif; }
     </style>
+    <link rel="icon" type="image/png" th:href="@{/images/logo.png}"/>
 </head>
 
 <body class="font-body-md text-body-md min-h-screen flex flex-col">
@@ -123,8 +124,10 @@
         class="bg-surface dark:bg-on-background w-full sticky top-0 z-50 border-b border-outline-variant dark:border-on-surface-variant shadow-sm">
         <div class="flex justify-between items-center px-lg py-sm max-w-container-max mx-auto">
             <div class="flex items-center gap-xl">
-                <a class="font-h2 text-h2 font-bold text-primary dark:text-primary-fixed-dim"
-                    th:href="@{/}">CharityHub</a>
+                <a class="flex items-center gap-xs no-underline" th:href="@{/}">
+                    <img th:src="@{/images/logo.png}" class="w-8 h-8 object-contain" alt="Logo"/>
+                    <span class="font-h2 text-h2 font-bold text-primary dark:text-primary-fixed-dim">CharityHub</span>
+                </a>
                 <nav class="hidden md:flex gap-lg items-center">
                     <a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors pb-1 no-underline" th:href="@{/}" th:text="#{nav.home}">Home</a>
                     <a class="font-body-md text-body-md text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-secondary pb-1 no-underline" th:href="@{/actions}" th:text="#{nav.explore}">Explore</a>
@@ -162,6 +165,11 @@
                         <img alt="User profile" class="w-full h-full object-cover"
                             th:src="${currentUser != null && currentUser.photoProfil != null ? currentUser.photoProfil : 'https://ui-avatars.com/api/?name=' + (currentUser != null ? currentUser.prenom : 'User') + '&background=005440&color=fff'}" />
                     </a>
+                    <form th:action="@{/auth/logout}" method="post">
+                        <button type="submit" class="p-base rounded-full hover:bg-surface-variant transition-colors text-on-surface-variant">
+                            <span class="material-symbols-outlined">logout</span>
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -323,8 +331,8 @@
         <div
             class="max-w-container-max mx-auto px-md md:px-xl pt-xl mt-xl border-t border-outline-variant flex flex-col md:flex-row justify-between items-center gap-md">
             <p class="text-outline text-label-caps font-label-caps">© 2026 CharityHub. <span th:text="#{footer.rights}">All Rights Reserved.</span></p>
-            <div class="flex gap-lg">
-                <span class="text-outline material-symbols-outlined">public</span>
+            <div class="flex gap-lg items-center">
+                <img th:src="@{/images/logo.png}" class="w-6 h-6 object-contain opacity-50 grayscale hover:grayscale-0 hover:opacity-100 transition-all" alt="App Icon"/>
                 <span class="text-outline material-symbols-outlined">share</span>
                 <span class="text-outline material-symbols-outlined">help</span>
             </div>

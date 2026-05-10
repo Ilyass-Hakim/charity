@@ -108,6 +108,7 @@
     <style>
         [lang='ar'] { font-family: 'Noto Sans Arabic', sans-serif; }
     </style>
+    <link rel="icon" type="image/png" th:href="@{/images/logo.png}"/>
 </head>
 <body class="bg-background text-on-background min-h-screen flex items-center justify-center p-md md:p-gutter font-body-md antialiased">
 <!-- Main Container -->
@@ -131,9 +132,10 @@
         <span class="text-outline opacity-30">|</span>
         <a th:href="@{'' (lang='ar')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'ar' ? 'text-secondary font-black' : ''}">AR</a>
     </div>
-<header class="mb-xl text-center md:text-left">
-<h1 class="font-h2 text-h2 text-primary mb-xs" th:text="#{login.title}">Welcome back</h1>
-<p class="font-body-sm text-body-sm text-on-surface-variant" th:text="#{login.subtitle}">Please enter your details to sign in.</p>
+<header class="mb-xl text-center md:text-left flex flex-col items-center md:items-start">
+    <img th:src="@{/images/logo.png}" class="w-16 h-16 mb-md object-contain" alt="App Logo"/>
+    <h1 class="font-h2 text-h2 text-primary mb-xs" th:text="#{login.title}">Welcome back</h1>
+    <p class="font-body-sm text-body-sm text-on-surface-variant" th:text="#{login.subtitle}">Please enter your details to sign in.</p>
 </header>
 
 <!-- Alerts -->

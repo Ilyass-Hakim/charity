@@ -110,6 +110,7 @@
     <style>
         [lang='ar'] { font-family: 'Noto Sans Arabic', sans-serif; }
     </style>
+    <link rel="icon" type="image/png" th:href="@{/images/logo.png}"/>
 </head>
 <body class="bg-background text-on-background font-body-md min-h-screen flex items-center justify-center p-md md:p-xl">
 
@@ -123,7 +124,8 @@
         <a th:href="@{'' (lang='ar')}" class="hover:underline no-underline" th:classappend="${#locale.language == 'ar' ? 'text-secondary font-black' : ''}">AR</a>
     </div>
     <!-- Header -->
-    <header class="text-center mb-xl">
+    <header class="text-center mb-xl flex flex-col items-center">
+        <img th:src="@{/images/logo.png}" class="w-16 h-16 mb-md object-contain" alt="App Logo"/>
         <h1 class="font-display text-display text-primary mb-xs" th:text="#{register.title}">Join CharityHub</h1>
         <p class="font-body-lg text-body-lg text-on-surface-variant" th:text="#{register.subtitle}">Create your account to start making an impact.</p>
     </header>

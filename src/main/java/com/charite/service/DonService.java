@@ -20,6 +20,7 @@ public class DonService {
     private final DonRepository donRepository;
     private final ActionChariteRepository actionRepository;
     private final UtilisateurRepository utilisateurRepository;
+    private final EmailService emailService;
 
     public void enregistrerDon(Long actionId, String emailUser, BigDecimal montant, String paymentIntentId) {
         ActionCharite action = actionRepository.findById(actionId)
@@ -44,5 +45,12 @@ public class DonService {
         // Mettre a jour le montant actuel de l'action
         action.setMontantActuel(action.getMontantActuel().add(montant));
         actionRepository.save(action);
+
+        // Envoyer l'email de confirmation
+        try {
+            emailService.envoyerConfirmationDon(user.getEmail(), action.getTitre(), montant);
+        } catch (Exception e) {
+            System.err.println("Erreur envoi email don: " + e.getMessage());
+        }
     }
 }

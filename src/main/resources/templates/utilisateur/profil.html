@@ -107,6 +107,7 @@
     <style>
         [lang='ar'] { font-family: 'Noto Sans Arabic', sans-serif; }
     </style>
+    <link rel="icon" type="image/png" th:href="@{/images/logo.png}"/>
 </head>
 <body class="bg-background text-on-surface min-h-screen flex flex-col">
 
@@ -114,7 +115,10 @@
 <header class="bg-surface sticky top-0 z-50 border-b border-outline-variant w-full">
     <div class="flex justify-between items-center px-lg py-sm max-w-container-max mx-auto">
         <div class="flex items-center gap-xl">
-            <a th:href="@{/}" class="font-h2 text-h2 font-bold text-primary no-underline">CharityHub</a>
+            <a th:href="@{/}" class="flex items-center gap-xs no-underline">
+                <img th:src="@{/images/logo.png}" class="w-8 h-8 object-contain" alt="Logo"/>
+                <span class="font-h2 text-h2 font-bold text-primary">CharityHub</span>
+            </a>
             <nav class="hidden md:flex gap-lg items-center">
                 <a class="text-on-surface-variant font-body-md hover:text-primary transition-colors cursor-pointer no-underline" th:href="@{/}" th:text="#{nav.home}">Home</a>
                 <a class="text-on-surface-variant font-body-md hover:text-primary transition-colors cursor-pointer no-underline" th:href="@{/actions}" th:text="#{nav.explore}">Explore</a>
@@ -272,7 +276,10 @@
 
 <footer class="bg-on-background text-surface py-lg px-md mt-auto">
     <div class="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-md">
-        <p class="font-label-caps text-label-caps text-surface-variant" th:text="'© 2024 CharityHub. ' + #{footer.rights}">© 2024 CharityHub. Tous droits réservés.</p>
+        <div class="flex items-center gap-sm">
+            <img th:src="@{/images/logo.png}" class="w-6 h-6 object-contain opacity-50 grayscale hover:grayscale-0 hover:opacity-100 transition-all" alt="App Icon"/>
+            <p class="font-label-caps text-label-caps text-surface-variant" th:text="'© 2024 CharityHub. ' + #{footer.rights}">© 2024 CharityHub. Tous droits réservés.</p>
+        </div>
     </div>
 </footer>
 

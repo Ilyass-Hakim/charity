@@ -31,8 +31,9 @@ public class SecurityConfig {
                 .requestMatchers("/", "/explore", "/about").permitAll()
                 .requestMatchers(org.springframework.http.HttpMethod.GET, "/actions", "/actions/{id}").permitAll()
                 .requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                .requestMatchers("/css/**", "/js/**", "/images/**", "/uploads/**").permitAll()
                 .requestMatchers("/webjars/**").permitAll()
+                .requestMatchers("/error").permitAll()
                 // Pages admin uniquement
                 .requestMatchers("/admin/**").hasRole("SUPER_ADMIN")
                 // Pages organisation (creer action et dashboard)

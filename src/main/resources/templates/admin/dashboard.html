@@ -164,6 +164,10 @@
     <span class="material-symbols-outlined">check_circle</span>
     <span th:text="${success}">Action completed successfully!</span>
 </div>
+<div th:if="${error}" class="mb-lg p-md bg-error-container text-on-error-container rounded-xl flex items-center gap-sm animate-fade-in shadow-sm">
+    <span class="material-symbols-outlined">error</span>
+    <span th:text="${error}">An error occurred!</span>
+</div>
 
 <div class="flex items-center gap-md">
 <!-- Language Toggle -->
