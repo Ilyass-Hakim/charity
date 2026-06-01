@@ -19,7 +19,7 @@
 ## 🛠️ Stack Technique
 
 - **Backend** : Java 21, Spring Boot 3, Spring Security.
-- **Bases de données** : 
+- **Bases de données** :
   - **PostgreSQL** (Données relationnelles, utilisateurs, dons).
   - **MongoDB** (Gestion performante des fichiers médias et images).
 - **Frontend** : Thymeleaf, Tailwind CSS, JavaScript.
@@ -28,13 +28,24 @@
 
 ---
 
+## 🖼️ Démonstration Vidéo
+
+https://github.com/user-attachments/assets/e779f6ef-5e71-4079-82b2-2db3ad4d9577
+
+
+
+---
+
 ## 📦 Installation et Lancement
 
 ### Prérequis
+
 - [Docker](https://www.docker.com/products/docker-desktop/) et [Docker Compose](https://docs.docker.com/compose/install/) installés.
 
 ### Étape 1 : Configuration
+
 Clonez le dépôt et créez un fichier `.env` à la racine en vous basant sur `.env.example` :
+
 ```properties
 DB_PROD_USERNAME=votre_utilisateur
 DB_PROD_PASSWORD=votre_mot_de_passe
@@ -47,27 +58,21 @@ GMAIL_PASSWORD=votre_mot_de_passe_application
 ```
 
 ### Étape 2 : Lancement avec Docker
+
 Exécutez la commande suivante pour compiler et lancer tous les services :
+
 ```bash
 docker-compose up --build
 ```
+
 L'application sera accessible sur : **http://localhost:8081**
 
 ---
 
-## 🖼️ Aperçu et Démonstration
-
-### Vidéo de Présentation
-> [!NOTE]
-> Découvrez le fonctionnement complet de CharityHub en vidéo.
-
-#### 🎥 Prochainement (Soon)
-*(Lien de la vidéo démonstrative à venir)*
-
----
-
 ## 🤝 Contribution
+
 Les contributions sont les bienvenues ! N'hésitez pas à ouvrir une *Issue* ou à soumettre une *Pull Request*.
 
 ---
+
 *Développé avec ❤️ pour un impact social positif.*
